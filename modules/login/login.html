@@ -7,20 +7,32 @@
     <link rel="stylesheet" href="../../assets/css/styles.css">
 </head>
 <body>
-    <header>
-        <h1>Login SiGap-Dumai</h1>
-    </header>
-    <form id="login-form">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <button type="submit">Login</button>
-    </form>
-    <footer>
-        <p>&copy; 2025 BPBD Dumai</p>
-    </footer>
+    <!-- Header -->
+    <div id="header-container"></div>
+
+    <main>
+        <h2>Login SiGap-Dumai</h2>
+        <form id="login-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
     <script src="../../assets/js/main.js"></script>
-    <script src="login.js"></script>
+    <script src="login.js"></script> <!-- Menyertakan script JS untuk login -->
 </body>
 </html>
+
+<template id="header-template">
+    <!-- Header yang digunakan di halaman login -->
+</template>
+
+<template id="footer-template">
+    <!-- Footer yang digunakan di halaman login -->
+</template>
