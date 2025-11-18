@@ -1,0 +1,18 @@
+[
+    {
+        "kecamatan": "Bukit Kapur",
+        "kelurahan": [
+            "Bagan Besar",
+            "Bukit Kayu Kapur",
+            "Bukit Nenas"
+        ]
+    },
+    {
+        "kecamatan": "Dumai Barat",
+        "kelurahan": [
+            "Bagan Keladi",
+            "Pangkalan Sesai",
+            "Purnama"
+        ]
+    }
+]

@@ -1,0 +1,20 @@
+[
+    {
+        "username": "kalaksa",
+        "password": "dumaisigap",
+        "name": "Kepala Pelaksana",
+        "role": "kalaksa"
+    },
+    {
+        "username": "sekre",
+        "password": "dumaisigap",
+        "name": "Sekretaris",
+        "role": "sekre"
+    },
+    {
+        "username": "operator_bpbd1",
+        "password": "dumaisigap",
+        "name": "Operator BPBD 1",
+        "role": "operator"
+    }
+]
