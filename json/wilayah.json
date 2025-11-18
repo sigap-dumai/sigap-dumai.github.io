@@ -4,7 +4,11 @@
         "kelurahan": [
             "Bagan Besar",
             "Bukit Kayu Kapur",
-            "Bukit Nenas"
+            "Bukit Nenas",
+            "Gurun Panjang",
+            "Kampung Baru",
+            "Bagan Besar Timur",
+            "Bukit Kapur"
         ]
     },
     {
@@ -12,7 +16,58 @@
         "kelurahan": [
             "Bagan Keladi",
             "Pangkalan Sesai",
-            "Purnama"
+            "Purnama",
+            "Simpang Tetap Darul Ichsan"
+        ]
+    },
+    {
+        "kecamatan": "Dumai Kota",
+        "kelurahan": [
+            "Rimba Sekampung",
+            "Laksamana",
+            "Dumai Kota",
+            "Bintan",
+            "Sukajadi"
+        ]
+    },
+    {
+        "kecamatan": "Dumai Selatan",
+        "kelurahan": [
+            "Bukit Datuk",
+            "Mekar Sari",
+            "Bukit Timah",
+            "Ratu Sima",
+            "Bumi Ayu"
+        ]
+    },
+    {
+        "kecamatan": "Dumai Timur",
+        "kelurahan": [
+            "Bukit Batrem",
+            "Buluh Kasap",
+            "Jaya Mukti",
+            "Tanjung Palas",
+            "Teluk Binjai"
+        ]
+    },
+    {
+        "kecamatan": "Medang Kampai",
+        "kelurahan": [
+            "Guntung",
+            "Mundam",
+            "Pelintung",
+            "Teluk Makmur"
+        ]
+    },
+    {
+        "kecamatan": "Sungai Sembilan",
+        "kelurahan": [
+            "Bangsal Aceh",
+            "Basilam Baru",
+            "Batu Teritip",
+            "Lubuk Gaung",
+            "Tanjung Penyembal",
+            "Sungai Geniot"
         ]
     }
 ]
