@@ -1,0 +1,1 @@
+console.log("Menampilkan laporan admin SiGap-Dumai.");

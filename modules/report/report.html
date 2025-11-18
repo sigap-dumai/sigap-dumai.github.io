@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lapor Warga - SiGap-Dumai</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+</head>
+<body>
+    <div id="header-container"></div>
+
+    <main>
+        <h2>Lapor Kejadian Bencana</h2>
+        <form id="report-form">
+            <label for="location">Lokasi Kejadian:</label>
+            <input type="text" id="location" name="location" required>
+            <label for="description">Deskripsi Kejadian:</label>
+            <textarea id="description" name="description" required></textarea>
+            <button type="submit">Kirim Laporan</button>
+        </form>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="../../assets/js/main.js"></script>
+    <script src="report.js"></script>
+</body>
+</html>
