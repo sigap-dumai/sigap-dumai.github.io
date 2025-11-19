@@ -1,22 +1,7 @@
 /* assets/css/styles.css */
 
-/* Reset beberapa elemen agar konsisten */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Roboto', sans-serif;
-  background-color: white;
-  color: #333;
-  line-height: 1.6;
-  font-size: 16px;
-}
-
 /* HEADER */
-header {
+.main-header {
   background: linear-gradient(to right, #1e3a8a, #2563eb, #d97706, #f97316, #fbbf24); /* Gradien dari biru tua ke kuning */
   color: white;
   padding: 20px;
@@ -44,6 +29,17 @@ header {
   max-height: 60px; /* Ukuran maksimum logo */
   height: auto;
   margin: 0 10px; /* Memberikan jarak antar logo */
+}
+
+/* Menata judul SIGAP */
+.sigap-title {
+  font-size: 1.5em;
+  font-weight: 600;
+  color: white;
+  margin-top: 20px; /* Jarak antara logo dan judul */
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.4;
 }
 
 /* MOTIVASI HARI INI */
