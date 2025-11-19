@@ -293,3 +293,102 @@ h1 {
 .logout-btn:hover {
     background: #e64a19;
 }
+
+/* Styling untuk Landing Page */
+.landing {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 80vh;
+    background-color: white;
+    text-align: center;
+}
+
+.landing-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.landing-content h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.subtitle {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+/* Styling untuk Tombol Login */
+.landing-login-btn {
+    background: #ff5722;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 16px;
+    display: inline-block;
+    transition: 0.2s;
+    margin-top: 30px;
+}
+
+.landing-login-btn:hover {
+    background: #e64a19;
+}
+
+/* Styling untuk Report Cards */
+.reports {
+    background-color: #f4f4f4;
+    padding: 40px 0;
+    text-align: center;
+}
+
+.reports h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.report-cards {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.report-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 250px;
+    text-align: left;
+    transition: transform 0.2s ease;
+}
+
+.report-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.report-card p {
+    font-size: 14px;
+    color: #555;
+}
+
+.report-card .report-date {
+    font-size: 12px;
+    color: #777;
+    margin-top: 10px;
+}
+
+.report-card:hover {
+    transform: translateY(-10px);
+}

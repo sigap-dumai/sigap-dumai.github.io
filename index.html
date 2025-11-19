@@ -4,63 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiGap-Dumai</title>
-    <link href="assets/fonts/Roboto-VariableFont_wdth,wght.ttf" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <!-- Menggunakan Absolute Path -->
+    <link href="/assets/fonts/Roboto-VariableFont_wdth,wght.ttf" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
 <body>
-    <div id="header-container"></div>
-    <script>
-        fetch('partials/header.html')
-            .then(response => response.text())
-            .then(data => document.getElementById('header-container').innerHTML = data);
-    </script>
+    <header>
+        <div class="logo-container">
+            <!-- Logo SiGap-Dumai -->
+            <img src="/images/sigap_dumai.png" alt="SiGap-Dumai Logo" class="logo-img">
+        </div>
+    </header>
 
+    <!-- Landing Page Section -->
     <section class="landing">
         <div class="landing-content">
             <h1>SiGap-Dumai</h1>
             <p class="subtitle">Aplikasi SiGap-Dumai membantu Anda mendapatkan informasi darurat dengan cepat dan mudah.</p>
 
-            <div class="card-container">
-                <!-- Lapor Warga Card -->
-                <div class="card">
-                    <img src="images/lapor_warga.png" alt="Lapor Warga">
-                    <div class="card-content">
-                        <h3>Lapor Warga</h3>
-                        <p>Laporkan kejadian darurat atau masalah lingkungan di sekitar Anda.</p>
-                        <a href="#" class="btn-card">Lapor Sekarang</a>
-                    </div>
-                </div>
-
-                <!-- Petunjuk Evakuasi Card -->
-                <div class="card">
-                    <img src="images/evakuasi.png" alt="Petunjuk Evakuasi">
-                    <div class="card-content">
-                        <h3>Petunjuk Evakuasi</h3>
-                        <p>Ikuti langkah-langkah evakuasi untuk keselamatan Anda saat bencana.</p>
-                        <a href="#" class="btn-card">Pelajari Lebih Lanjut</a>
-                    </div>
-                </div>
-
-                <!-- Tentang Kami Card -->
-                <div class="card">
-                    <img src="images/tentang_kami.png" alt="Tentang Kami">
-                    <div class="card-content">
-                        <h3>Tentang Kami</h3>
-                        <p>Kenali lebih dalam tentang misi dan visi SiGap-Dumai.</p>
-                        <a href="#" class="btn-card">Baca Selengkapnya</a>
-                    </div>
-                </div>
-            </div>
-
-            <a href="modules/login/login.html" class="landing-login-btn">Masuk</a>
+            <!-- Tombol untuk Arahkan ke Halaman Login -->
+            <a href="/modules/login/login.html" class="landing-login-btn">Masuk</a>
         </div>
     </section>
 
-    <footer id="footer-container"></footer>
+    <!-- 5 Laporan Terakhir -->
+    <section class="reports">
+        <h2>Laporan Terbaru</h2>
+        <div class="report-cards" id="report-cards-container">
+            <!-- Laporan akan ditampilkan di sini -->
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 SiGap-Dumai. All rights reserved.</p>
+    </footer>
+
+    <script src="/assets/js/main.js"></script>
     <script>
-        fetch('partials/footer.html')
-            .then(response => response.text())
-            .then(data => document.getElementById('footer-container').innerHTML = data);
+        // Fungsi untuk mengambil dan menampilkan 5 laporan terakhir dari localStorage
+        function displayRecentReports() {
+            const reports = JSON.parse(localStorage.getItem('pendingReports')) || [];  // Ambil laporan dari localStorage
+            const recentReports = reports.slice(-5).reverse();  // Ambil 5 laporan terakhir, urutkan terbalik
+            
+            const reportContainer = document.getElementById('report-cards-container');
+            recentReports.forEach(report => {
+                const reportCard = document.createElement('div');
+                reportCard.classList.add('report-card');
+                reportCard.innerHTML = `
+                    <h3>${report.title}</h3>
+                    <p>${report.description}</p>
+                    <span class="report-date">${new Date(report.createdAt).toLocaleDateString()}</span>
+                `;
+                reportContainer.appendChild(reportCard);
+            });
+        }
+
+        // Memanggil fungsi untuk menampilkan laporan setelah halaman dimuat
+        window.onload = displayRecentReports;
     </script>
 </body>
 </html>
