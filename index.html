@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiGap-Dumai</title>
 
-    <!-- Link untuk memuat font Roboto dan Roboto Italic -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Roboto+Italic:wght@400&display=swap" rel="stylesheet">
+    <!-- Memuat font lokal dari folder /fonts/ -->
+    <link rel="stylesheet" href="/fonts/Roboto-VariableFont_wdth,wght.css">
+    <link rel="stylesheet" href="/fonts/Roboto-Italic-VariableFont_wdth,wght.css">
 
     <!-- CSS utama aplikasi -->
     <link rel="stylesheet" href="/assets/css/styles.css">
@@ -31,7 +32,7 @@
 
     <!-- PETA: posisi paling atas setelah motivasi -->
     <section class="map-section">
-        <div id="map"></div>
+        <div id="map" style="height: 400px;"></div> <!-- Pastikan ada ID #map dengan ukuran -->
     </section>
 
     <!-- 5 LAPORAN TERBARU -->
@@ -77,7 +78,7 @@
                 </div>
             </div>
 
-            <!-- Login hanya untuk Admin/Operator -->
+            <!-- Tombol Login Admin/Operator -->
             <a href="/modules/login/login.html" class="landing-login-btn">
                 Login Admin/Operator
             </a>
