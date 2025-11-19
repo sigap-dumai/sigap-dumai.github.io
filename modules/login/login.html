@@ -6,11 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - SiGap Dumai</title>
   <link rel="stylesheet" href="../../assets/css/styles.css"> <!-- Mengarah ke CSS -->
+  <!-- Memuat Font Roboto -->
+  <link rel="stylesheet" href="../../assets/css/fonts.css">
 </head>
 <body>
   <!-- Memuat Header -->
   <div id="header-placeholder"></div>
-  
+
   <div class="login-container">
     <h1>Login SiGap Dumai</h1>
     <form id="login-form" action="javascript:void(0)">
@@ -26,6 +28,27 @@
 
   <script src="../../assets/js/main.js"></script> <!-- Mengarah ke JS -->
   <script>
+    // Fungsi untuk memuat header dan footer
+    function loadHeaderAndFooter() {
+      // Memuat header
+      fetch('../../partials/header.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('header-placeholder').innerHTML = html;
+        })
+        .catch(err => console.error('Gagal memuat header:', err));
+
+      // Memuat footer
+      fetch('../../partials/footer.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('footer-placeholder').innerHTML = html;
+        })
+        .catch(err => console.error('Gagal memuat footer:', err));
+    }
+
+    loadHeaderAndFooter(); // Panggil fungsi untuk memuat header dan footer
+
     // Menangani proses login
     document.getElementById('login-form').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -56,28 +79,6 @@
           console.error('Terjadi kesalahan saat mengambil data pengguna:', err);
         });
     });
-
-    // Fungsi untuk memuat header dan footer
-    function loadHeaderAndFooter() {
-      // Memuat header
-      fetch('../../partials/header.html')
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById('header-placeholder').innerHTML = html;
-        })
-        .catch(err => console.error('Gagal memuat header:', err));
-
-      // Memuat footer
-      fetch('../../partials/footer.html')
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById('footer-placeholder').innerHTML = html;
-        })
-        .catch(err => console.error('Gagal memuat footer:', err));
-    }
-
-    // Panggil fungsi untuk memuat header dan footer
-    loadHeaderAndFooter();
   </script>
 </body>
 </html>
