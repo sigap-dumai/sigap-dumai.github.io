@@ -1,108 +1,120 @@
-/* General Styles */
+/* Umum untuk seluruh halaman */
 body {
     font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
     background-color: #f4f4f4;
     color: #333;
+    margin: 0;
+    padding: 0;
 }
 
 header {
     background-color: #ff5722;
-    color: white;
-    padding: 15px 0;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
 }
 
-header .logo img {
-    width: 120px; /* Sesuaikan ukuran logo jika perlu */
+.logo-container {
+    display: flex;
+    justify-content: space-between;
+    width: 70%; /* Membatasi lebar agar tidak terlalu lebar */
+    gap: 20px;
+    align-items: center;
+}
+
+.logo img {
+    width: 120px;
     height: auto;
 }
 
-/* Other Styles (Unchanged) */
+/* Responsif: Menyusun logo secara vertikal di layar kecil */
+@media (max-width: 768px) {
+    .logo-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .logo img {
+        width: 100px;
+    }
+}
+
+/* Landing Page */
 .landing {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 70vh;
-    padding: 20px;
     flex-direction: column;
-    background-color: #fff;
+    min-height: 80vh;
+    padding: 20px;
+    background-color: white;
+    text-align: center;
 }
 
 .landing-content {
-    text-align: center;
     max-width: 800px;
     margin: 0 auto;
 }
 
 .landing-content h1 {
-    font-weight: 700;
     font-size: 32px;
+    font-weight: 700;
     margin-bottom: 10px;
+    color: #333;
 }
 
 .subtitle {
-    font-size: 16px;
+    font-size: 18px;
     margin-bottom: 30px;
     color: #555;
 }
 
-/* Card Container */
+/* Container Card (Lapor Warga, Petunjuk Evakuasi, Tentang Kami) */
 .card-container {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
+    flex-wrap: wrap;
     gap: 20px;
-    padding: 20px;
+    margin-top: 40px;
 }
 
-/* Card Styling */
 .card {
     background-color: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
     width: 250px;
     text-align: center;
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.3s ease;
+    padding: 20px;
 }
 
 .card img {
     width: 100%;
-    height: 200px;
+    height: 150px;
     object-fit: cover;
     border-bottom: 2px solid #ddd;
+    border-radius: 8px;
 }
 
-.card-content {
-    padding: 15px;
-}
-
-.card h3 {
-    font-size: 18px;
+.card-content h3 {
+    font-size: 20px;
     font-weight: 600;
-    margin: 10px 0;
+    margin-top: 10px;
 }
 
-.card p {
+.card-content p {
     font-size: 14px;
     color: #555;
+    margin-bottom: 20px;
 }
 
-.card:hover {
-    transform: translateY(-10px);
-}
-
-/* Button Style in Cards */
 .card .btn-card {
     background-color: #ff5722;
     color: white;
     padding: 10px 20px;
     border-radius: 6px;
     text-decoration: none;
-    margin-top: 10px;
-    display: inline-block;
     font-size: 14px;
     transition: background-color 0.3s;
 }
@@ -111,7 +123,11 @@ header .logo img {
     background-color: #e64a19;
 }
 
-/* Landing Login Button */
+.card:hover {
+    transform: translateY(-10px);
+}
+
+/* Tombol Masuk */
 .landing-login-btn {
     background: #ff5722;
     color: white;

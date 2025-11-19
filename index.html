@@ -4,47 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiGap-Dumai</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link href="assets/fonts/Roboto-VariableFont_wdth,wght.ttf" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    <header class="header">
-        <!-- Menampilkan Logo -->
-        <div class="logo">
-            <img src="images/sigap-dumai.png" alt="SiGap-Dumai Logo" class="logo-img">
-        </div>
-    </header>
+    <div id="header-container"></div>
+    <script>
+        fetch('partials/header.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('header-container').innerHTML = data);
+    </script>
 
     <section class="landing">
         <div class="landing-content">
             <h1>SiGap-Dumai</h1>
             <p class="subtitle">Aplikasi SiGap-Dumai membantu Anda mendapatkan informasi darurat dengan cepat dan mudah.</p>
-            
-            <!-- Card Modules -->
+
             <div class="card-container">
-                <!-- Lapor Warga -->
+                <!-- Lapor Warga Card -->
                 <div class="card">
-                    <img src="lapor_warga_icon.png" alt="Lapor Warga">
+                    <img src="images/lapor_warga.png" alt="Lapor Warga">
                     <div class="card-content">
                         <h3>Lapor Warga</h3>
                         <p>Laporkan kejadian darurat atau masalah lingkungan di sekitar Anda.</p>
                         <a href="#" class="btn-card">Lapor Sekarang</a>
                     </div>
                 </div>
-                
-                <!-- Petunjuk Evakuasi -->
+
+                <!-- Petunjuk Evakuasi Card -->
                 <div class="card">
-                    <img src="evakuasi_icon.png" alt="Petunjuk Evakuasi">
+                    <img src="images/evakuasi.png" alt="Petunjuk Evakuasi">
                     <div class="card-content">
                         <h3>Petunjuk Evakuasi</h3>
                         <p>Ikuti langkah-langkah evakuasi untuk keselamatan Anda saat bencana.</p>
                         <a href="#" class="btn-card">Pelajari Lebih Lanjut</a>
                     </div>
                 </div>
-        
-                <!-- Tentang Kami -->
+
+                <!-- Tentang Kami Card -->
                 <div class="card">
-                    <img src="tentang_kami_icon.png" alt="Tentang Kami">
+                    <img src="images/tentang_kami.png" alt="Tentang Kami">
                     <div class="card-content">
                         <h3>Tentang Kami</h3>
                         <p>Kenali lebih dalam tentang misi dan visi SiGap-Dumai.</p>
@@ -53,13 +52,15 @@
                 </div>
             </div>
 
-            <!-- Login Button -->
-            <a href="login.html" class="landing-login-btn">Masuk</a>
+            <a href="modules/login/login.html" class="landing-login-btn">Masuk</a>
         </div>
     </section>
 
-    <footer class="footer">
-        <p>&copy; 2025 SiGap-Dumai. All rights reserved.</p>
-    </footer>
+    <footer id="footer-container"></footer>
+    <script>
+        fetch('partials/footer.html')
+            .then(response => response.text())
+            .then(data => document.getElementById('footer-container').innerHTML = data);
+    </script>
 </body>
 </html>
