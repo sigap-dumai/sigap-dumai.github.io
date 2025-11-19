@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiGap-Dumai</title>
 
-    <!-- CSS utama -->
+    <!-- CSS utama aplikasi -->
     <link rel="stylesheet" href="/assets/css/styles.css">
 
     <!-- Leaflet CSS -->
@@ -15,19 +15,27 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 <body>
-    <!-- Header (partial) -->
+    <!-- HEADER (partial) -->
     <div id="header-container"></div>
 
-    <!-- PETA: posisi paling atas di body -->
+    <!-- MOTIVASI HARI INI (di atas peta) -->
+    <section class="motivation-box">
+        <h2>Motivasi Hari Ini</h2>
+        <ul id="quote-list">
+            <!-- Quotes akan diisi via main.js dari /json/quotes.json -->
+        </ul>
+    </section>
+
+    <!-- PETA: posisi paling atas setelah motivasi -->
     <section class="map-section">
         <div id="map"></div>
     </section>
 
-    <!-- 5 Laporan Terakhir -->
+    <!-- 5 LAPORAN TERBARU -->
     <section class="reports">
         <h2>Laporan Terbaru</h2>
         <div class="report-cards" id="report-cards-container">
-            <!-- Card laporan akan diinject via main.js -->
+            <!-- Card laporan akan di-inject via main.js -->
         </div>
     </section>
 
@@ -73,12 +81,12 @@
         </div>
     </section>
 
-    <!-- Footer (partial) -->
+    <!-- FOOTER (partial) -->
     <div id="footer-container"></div>
 
     <!-- Load partial header & footer -->
     <script>
-        // Header
+        // Muat header
         fetch('/partials/header.html')
             .then(response => response.text())
             .then(html => {
@@ -86,7 +94,7 @@
             })
             .catch(err => console.error('Error loading header:', err));
 
-        // Footer
+        // Muat footer
         fetch('/partials/footer.html')
             .then(response => response.text())
             .then(html => {
