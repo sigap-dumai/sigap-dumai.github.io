@@ -4,30 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiGap-Dumai</title>
-    <!-- Menggunakan Absolute Path -->
     <link href="/assets/fonts/Roboto-VariableFont_wdth,wght.ttf" rel="stylesheet">
     <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
 <body>
-    <header>
-        <div class="logo-container">
-            <!-- Logo SiGap-Dumai -->
-            <img src="/images/sigap_dumai.png" alt="SiGap-Dumai Logo" class="logo-img">
-        </div>
-    </header>
+    <!-- Mengambil header dari partial header.html -->
+    <div id="header-container"></div>
 
-    <!-- Landing Page Section -->
+    <!-- Landing Page dengan card modul -->
     <section class="landing">
         <div class="landing-content">
             <h1>SiGap-Dumai</h1>
             <p class="subtitle">Aplikasi SiGap-Dumai membantu Anda mendapatkan informasi darurat dengan cepat dan mudah.</p>
 
-            <!-- Tombol untuk Arahkan ke Halaman Login -->
-            <a href="/modules/login/login.html" class="landing-login-btn">Masuk</a>
+            <!-- Menampilkan Card-modul -->
+            <div class="card-container">
+                <div class="card">
+                    <img src="https://img.icons8.com/ios/452/report-card.png" alt="Lapor Warga">
+                    <h3>Lapor Warga</h3>
+                    <p>Laporkan kejadian darurat atau masalah lingkungan di sekitar Anda.</p>
+                    <a href="/modules/report/report.html" class="btn-card">Lapor Sekarang</a>
+                </div>
+
+                <div class="card">
+                    <img src="https://img.icons8.com/ios/452/earthquake.png" alt="Petunjuk Evakuasi">
+                    <h3>Petunjuk Evakuasi</h3>
+                    <p>Ikuti langkah-langkah evakuasi untuk keselamatan Anda saat bencana.</p>
+                    <a href="/modules/disaster-guide/disaster-guide.html" class="btn-card">Pelajari Lebih Lanjut</a>
+                </div>
+
+                <div class="card">
+                    <img src="https://img.icons8.com/ios/452/info.png" alt="Tentang Kami">
+                    <h3>Tentang Kami</h3>
+                    <p>Kenali lebih dalam tentang misi dan visi SiGap-Dumai.</p>
+                    <a href="/modules/about/about.html" class="btn-card">Baca Selengkapnya</a>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- 5 Laporan Terakhir -->
+    <!-- Menampilkan 5 Laporan Terakhir -->
     <section class="reports">
         <h2>Laporan Terbaru</h2>
         <div class="report-cards" id="report-cards-container">
@@ -35,9 +51,21 @@
         </div>
     </section>
 
+    <!-- Footer dengan tombol login -->
     <footer>
         <p>&copy; 2025 SiGap-Dumai. All rights reserved.</p>
+        <a href="/modules/login/login.html" class="footer-login-btn">Masuk</a>
     </footer>
+
+    <!-- Mengambil dan memasukkan header.html -->
+    <script>
+        fetch('/partials/header.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('header-container').innerHTML = html;
+            })
+            .catch(err => console.log('Error loading header: ', err));
+    </script>
 
     <script src="/assets/js/main.js"></script>
     <script>
