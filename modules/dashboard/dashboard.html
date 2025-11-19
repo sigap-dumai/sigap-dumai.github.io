@@ -1,3 +1,4 @@
+<!-- Contoh dashboard.html -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -18,14 +19,14 @@
     <div class="dashboard-content">
         <h1>Selamat datang di Dashboard SiGap Dumai</h1>
 
-        <!-- Modul Admin Reports -->
-        <div class="module">
+        <!-- Modul Admin Reports (Hanya untuk Kalaksa dan Sekre) -->
+        <div class="module" id="admin-reports-module">
             <h2>Admin Reports</h2>
             <p>Laporan dan informasi yang terkait dengan bencana dapat diakses di sini.</p>
             <a href="../admin-reports/admin-reports.html" class="btn">Lihat Laporan Admin</a>
         </div>
 
-        <!-- Modul Lainnya (sesuaikan dengan modul yang ada di repo) -->
+        <!-- Modul Lainnya (Disaster Guide) -->
         <div class="module">
             <h2>Disaster Guide</h2>
             <p>Panduan terkait penanggulangan bencana.</p>
@@ -44,10 +45,18 @@
         // Tampilkan nama user yang login
         document.getElementById('user-name').textContent = 'Hello, ' + localStorage.getItem('loggedInUser');
 
+        // Cek role user dan kontrol akses
+        const userRole = localStorage.getItem('userRole');
+        if (userRole !== 'kalaksa' && userRole !== 'sekre') {
+            // Jika bukan kalaksa atau sekre, sembunyikan modul Admin Reports
+            document.getElementById('admin-reports-module').style.display = 'none';
+        }
+
         // Fungsi untuk logout
         function logout() {
             // Hapus user dari localStorage
             localStorage.removeItem('loggedInUser');
+            localStorage.removeItem('userRole');
             
             // Redirect kembali ke halaman login
             window.location.href = '/modules/login/login.html';
