@@ -1,19 +1,20 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    // Fungsi untuk mengambil kutipan dari file JSON
+    // Mengambil dan menampilkan satu kutipan secara acak
     function loadQuotes() {
         fetch('/json/quotes.json')  // Pastikan path ini benar
             .then(response => response.json())
             .then(data => {
                 const quoteList = document.getElementById('quote-list');
                 quoteList.innerHTML = '';  // Mengosongkan daftar kutipan
+                
+                // Ambil kutipan acak dari array quotes
+                const randomQuote = data.quotes[Math.floor(Math.random() * data.quotes.length)];
 
-                // Menampilkan kutipan dari data
-                data.quotes.forEach(quote => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = `"${quote}"`;
-                    quoteList.appendChild(listItem);
-                });
+                // Menampilkan kutipan acak di #quote-list
+                const listItem = document.createElement('li');
+                listItem.textContent = `"${randomQuote}"`;
+                quoteList.appendChild(listItem);
             })
             .catch(error => {
                 console.error('Error loading quotes:', error);
@@ -23,10 +24,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Mengganti kutipan setiap 10 menit
     function refreshQuotes() {
         loadQuotes();
-        setInterval(loadQuotes, 600000);  // Memuat kutipan setiap 10 menit
+        setInterval(loadQuotes, 600000);  // Memuat kutipan setiap 10 menit (600000 ms)
     }
 
-    // Memastikan kutipan dimuat setelah halaman dimuat
+    // Memastikan kutipan dimuat pertama kali saat halaman dimuat
     refreshQuotes();
 
     // Inisialisasi Peta
