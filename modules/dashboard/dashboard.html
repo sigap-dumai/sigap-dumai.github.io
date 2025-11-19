@@ -4,48 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - SiGap-Dumai</title>
-    <link rel="stylesheet" href="../../assets/css/styles.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link href="/assets/fonts/Roboto-VariableFont_wdth,wght.ttf" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
 <body>
-    <!-- Header -->
-    <div id="header-container"></div>
+    <header>
+        <div class="logo-container">
+            <img src="/images/sigap_dumai.png" alt="SiGap-Dumai Logo" class="logo-img">
+        </div>
+    </header>
 
-    <main>
-        <h2>Dashboard SiGap-Dumai</h2>
-        <div id="map" style="height: 400px;"></div>
-    </main>
+    <section class="dashboard-container">
+        <div class="dashboard-content">
+            <h1>Dashboard</h1>
+            <p id="user-welcome"></p>
 
-    <!-- Footer -->
-    <div id="footer-container"></div>
+            <!-- Container untuk menampilkan notifikasi -->
+            <div id="notification-container"></div>
 
-    <script src="../../assets/js/main.js"></script>
-    <script>
-        // Menyisipkan header dan footer dari partials
-        fetch('../../partials/header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("header-container").innerHTML = data;
-            });
+            <!-- Konten dashboard sesuai dengan role pengguna -->
+            <div id="kalaksa-content" class="role-content" style="display:none;">
+                <h2>Konten untuk Kepala Pelaksana</h2>
+                <p>Data laporan terkini dan pengawasan kebijakan.</p>
+            </div>
 
-        fetch('../../partials/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("footer-container").innerHTML = data;
-            });
+            <div id="sekre-content" class="role-content" style="display:none;">
+                <h2>Konten untuk Sekretaris</h2>
+                <p>Manajemen tugas administratif dan dokumen penting.</p>
+            </div>
 
-        // Inisialisasi peta
-        const map = L.map('map').setView([0.5184, 101.4473], 13); // Koordinat Dumai
-        
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+            <div id="operator-content" class="role-content" style="display:none;">
+                <h2>Konten untuk Operator BPBD</h2>
+                <p>Pengelolaan laporan darurat dan bencana.</p>
+            </div>
 
-        // Menambahkan marker lokasi kejadian
-        L.marker([0.5184, 101.4473]).addTo(map)
-            .bindPopup('Kejadian: Banjir')
-            .openPopup();
-    </script>
+            <div id="admin_kecamatan-content" class="role-content" style="display:none;">
+                <h2>Konten untuk Admin Kecamatan</h2>
+                <p>Manajemen data kecamatan dan kelurahan.</p>
+            </div>
+
+            <div id="admin_kelurahan-content" class="role-content" style="display:none;">
+                <h2>Konten untuk Admin Kelurahan</h2>
+                <p>Manajemen data kelurahan dan laporan masyarakat.</p>
+            </div>
+
+            <a href="/index.html" class="logout-btn">Logout</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 SiGap-Dumai. All rights reserved.</p>
+    </footer>
+
+    <script src="/assets/js/main.js"></script>
 </body>
 </html>

@@ -154,3 +154,142 @@ footer {
     bottom: 0;
     width: 100%;
 }
+
+/* Styling untuk halaman login */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background-color: #f4f4f4;
+}
+
+.login-content {
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+button.login-btn {
+    background-color: #ff5722;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 6px;
+    width: 100%;
+    font-size: 16px;
+    transition: 0.2s;
+}
+
+button.login-btn:hover {
+    background-color: #e64a19;
+}
+
+#error-message {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+/* Styling untuk halaman dashboard */
+.dashboard-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    background-color: #f4f4f4;
+}
+
+.dashboard-content {
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.role-content {
+    margin-bottom: 20px;
+}
+
+/* Styling untuk notifikasi */
+#notification-container {
+    margin-top: 20px;
+}
+
+.notification {
+    background-color: #ff5722;
+    color: white;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notification p {
+    margin: 0;
+    padding: 0;
+}
+
+.dismiss-btn {
+    background: transparent;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.dismiss-btn:hover {
+    color: #e64a19;
+}
+
+/* Styling untuk logout button */
+.logout-btn {
+    display: inline-block;
+    background-color: #ff5722;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 16px;
+    margin-top: 30px;
+}
+
+.logout-btn:hover {
+    background: #e64a19;
+}
