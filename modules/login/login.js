@@ -1,17 +1,24 @@
-document.getElementById('login-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    let username = document.getElementById('username').value;
-    let password = document.getElementById('password').value;
+// modules/login/login.js
+document.getElementById('login-form').addEventListener('submit', function(e) {
+  e.preventDefault();
 
-    fetch('../../json/users.json')
-        .then(response => response.json())
-        .then(users => {
-            let user = users.find(u => u.username === username && u.password === password);
-            if (user) {
-                localStorage.setItem('user', JSON.stringify(user));
-                window.location.href = "../../modules/dashboard/dashboard.html"; // Redirect to dashboard
-            } else {
-                alert('Username atau password salah!');
-            }
-        });
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  // Ambil data pengguna dari users.json
+  fetch('../../json/users.json')
+    .then(response => response.json())
+    .then(users => {
+      const user = users.find(user => user.username === username && user.password === password);
+      
+      if (user) {
+        localStorage.setItem('loggedIn', 'true');  // Menyimpan status login
+        localStorage.setItem('username', username);  // Menyimpan username
+        localStorage.setItem('role', user.role);  // Menyimpan role pengguna
+        window.location.href = '../../index.html'; // Redirect ke halaman utama
+      } else {
+        document.getElementById('login-error').style.display = 'block'; // Tampilkan error
+      }
+    })
+    .catch(err => console.error('Error fetching users:', err));
 });
