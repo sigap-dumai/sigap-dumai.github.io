@@ -286,3 +286,34 @@ button {
 button:hover {
   background-color: #45a049;
 }
+
+
+/* Styling untuk modul-modul di dashboard */
+.module {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+}
+
+.module h2 {
+    margin-bottom: 10px;
+}
+
+.module p {
+    margin-bottom: 15px;
+}
+
+/* Styling tombol */
+.btn {
+    background-color: #ff5722;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background-color: #e64a19;
+}
+
