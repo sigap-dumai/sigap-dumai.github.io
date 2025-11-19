@@ -1,19 +1,24 @@
-<!-- partials/header.html -->
-<header class="header">
-    <div class="logo-container">
-        <!-- Logo Dumai Idaman -->
-        <div class="logo">
-            <img src="../images/dumai_idaman.png" alt="Dumai Idaman Logo" class="logo-img">
-        </div>
-        
-        <!-- Logo SiGap-Dumai -->
-        <div class="logo">
-            <img src="../images/sigap_dumai.png" alt="SiGap-Dumai Logo" class="logo-img">
-        </div>
+<header class="main-header">
 
-        <!-- Logo ASN (BPBD) -->
-        <div class="logo">
-            <img src="../images/asn.png" alt="ASN Logo" class="logo-img"> <!-- Ganti asn.png dengan logo ASN/BPBD jika ada -->
-        </div>
+    <!-- LOGO WRAPPER -->
+    <div class="logo-group">
+        <img src="/images/sigap_dumai.png" alt="Logo SiGap Dumai" class="logo-item">
+        <img src="/images/dumai_idaman.png" alt="Dumai Idaman" class="logo-item">
+        <img src="/images/asn.png" alt="ASN Dumai" class="logo-item">
     </div>
+
+    <!-- NAV (minimalist, mobile-first) -->
+    <nav class="top-nav">
+        <a href="/index.html">Beranda</a>
+        <a href="/modules/report/report.html">Lapor Warga</a>
+        <a href="/modules/disaster-guide/disaster-guide.html">Evakuasi</a>
+        <a href="/modules/about/about.html">Tentang Kami</a>
+    </nav>
+
+    <!-- USER AREA (diisi otomatis oleh main.js) -->
+    <div class="user-area">
+        <span id="user-greeting"></span>
+        <button id="logout-btn" class="logout-btn" style="display:none;">Logout</button>
+    </div>
+
 </header>
