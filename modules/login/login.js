@@ -11,8 +11,9 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
       const user = users.find(user => user.username === username && user.password === password);
       
       if (user) {
-        // Simpan nama user ke localStorage
+        // Simpan nama user dan role ke localStorage
         localStorage.setItem('loggedInUser', user.username);
+        localStorage.setItem('userRole', user.role);  // Menyimpan role user
 
         // Redirect ke halaman dashboard
         window.location.href = '/modules/dashboard/dashboard.html'; // Ganti dengan path dashboard yang sesuai
