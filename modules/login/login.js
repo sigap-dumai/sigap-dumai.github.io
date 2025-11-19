@@ -12,13 +12,15 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
       const user = users.find(user => user.username === username && user.password === password);
       
       if (user) {
-        localStorage.setItem('loggedIn', 'true');  // Menyimpan status login
-        localStorage.setItem('username', username);  // Menyimpan username
-        localStorage.setItem('role', user.role);  // Menyimpan role pengguna
-        window.location.href = '../../index.html'; // Redirect ke halaman utama
+        // Redirect ke halaman dashboard jika login berhasil
+        window.location.href = '/modules/dashboard/dashboard.html'; // Ganti dengan path dashboard yang sesuai
       } else {
-        document.getElementById('login-error').style.display = 'block'; // Tampilkan error
+        // Tampilkan pesan error jika login gagal
+        alert('Username atau password salah!');
       }
     })
-    .catch(err => console.error('Error fetching users:', err));
+    .catch(error => {
+      console.error('Terjadi kesalahan:', error);
+      alert('Terjadi kesalahan dalam memproses login!');
+    });
 });
