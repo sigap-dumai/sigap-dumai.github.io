@@ -4,91 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiGap-Dumai</title>
-    <link href="/assets/fonts/Roboto-VariableFont_wdth,wght.ttf" rel="stylesheet">
+
+    <!-- CSS utama -->
     <link rel="stylesheet" href="/assets/css/styles.css">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 <body>
-    <!-- Mengambil header dari partial header.html -->
+    <!-- Header (partial) -->
     <div id="header-container"></div>
 
-    <!-- Landing Page dengan card modul -->
-    <section class="landing">
-        <div class="landing-content">
-            <h1>SiGap-Dumai</h1>
-            <p class="subtitle">Aplikasi SiGap-Dumai membantu Anda mendapatkan informasi darurat dengan cepat dan mudah.</p>
-
-            <!-- Menampilkan Card-modul -->
-            <div class="card-container">
-                <div class="card">
-                    <img src="https://img.icons8.com/ios/452/report-card.png" alt="Lapor Warga">
-                    <h3>Lapor Warga</h3>
-                    <p>Laporkan kejadian darurat atau masalah lingkungan di sekitar Anda.</p>
-                    <a href="/modules/report/report.html" class="btn-card">Lapor Sekarang</a>
-                </div>
-
-                <div class="card">
-                    <img src="https://img.icons8.com/ios/452/earthquake.png" alt="Petunjuk Evakuasi">
-                    <h3>Petunjuk Evakuasi</h3>
-                    <p>Ikuti langkah-langkah evakuasi untuk keselamatan Anda saat bencana.</p>
-                    <a href="/modules/disaster-guide/disaster-guide.html" class="btn-card">Pelajari Lebih Lanjut</a>
-                </div>
-
-                <div class="card">
-                    <img src="https://img.icons8.com/ios/452/info.png" alt="Tentang Kami">
-                    <h3>Tentang Kami</h3>
-                    <p>Kenali lebih dalam tentang misi dan visi SiGap-Dumai.</p>
-                    <a href="/modules/about/about.html" class="btn-card">Baca Selengkapnya</a>
-                </div>
-            </div>
-        </div>
+    <!-- PETA: posisi paling atas di body -->
+    <section class="map-section">
+        <div id="map"></div>
     </section>
 
-    <!-- Menampilkan 5 Laporan Terakhir -->
+    <!-- 5 Laporan Terakhir -->
     <section class="reports">
         <h2>Laporan Terbaru</h2>
         <div class="report-cards" id="report-cards-container">
-            <!-- Laporan akan ditampilkan di sini -->
+            <!-- Card laporan akan diinject via main.js -->
         </div>
     </section>
 
-    <!-- Footer dengan tombol login -->
-    <footer>
-        <p>&copy; 2025 SiGap-Dumai. All rights reserved.</p>
-        <a href="/modules/login/login.html" class="footer-login-btn">Masuk</a>
-    </footer>
+    <!-- LANDING / MODUL DALAM BENTUK CARD -->
+    <section class="landing">
+        <div class="landing-content">
+            <h1>SiGap-Dumai</h1>
+            <p class="subtitle">
+                Aplikasi SiGap-Dumai membantu Anda mendapatkan informasi darurat
+                dan melaporkan kejadian di wilayah Kota Dumai.
+            </p>
 
-    <!-- Mengambil dan memasukkan header.html -->
+            <div class="card-container">
+                <!-- Card: Lapor Warga -->
+                <div class="card">
+                    <img src="/images/report.png" alt="Lapor Warga" class="card-icon">
+                    <h3>Lapor Warga</h3>
+                    <p>Laporkan kejadian darurat atau gangguan di sekitar Anda.</p>
+                    <a href="/modules/report/report.html" class="btn-card">Lapor Sekarang</a>
+                </div>
+
+                <!-- Card: Petunjuk Evakuasi -->
+                <div class="card">
+                    <img src="/images/earthquake.png" alt="Petunjuk Evakuasi" class="card-icon">
+                    <h3>Petunjuk Evakuasi</h3>
+                    <p>Panduan evakuasi saat bencana agar Anda tetap selamat.</p>
+                    <a href="/modules/disaster-guide/disaster-guide.html" class="btn-card">Lihat Petunjuk</a>
+                </div>
+
+                <!-- Card: Tentang Kami -->
+                <div class="card">
+                    <img src="/images/about.png" alt="Tentang Kami" class="card-icon">
+                    <h3>Tentang Kami</h3>
+                    <p>Kenali lebih dekat peran dan tugas BPBD Kota Dumai.</p>
+                    <a href="/modules/about/about.html" class="btn-card">Baca Selengkapnya</a>
+                </div>
+            </div>
+
+            <!-- Login hanya untuk Admin/Operator -->
+            <a href="/modules/login/login.html" class="landing-login-btn">
+                Login Admin/Operator
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer (partial) -->
+    <div id="footer-container"></div>
+
+    <!-- Load partial header & footer -->
     <script>
+        // Header
         fetch('/partials/header.html')
             .then(response => response.text())
             .then(html => {
                 document.getElementById('header-container').innerHTML = html;
             })
-            .catch(err => console.log('Error loading header: ', err));
+            .catch(err => console.error('Error loading header:', err));
+
+        // Footer
+        fetch('/partials/footer.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('footer-container').innerHTML = html;
+            })
+            .catch(err => console.error('Error loading footer:', err));
     </script>
 
+    <!-- JS utama aplikasi -->
     <script src="/assets/js/main.js"></script>
     <script>
-        // Fungsi untuk mengambil dan menampilkan 5 laporan terakhir dari localStorage
-        function displayRecentReports() {
-            const reports = JSON.parse(localStorage.getItem('pendingReports')) || [];  // Ambil laporan dari localStorage
-            const recentReports = reports.slice(-5).reverse();  // Ambil 5 laporan terakhir, urutkan terbalik
-            
-            const reportContainer = document.getElementById('report-cards-container');
-            recentReports.forEach(report => {
-                const reportCard = document.createElement('div');
-                reportCard.classList.add('report-card');
-                reportCard.innerHTML = `
-                    <h3>${report.title}</h3>
-                    <p>${report.description}</p>
-                    <span class="report-date">${new Date(report.createdAt).toLocaleDateString()}</span>
-                `;
-                reportContainer.appendChild(reportCard);
-            });
+        // Inisialisasi khusus halaman index
+        if (typeof initIndexPage === 'function') {
+            initIndexPage();
         }
-
-        // Memanggil fungsi untuk menampilkan laporan setelah halaman dimuat
-        window.onload = displayRecentReports;
     </script>
 </body>
 </html>
