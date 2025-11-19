@@ -9,7 +9,7 @@ document.getElementById('login-form').addEventListener('submit', function(event)
             let user = users.find(u => u.username === username && u.password === password);
             if (user) {
                 localStorage.setItem('user', JSON.stringify(user));
-                window.location.href = "../../modules/dashboard/dashboard.html";
+                window.location.href = "../../modules/dashboard/dashboard.html"; // Redirect to dashboard
             } else {
                 alert('Username atau password salah!');
             }

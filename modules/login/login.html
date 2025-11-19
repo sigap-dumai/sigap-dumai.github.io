@@ -25,14 +25,21 @@
     <div id="footer-container"></div>
 
     <script src="../../assets/js/main.js"></script>
-    <script src="login.js"></script> <!-- Menyertakan script JS untuk login -->
+    <script src="login.js"></script>
+
+    <script>
+        // Menyisipkan header dan footer dari partials
+        fetch('../../partials/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("header-container").innerHTML = data;
+            });
+
+        fetch('../../partials/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-container").innerHTML = data;
+            });
+    </script>
 </body>
 </html>
-
-<template id="header-template">
-    <!-- Header yang digunakan di halaman login -->
-</template>
-
-<template id="footer-template">
-    <!-- Footer yang digunakan di halaman login -->
-</template>

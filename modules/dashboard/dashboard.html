@@ -9,17 +9,43 @@
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </head>
 <body>
+    <!-- Header -->
     <div id="header-container"></div>
 
     <main>
         <h2>Dashboard SiGap-Dumai</h2>
-        <p>Statistik laporan dan peta kejadian.</p>
         <div id="map" style="height: 400px;"></div>
     </main>
 
+    <!-- Footer -->
     <div id="footer-container"></div>
 
     <script src="../../assets/js/main.js"></script>
-    <script src="dashboard.js"></script>
+    <script>
+        // Menyisipkan header dan footer dari partials
+        fetch('../../partials/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("header-container").innerHTML = data;
+            });
+
+        fetch('../../partials/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-container").innerHTML = data;
+            });
+
+        // Inisialisasi peta
+        const map = L.map('map').setView([0.5184, 101.4473], 13); // Koordinat Dumai
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Menambahkan marker lokasi kejadian
+        L.marker([0.5184, 101.4473]).addTo(map)
+            .bindPopup('Kejadian: Banjir')
+            .openPopup();
+    </script>
 </body>
 </html>

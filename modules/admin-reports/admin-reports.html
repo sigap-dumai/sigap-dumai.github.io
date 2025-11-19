@@ -3,20 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Admin - SiGap-Dumai</title>
+    <title>Admin Laporan - SiGap-Dumai</title>
     <link rel="stylesheet" href="../../assets/css/styles.css">
 </head>
 <body>
+    <!-- Header -->
     <div id="header-container"></div>
 
     <main>
-        <h2>Laporan Admin SiGap-Dumai</h2>
-        <p>Berikut adalah laporan yang diajukan oleh admin atau operator BPBD Dumai.</p>
+        <h2>Laporan Kejadian Bencana</h2>
+        <table>
+            <tr>
+                <th>Lokasi</th>
+                <th>Deskripsi</th>
+                <th>Waktu</th>
+            </tr>
+            <!-- Data laporan akan ditampilkan di sini -->
+        </table>
     </main>
 
+    <!-- Footer -->
     <div id="footer-container"></div>
 
     <script src="../../assets/js/main.js"></script>
-    <script src="admin-reports.js"></script>
+    <script>
+        // Menyisipkan header dan footer dari partials
+        fetch('../../partials/header.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("header-container").innerHTML = data;
+            });
+
+        fetch('../../partials/footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-container").innerHTML = data;
+            });
+
+        // Fetch data laporan untuk admin
+        fetch('../../json/users.json')
+            .then(response => response.json())
+            .then(users => {
+                const currentUser = JSON.parse(localStorage.getItem('user'));
+                if (currentUser && currentUser.role === 'admin_kecamatan') {
+                    // Simulasi laporan admin kecamatan
+                    const reports = [
+                        { lokasi: 'Bagan Keladi', deskripsi: 'Angin Kencang', waktu: '2025-11-19 10:00' },
+                        { lokasi: 'Dumai Kota', deskripsi: 'Banjir', waktu: '2025-11-19 12:00' }
+                    ];
+
+                    const table = document.querySelector('table');
+                    reports.forEach(report => {
+                        const row = table.insertRow();
+                        row.insertCell(0).textContent = report.lokasi;
+                        row.insertCell(1).textContent = report.deskripsi;
+                        row.insertCell(2).textContent = report.waktu;
+                    });
+                } else {
+                    alert('Akses ditolak, hanya admin yang dapat melihat laporan.');
+                    window.location.href = "../../modules/login/login.html";
+                }
+            });
+    </script>
 </body>
 </html>
