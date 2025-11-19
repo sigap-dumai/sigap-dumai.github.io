@@ -3,59 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - SiGap-Dumai</title>
-    <link href="/assets/fonts/Roboto-VariableFont_wdth,wght.ttf" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/styles.css">
+    <title>Dashboard - SiGap Dumai</title>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
 </head>
 <body>
     <header>
-        <div class="logo-container">
-            <img src="/images/sigap_dumai.png" alt="SiGap-Dumai Logo" class="logo-img">
+        <div class="user-info">
+            <!-- Menampilkan nama user dari localStorage -->
+            <span id="user-name"></span>
+            <button id="logout-btn" onclick="logout()">Logout</button>
         </div>
     </header>
 
-    <section class="dashboard-container">
-        <div class="dashboard-content">
-            <h1>Dashboard</h1>
-            <p id="user-welcome"></p>
+    <div class="dashboard-content">
+        <h1>Selamat datang di Dashboard SiGap Dumai</h1>
 
-            <!-- Container untuk menampilkan notifikasi -->
-            <div id="notification-container"></div>
-
-            <!-- Konten dashboard sesuai dengan role pengguna -->
-            <div id="kalaksa-content" class="role-content" style="display:none;">
-                <h2>Konten untuk Kepala Pelaksana</h2>
-                <p>Data laporan terkini dan pengawasan kebijakan.</p>
-            </div>
-
-            <div id="sekre-content" class="role-content" style="display:none;">
-                <h2>Konten untuk Sekretaris</h2>
-                <p>Manajemen tugas administratif dan dokumen penting.</p>
-            </div>
-
-            <div id="operator-content" class="role-content" style="display:none;">
-                <h2>Konten untuk Operator BPBD</h2>
-                <p>Pengelolaan laporan darurat dan bencana.</p>
-            </div>
-
-            <div id="admin_kecamatan-content" class="role-content" style="display:none;">
-                <h2>Konten untuk Admin Kecamatan</h2>
-                <p>Manajemen data kecamatan dan kelurahan.</p>
-            </div>
-
-            <div id="admin_kelurahan-content" class="role-content" style="display:none;">
-                <h2>Konten untuk Admin Kelurahan</h2>
-                <p>Manajemen data kelurahan dan laporan masyarakat.</p>
-            </div>
-
-            <a href="/index.html" class="logout-btn">Logout</a>
+        <!-- Modul Admin Reports -->
+        <div class="module">
+            <h2>Admin Reports</h2>
+            <p>Laporan dan informasi yang terkait dengan bencana dapat diakses di sini.</p>
+            <a href="../admin-reports/admin-reports.html" class="btn">Lihat Laporan Admin</a>
         </div>
-    </section>
 
-    <footer>
-        <p>&copy; 2025 SiGap-Dumai. All rights reserved.</p>
-    </footer>
+        <!-- Modul Lainnya (sesuaikan dengan modul yang ada di repo) -->
+        <div class="module">
+            <h2>Disaster Guide</h2>
+            <p>Panduan terkait penanggulangan bencana.</p>
+            <a href="../disaster-guide/disaster-guide.html" class="btn">Lihat Panduan Bencana</a>
+        </div>
 
-    <script src="/assets/js/main.js"></script>
+        <!-- Modul Report -->
+        <div class="module">
+            <h2>Laporan</h2>
+            <p>Laporan-laporan terkini dapat dilihat di sini.</p>
+            <a href="../report/report.html" class="btn">Lihat Laporan</a>
+        </div>
+    </div>
+
+    <script>
+        // Tampilkan nama user yang login
+        document.getElementById('user-name').textContent = 'Hello, ' + localStorage.getItem('loggedInUser');
+
+        // Fungsi untuk logout
+        function logout() {
+            // Hapus user dari localStorage
+            localStorage.removeItem('loggedInUser');
+            
+            // Redirect kembali ke halaman login
+            window.location.href = '/modules/login/login.html';
+        }
+    </script>
 </body>
 </html>

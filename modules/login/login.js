@@ -1,4 +1,3 @@
-// modules/login/login.js
 document.getElementById('login-form').addEventListener('submit', function(e) {
   e.preventDefault();
 
@@ -12,7 +11,10 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
       const user = users.find(user => user.username === username && user.password === password);
       
       if (user) {
-        // Redirect ke halaman dashboard jika login berhasil
+        // Simpan nama user ke localStorage
+        localStorage.setItem('loggedInUser', user.username);
+
+        // Redirect ke halaman dashboard
         window.location.href = '/modules/dashboard/dashboard.html'; // Ganti dengan path dashboard yang sesuai
       } else {
         // Tampilkan pesan error jika login gagal
