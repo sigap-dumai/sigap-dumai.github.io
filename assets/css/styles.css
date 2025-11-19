@@ -28,6 +28,32 @@ header h1 {
   font-weight: 700;
 }
 
+/* MOTIVASI HARI INI */
+.motivation-box {
+  background-color: #f4f4f4; /* Latar belakang cerah */
+  padding: 20px;
+  text-align: center; /* Rata tengah */
+  margin-top: 20px; /* Jarak dari header */
+  border-radius: 8px;
+}
+
+.motivation-box h2 {
+  font-size: 2em;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.motivation-box ul {
+  list-style-type: none;
+  padding: 0;
+  font-size: 1.2em;
+  color: #555;
+}
+
+.motivation-box li {
+  margin-bottom: 10px;
+}
+
 /* LANDING PAGE */
 .landing {
   display: flex;
@@ -47,8 +73,8 @@ header h1 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.landing-content h2 {
-  font-size: 2em;
+.landing-content h1 {
+  font-size: 2.5em;
   color: #333;
 }
 
