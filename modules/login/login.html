@@ -4,42 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - SiGap-Dumai</title>
-    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <link href="/assets/fonts/Roboto-VariableFont_wdth,wght.ttf" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
 <body>
-    <!-- Header -->
-    <div id="header-container"></div>
+    <section class="login-container">
+        <div class="login-content">
+            <h1>Masuk ke SiGap-Dumai</h1>
+            <form id="loginForm">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
 
-    <main>
-        <h2>Login SiGap-Dumai</h2>
-        <form id="login-form">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="submit">Login</button>
-        </form>
-    </main>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
 
-    <!-- Footer -->
-    <div id="footer-container"></div>
+                <button type="submit" class="login-btn">Masuk</button>
+            </form>
+            <p id="error-message" style="color: red; display: none;">Username atau Password salah.</p>
+        </div>
+    </section>
 
-    <script src="../../assets/js/main.js"></script>
-    <script src="login.js"></script>
-
-    <script>
-        // Menyisipkan header dan footer dari partials
-        fetch('../../partials/header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("header-container").innerHTML = data;
-            });
-
-        fetch('../../partials/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("footer-container").innerHTML = data;
-            });
-    </script>
+    <footer id="footer-container"></footer>
+    <script src="/assets/js/main.js"></script>
 </body>
 </html>
