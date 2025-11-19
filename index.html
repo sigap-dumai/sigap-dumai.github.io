@@ -4,38 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiGap-Dumai</title>
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <!-- HEADER -->
-    <div id="header-container"></div>
-
-    <main class="landing">
-        <div class="landing-content">
-            <h1>Selamat Datang di Aplikasi SiGap-Dumai</h1>
-            <p class="subtitle">
-                Sistem Informasi Gawat Darurat Bencana Kota Dumai — Media pelaporan bencana dan monitoring kawasan.
-            </p>
-
-            <a href="modules/login/login.html" class="landing-login-btn">Masuk ke Sistem</a>
+    <header class="header">
+        <!-- Menampilkan Logo -->
+        <div class="logo">
+            <img src="images/sigap-dumai.png" alt="SiGap-Dumai Logo" class="logo-img">
         </div>
-    </main>
+    </header>
 
-    <!-- FOOTER -->
-    <div id="footer-container"></div>
+    <section class="landing">
+        <div class="landing-content">
+            <h1>SiGap-Dumai</h1>
+            <p class="subtitle">Aplikasi SiGap-Dumai membantu Anda mendapatkan informasi darurat dengan cepat dan mudah.</p>
+            
+            <!-- Card Modules -->
+            <div class="card-container">
+                <!-- Lapor Warga -->
+                <div class="card">
+                    <img src="lapor_warga_icon.png" alt="Lapor Warga">
+                    <div class="card-content">
+                        <h3>Lapor Warga</h3>
+                        <p>Laporkan kejadian darurat atau masalah lingkungan di sekitar Anda.</p>
+                        <a href="#" class="btn-card">Lapor Sekarang</a>
+                    </div>
+                </div>
+                
+                <!-- Petunjuk Evakuasi -->
+                <div class="card">
+                    <img src="evakuasi_icon.png" alt="Petunjuk Evakuasi">
+                    <div class="card-content">
+                        <h3>Petunjuk Evakuasi</h3>
+                        <p>Ikuti langkah-langkah evakuasi untuk keselamatan Anda saat bencana.</p>
+                        <a href="#" class="btn-card">Pelajari Lebih Lanjut</a>
+                    </div>
+                </div>
+        
+                <!-- Tentang Kami -->
+                <div class="card">
+                    <img src="tentang_kami_icon.png" alt="Tentang Kami">
+                    <div class="card-content">
+                        <h3>Tentang Kami</h3>
+                        <p>Kenali lebih dalam tentang misi dan visi SiGap-Dumai.</p>
+                        <a href="#" class="btn-card">Baca Selengkapnya</a>
+                    </div>
+                </div>
+            </div>
 
-    <script>
-        // Load Header
-        fetch('partials/header.html')
-            .then(r => r.text())
-            .then(html => document.getElementById("header-container").innerHTML = html);
+            <!-- Login Button -->
+            <a href="login.html" class="landing-login-btn">Masuk</a>
+        </div>
+    </section>
 
-        // Load Footer
-        fetch('partials/footer.html')
-            .then(r => r.text())
-            .then(html => document.getElementById("footer-container").innerHTML = html);
-    </script>
-
+    <footer class="footer">
+        <p>&copy; 2025 SiGap-Dumai. All rights reserved.</p>
+    </footer>
 </body>
 </html>
