@@ -7,38 +7,35 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    <!-- Header -->
+
+    <!-- HEADER -->
     <div id="header-container"></div>
 
-    <main>
-        <h2>Selamat datang di Aplikasi SiGap-Dumai</h2>
-        <p>Portal untuk laporan bencana dan penanggulangan darurat di Kota Dumai.</p>
-        
-        <section id="login-section">
-            <h3>Login</h3>
-            <form action="modules/login/login.html">
-                <button type="submit">Login untuk melaporkan kejadian</button>
-            </form>
-        </section>
+    <main class="landing">
+        <div class="landing-content">
+            <h1>Selamat Datang di Aplikasi SiGap-Dumai</h1>
+            <p class="subtitle">
+                Sistem Informasi Gawat Darurat Bencana Kota Dumai — Media pelaporan bencana dan monitoring kawasan.
+            </p>
+
+            <a href="modules/login/login.html" class="landing-login-btn">Masuk ke Sistem</a>
+        </div>
     </main>
 
-    <!-- Footer -->
+    <!-- FOOTER -->
     <div id="footer-container"></div>
 
-    <script src="assets/js/main.js"></script>
     <script>
-        // Menyisipkan header dan footer ke halaman
+        // Load Header
         fetch('partials/header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("header-container").innerHTML = data;
-            });
+            .then(r => r.text())
+            .then(html => document.getElementById("header-container").innerHTML = html);
 
+        // Load Footer
         fetch('partials/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("footer-container").innerHTML = data;
-            });
+            .then(r => r.text())
+            .then(html => document.getElementById("footer-container").innerHTML = html);
     </script>
+
 </body>
 </html>
