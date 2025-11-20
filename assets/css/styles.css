@@ -367,3 +367,11 @@ button:hover {
     margin-top: 20px;
 }
 
+/* modules/report/report.css */
+
+/* Menyesuaikan ukuran peta */
+#map {
+    width: 100%;
+    height: 250px; /* Ukuran peta lebih kecil (tinggi 250px) */
+    margin-top: 40px;
+}
