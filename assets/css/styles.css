@@ -371,7 +371,7 @@ button:hover {
 
 /* Menyesuaikan ukuran peta */
 #map {
-    width: 100%;
+    width: 90%;
     height: 250px; /* Ukuran peta lebih kecil (tinggi 250px) */
     margin-top: 40px;
 }
