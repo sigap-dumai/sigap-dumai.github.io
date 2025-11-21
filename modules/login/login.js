@@ -15,14 +15,8 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
         localStorage.setItem('loggedInUser', user.username);
         localStorage.setItem('userRole', user.role);  // Menyimpan role user
 
-        // Redirect berdasarkan role user
-        if (user.role === 'kalaksa' || user.role.includes('admin')) {
-          // Jika role admin (kalaksa atau lainnya), redirect ke halaman admin
-          window.location.href = '/modules/admin-reports/admin-reports.html'; // Halaman untuk admin
-        } else {
-          // Jika pengguna biasa, redirect ke report
-          window.location.href = '/modules/report/report.html'; // Halaman untuk laporan biasa
-        }
+        // Redirect ke halaman dashboard setelah login
+        window.location.href = '/modules/dashboard/dashboard.html';  // Arahkan ke dashboard
       } else {
         // Tampilkan pesan error jika login gagal
         alert('Username atau password salah!');
