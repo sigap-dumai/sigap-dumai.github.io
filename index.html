@@ -24,6 +24,7 @@
     </style>
 </head>
 <body>
+    <!-- Header (partial) -->
     <div id="header-container"></div>
 
     <section class="motivation-box">
@@ -74,8 +75,25 @@
     <div id="footer-container"></div>
 
     <script>
-        // Cek status login dan peran pengguna
+        // Muat header dan footer
         window.onload = function() {
+            // Memuat header dari file partial
+            fetch('/partials/header.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('header-container').innerHTML = html;
+                })
+                .catch(err => console.error('Error loading header:', err));
+
+            // Memuat footer dari file partial
+            fetch('/partials/footer.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('footer-container').innerHTML = html;
+                })
+                .catch(err => console.error('Error loading footer:', err));
+
+            // Cek status login dan peran pengguna
             const userRole = localStorage.getItem('userRole');
 
             if (userRole) {
