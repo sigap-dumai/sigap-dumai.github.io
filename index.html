@@ -5,71 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiGap-Dumai</title>
 
-    <!-- Memuat font lokal dari folder /fonts/ -->
     <link rel="stylesheet" href="/fonts/Roboto-VariableFont_wdth,wght.css">
     <link rel="stylesheet" href="/fonts/Roboto-Italic-VariableFont_wdth,wght.css">
-
-    <!-- CSS utama aplikasi -->
     <link rel="stylesheet" href="/assets/css/styles.css">
-
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 <body>
-    <!-- HEADER (partial) -->
     <div id="header-container"></div>
 
-    <!-- MOTIVASI HARI INI (di atas peta) -->
     <section class="motivation-box">
         <h2>Motivasi Hari Ini</h2>
-        <ul id="quote-list">
-            <!-- Quotes akan diisi via main.js dari /json/quotes.json -->
-        </ul>
+        <ul id="quote-list"></ul>
     </section>
 
-    <!-- PETA: posisi paling atas setelah motivasi -->
     <section class="map-section">
-        <div id="map" style="height: 400px;"></div> <!-- Pastikan ada ID #map dengan ukuran -->
+        <div id="map" style="height: 400px;"></div>
     </section>
 
-    <!-- 5 LAPORAN TERBARU -->
     <section class="reports">
         <h2>Laporan Terbaru</h2>
-        <div class="report-cards" id="report-cards-container">
-            <!-- Card laporan akan di-inject via main.js -->
-        </div>
+        <div class="report-cards" id="report-cards-container"></div>
     </section>
 
-    <!-- LANDING / MODUL DALAM BENTUK CARD -->
     <section class="landing">
         <div class="landing-content">
             <h1>SiGap-Dumai</h1>
-            <p class="subtitle">
-                Aplikasi SiGap-Dumai membantu Anda mendapatkan informasi darurat
-                dan melaporkan kejadian di wilayah Kota Dumai.
-            </p>
+            <p>Aplikasi SiGap-Dumai membantu Anda mendapatkan informasi darurat dan melaporkan kejadian di wilayah Kota Dumai.</p>
 
             <div class="card-container">
-                <!-- Card: Lapor Warga -->
                 <div class="card">
                     <img src="/images/report.png" alt="Lapor Warga" class="card-icon">
                     <h3>Lapor Warga</h3>
                     <p>Laporkan kejadian darurat atau gangguan di sekitar Anda.</p>
                     <a href="/modules/report/report.html" class="btn-card">Lapor Sekarang</a>
                 </div>
-
-                <!-- Card: Petunjuk Evakuasi -->
                 <div class="card">
                     <img src="/images/earthquake.png" alt="Petunjuk Evakuasi" class="card-icon">
                     <h3>Petunjuk Evakuasi</h3>
                     <p>Panduan evakuasi saat bencana agar Anda tetap selamat.</p>
                     <a href="/modules/disaster-guide/disaster-guide.html" class="btn-card">Lihat Petunjuk</a>
                 </div>
-
-                <!-- Card: Tentang Kami -->
                 <div class="card">
                     <img src="/images/about.png" alt="Tentang Kami" class="card-icon">
                     <h3>Tentang Kami</h3>
@@ -89,10 +64,8 @@
         </div>
     </section>
 
-    <!-- FOOTER (partial) -->
     <div id="footer-container"></div>
 
-    <!-- Load partial header & footer -->
     <script>
         // Muat header
         fetch('/partials/header.html')
@@ -113,11 +86,10 @@
         // Cek status login dan peran pengguna
         window.onload = function() {
             const userRole = localStorage.getItem('userRole');
-
             if (userRole) {
                 // Jika pengguna sudah login
-                if (userRole === 'admin_kecamatan') {
-                    // Jika admin, tampilkan tombol untuk login ke admin panel
+                if (userRole === 'kalaksa' || userRole.includes('admin')) {
+                    // Jika role admin, tampilkan tombol untuk login ke admin panel
                     document.getElementById('adminLoginButton').style.display = 'block';
                     document.getElementById('userLoginButton').style.display = 'none';
                 } else {
@@ -131,15 +103,6 @@
                 document.getElementById('adminLoginButton').style.display = 'none';
             }
         };
-    </script>
-
-    <!-- JS utama aplikasi -->
-    <script src="/assets/js/main.js"></script>
-    <script>
-        // Inisialisasi khusus halaman index
-        if (typeof initIndexPage === 'function') {
-            initIndexPage();
-        }
     </script>
 </body>
 </html>
