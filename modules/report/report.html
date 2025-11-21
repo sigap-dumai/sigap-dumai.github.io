@@ -47,8 +47,17 @@
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
-        // Tampilkan nama user yang login
-        document.getElementById('user-name').textContent = 'Hello, ' + localStorage.getItem('loggedInUser');
+        // Cek apakah pengguna sudah login dan memiliki peran yang sesuai
+        window.onload = function() {
+            const userRole = localStorage.getItem('userRole');
+            if (userRole && userRole.includes('admin')) {
+                // Jika admin, ganti halaman report ke admin-report
+                window.location.href = '/modules/admin-reports/admin-reports.html';
+            }
+
+            // Tampilkan nama user yang login
+            document.getElementById('user-name').textContent = 'Hello, ' + localStorage.getItem('loggedInUser');
+        };
 
         // Fungsi untuk logout
         function logout() {
