@@ -4,116 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiGap-Dumai</title>
-
-    <!-- Memuat font lokal dari folder /fonts/ -->
-    <link rel="stylesheet" href="/fonts/Roboto-VariableFont_wdth,wght.css">
-    <link rel="stylesheet" href="/fonts/Roboto-Italic-VariableFont_wdth,wght.css">
-
-    <!-- CSS utama aplikasi -->
     <link rel="stylesheet" href="/assets/css/styles.css">
-
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="/assets/js/main.js"></script>
 </head>
 <body>
-    <!-- HEADER (partial) -->
     <div id="header-container"></div>
-
-    <!-- MOTIVASI HARI INI (di atas peta) -->
-    <section class="motivation-box">
-        <h2>Motivasi Hari Ini</h2>
-        <ul id="quote-list">
-            <!-- Quotes akan diisi via main.js dari /json/quotes.json -->
-        </ul>
-    </section>
-
-    <!-- PETA: posisi paling atas setelah motivasi -->
-    <section class="map-section">
-        <div id="map" style="height: 400px;"></div> <!-- Pastikan ada ID #map dengan ukuran -->
-    </section>
-
-    <!-- 5 LAPORAN TERBARU -->
-    <section class="reports">
-        <h2>Laporan Terbaru</h2>
-        <div class="report-cards" id="report-cards-container">
-            <!-- Card laporan akan di-inject via main.js -->
-        </div>
-    </section>
-
-    <!-- LANDING / MODUL DALAM BENTUK CARD -->
+    
     <section class="landing">
         <div class="landing-content">
             <h1>SiGap-Dumai</h1>
-            <p class="subtitle">
-                Aplikasi SiGap-Dumai membantu Anda mendapatkan informasi darurat
-                dan melaporkan kejadian di wilayah Kota Dumai.
-            </p>
+            <p>Aplikasi SiGap-Dumai membantu Anda mendapatkan informasi darurat dan melaporkan kejadian di wilayah Kota Dumai.</p>
 
-            <div class="card-container">
-                <!-- Card: Lapor Warga -->
-                <div class="card">
-                    <img src="/images/report.png" alt="Lapor Warga" class="card-icon">
-                    <h3>Lapor Warga</h3>
-                    <p>Laporkan kejadian darurat atau gangguan di sekitar Anda.</p>
-                    <a href="/modules/report/report.html" class="btn-card">Lapor Sekarang</a>
-                </div>
+            <!-- Card dan modul lainnya -->
 
-                <!-- Card: Petunjuk Evakuasi -->
-                <div class="card">
-                    <img src="/images/earthquake.png" alt="Petunjuk Evakuasi" class="card-icon">
-                    <h3>Petunjuk Evakuasi</h3>
-                    <p>Panduan evakuasi saat bencana agar Anda tetap selamat.</p>
-                    <a href="/modules/disaster-guide/disaster-guide.html" class="btn-card">Lihat Petunjuk</a>
-                </div>
-
-                <!-- Card: Tentang Kami -->
-                <div class="card">
-                    <img src="/images/about.png" alt="Tentang Kami" class="card-icon">
-                    <h3>Tentang Kami</h3>
-                    <p>Kenali lebih dekat peran dan tugas BPBD Kota Dumai.</p>
-                    <a href="/modules/about/about.html" class="btn-card">Baca Selengkapnya</a>
-                </div>
+            <div id="adminLoginButton" style="display:none;">
+                <a href="/modules/admin-reports/admin-reports.html" class="landing-login-btn">Login Admin</a>
             </div>
 
-            <!-- Tombol Login Admin/Operator -->
-            <a href="/modules/login/login.html" class="landing-login-btn">
-                Login Admin/Operator
-            </a>
+            <div id="userLoginButton" style="display:none;">
+                <a href="/modules/login/login.html" class="landing-login-btn">Login Admin/Operator</a>
+            </div>
         </div>
     </section>
 
-    <!-- FOOTER (partial) -->
     <div id="footer-container"></div>
 
-    <!-- Load partial header & footer -->
     <script>
-        // Muat header
-        fetch('/partials/header.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('header-container').innerHTML = html;
-            })
-            .catch(err => console.error('Error loading header:', err));
-
-        // Muat footer
-        fetch('/partials/footer.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('footer-container').innerHTML = html;
-            })
-            .catch(err => console.error('Error loading footer:', err));
-    </script>
-
-    <!-- JS utama aplikasi -->
-    <script src="/assets/js/main.js"></script>
-    <script>
-        // Inisialisasi khusus halaman index
-        if (typeof initIndexPage === 'function') {
-            initIndexPage();
-        }
+        // Cek status login dan peran pengguna
+        window.onload = function() {
+            const userRole = localStorage.getItem('userRole');
+            if (userRole === 'admin_kecamatan') {
+                document.getElementById('adminLoginButton').style.display = 'block';
+                document.getElementById('userLoginButton').style.display = 'none';
+            } else {
+                document.getElementById('userLoginButton').style.display = 'block';
+                document.getElementById('adminLoginButton').style.display = 'none';
+            }
+        };
     </script>
 </body>
 </html>

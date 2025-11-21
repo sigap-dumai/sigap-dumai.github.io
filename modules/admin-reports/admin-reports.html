@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="../../assets/css/styles.css">
 </head>
 <body>
-    <!-- Header -->
     <div id="header-container"></div>
 
     <main>
@@ -22,10 +21,8 @@
         </table>
     </main>
 
-    <!-- Footer -->
     <div id="footer-container"></div>
 
-    <script src="../../assets/js/main.js"></script>
     <script>
         // Menyisipkan header dan footer dari partials
         fetch('../../partials/header.html')
@@ -40,18 +37,16 @@
                 document.getElementById("footer-container").innerHTML = data;
             });
 
-        // Fetch data laporan untuk admin
-        fetch('../../json/users.json')
-            .then(response => response.json())
-            .then(users => {
-                const currentUser = JSON.parse(localStorage.getItem('user'));
-                if (currentUser && currentUser.role === 'admin_kecamatan') {
-                    // Simulasi laporan admin kecamatan
-                    const reports = [
-                        { lokasi: 'Bagan Keladi', deskripsi: 'Angin Kencang', waktu: '2025-11-19 10:00' },
-                        { lokasi: 'Dumai Kota', deskripsi: 'Banjir', waktu: '2025-11-19 12:00' }
-                    ];
-
+        // Cek apakah pengguna adalah admin
+        const currentUser = JSON.parse(localStorage.getItem('user'));
+        if (currentUser && currentUser.role !== 'admin_kecamatan') {
+            alert('Akses ditolak, hanya admin yang dapat melihat laporan.');
+            window.location.href = "../../modules/login/login.html";
+        } else {
+            // Fetch dan tampilkan laporan admin
+            fetch('../../json/reports.json')
+                .then(response => response.json())
+                .then(reports => {
                     const table = document.querySelector('table');
                     reports.forEach(report => {
                         const row = table.insertRow();
@@ -59,11 +54,8 @@
                         row.insertCell(1).textContent = report.deskripsi;
                         row.insertCell(2).textContent = report.waktu;
                     });
-                } else {
-                    alert('Akses ditolak, hanya admin yang dapat melihat laporan.');
-                    window.location.href = "../../modules/login/login.html";
-                }
-            });
+                });
+        }
     </script>
 </body>
 </html>
