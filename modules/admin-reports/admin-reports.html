@@ -3,59 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Laporan - SiGap-Dumai</title>
+    <title>Admin Laporan - SiGap Dumai</title>
     <link rel="stylesheet" href="../../assets/css/styles.css">
 </head>
 <body>
-    <div id="header-container"></div>
+    <header>
+        <div class="user-info">
+            <span id="user-name"></span>
+            <button id="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </header>
 
-    <main>
-        <h2>Laporan Kejadian Bencana</h2>
-        <table>
-            <tr>
-                <th>Lokasi</th>
-                <th>Deskripsi</th>
-                <th>Waktu</th>
-            </tr>
-            <!-- Data laporan akan ditampilkan di sini -->
-        </table>
-    </main>
+    <div class="admin-report-content">
+        <h1>Admin Laporan Kejadian</h1>
 
-    <div id="footer-container"></div>
+        <!-- Form Input Laporan -->
+        <section id="input-laporan">
+            <h2>Tambah Laporan</h2>
+            <form id="report-form">
+                <label for="lokasi">Lokasi:</label>
+                <input type="text" id="lokasi" name="lokasi" required>
+
+                <label for="deskripsi">Deskripsi:</label>
+                <textarea id="deskripsi" name="deskripsi" rows="4" required></textarea>
+
+                <label for="waktu">Waktu Kejadian:</label>
+                <input type="datetime-local" id="waktu" name="waktu" required>
+
+                <button type="submit" class="btn">Kirim Laporan</button>
+            </form>
+        </section>
+
+        <!-- Daftar Laporan -->
+        <section id="list-laporan">
+            <h2>Daftar Laporan</h2>
+            <table id="laporan-table">
+                <thead>
+                    <tr>
+                        <th>Lokasi</th>
+                        <th>Deskripsi</th>
+                        <th>Waktu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Laporan akan dimasukkan di sini oleh JavaScript -->
+                </tbody>
+            </table>
+        </section>
+    </div>
 
     <script>
-        // Menyisipkan header dan footer dari partials
-        fetch('../../partials/header.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("header-container").innerHTML = data;
-            });
+        // Menampilkan nama user yang login
+        document.getElementById('user-name').textContent = 'Hello, ' + localStorage.getItem('loggedInUser');
 
-        fetch('../../partials/footer.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("footer-container").innerHTML = data;
-            });
+        // Fungsi untuk logout
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            localStorage.removeItem('userRole');
+            window.location.href = '/modules/login/login.html';  // Arahkan kembali ke halaman login
+        }
 
-        // Cek apakah pengguna adalah admin
-        const currentUser = JSON.parse(localStorage.getItem('user'));
-        if (currentUser && currentUser.role !== 'admin_kecamatan') {
-            alert('Akses ditolak, hanya admin yang dapat melihat laporan.');
-            window.location.href = "../../modules/login/login.html";
-        } else {
-            // Fetch dan tampilkan laporan admin
+        // Ambil dan tampilkan daftar laporan dari file JSON
+        window.onload = function() {
+            // Cek apakah pengguna sudah login
+            const userRole = localStorage.getItem('userRole');
+            if (!userRole || userRole !== 'admin_kecamatan') {
+                // Jika bukan admin, arahkan kembali ke login
+                window.location.href = '/modules/login/login.html';
+                return;
+            }
+
+            // Ambil data laporan dari reports.json (misalnya)
             fetch('../../json/reports.json')
                 .then(response => response.json())
                 .then(reports => {
-                    const table = document.querySelector('table');
+                    const laporanTableBody = document.querySelector('#laporan-table tbody');
                     reports.forEach(report => {
-                        const row = table.insertRow();
-                        row.insertCell(0).textContent = report.lokasi;
-                        row.insertCell(1).textContent = report.deskripsi;
-                        row.insertCell(2).textContent = report.waktu;
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${report.lokasi}</td>
+                            <td>${report.deskripsi}</td>
+                            <td>${report.waktu}</td>
+                        `;
+                        laporanTableBody.appendChild(row);
                     });
+                })
+                .catch(error => {
+                    console.error('Error fetching reports data:', error);
                 });
-        }
+        };
+
+        // Menangani form laporan
+        document.getElementById('report-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const lokasi = document.getElementById('lokasi').value;
+            const deskripsi = document.getElementById('deskripsi').value;
+            const waktu = document.getElementById('waktu').value;
+
+            // Data laporan baru
+            const newReport = {
+                lokasi: lokasi,
+                deskripsi: deskripsi,
+                waktu: waktu,
+                type: 'admin-report' // Tipe laporan untuk admin
+            };
+
+            // Kirim data laporan baru ke backend atau simpan di reports.json (misalnya, disini hanya ditampilkan di console)
+            console.log('Laporan baru:', newReport);
+
+            // Menambahkan laporan ke dalam tabel tanpa refresh halaman (simulasi)
+            const laporanTableBody = document.querySelector('#laporan-table tbody');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${newReport.lokasi}</td>
+                <td>${newReport.deskripsi}</td>
+                <td>${newReport.waktu}</td>
+            `;
+            laporanTableBody.appendChild(row);
+
+            // Reset form
+            document.getElementById('report-form').reset();
+            alert('Laporan berhasil dikirim!');
+        });
     </script>
 </body>
 </html>

@@ -5,26 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiGap-Dumai</title>
 
+    <!-- Memuat font lokal dari folder /fonts/ -->
     <link rel="stylesheet" href="/fonts/Roboto-VariableFont_wdth,wght.css">
     <link rel="stylesheet" href="/fonts/Roboto-Italic-VariableFont_wdth,wght.css">
+
+    <!-- CSS utama aplikasi -->
     <link rel="stylesheet" href="/assets/css/styles.css">
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <style>
+        /* Pastikan peta tampil dengan ukuran yang benar */
+        #map {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
 </head>
 <body>
     <div id="header-container"></div>
 
     <section class="motivation-box">
         <h2>Motivasi Hari Ini</h2>
-        <ul id="quote-list"></ul>
+        <ul id="quote-list">
+            <!-- Quotes akan diisi via main.js dari /json/quotes.json -->
+        </ul>
     </section>
 
+    <!-- Peta: Letakkan peta Leaflet di sini -->
     <section class="map-section">
-        <div id="map" style="height: 400px;"></div>
-    </section>
-
-    <section class="reports">
-        <h2>Laporan Terbaru</h2>
-        <div class="report-cards" id="report-cards-container"></div>
+        <div id="map"></div>
     </section>
 
     <section class="landing">
@@ -37,7 +48,7 @@
                     <img src="/images/report.png" alt="Lapor Warga" class="card-icon">
                     <h3>Lapor Warga</h3>
                     <p>Laporkan kejadian darurat atau gangguan di sekitar Anda.</p>
-                    <a href="/modules/report/report.html" class="btn-card">Lapor Sekarang</a>
+                    <a href="/modules/report/report.html" class="btn-card" id="reportLink">Lapor Sekarang</a>
                 </div>
                 <div class="card">
                     <img src="/images/earthquake.png" alt="Petunjuk Evakuasi" class="card-icon">
@@ -53,13 +64,9 @@
                 </div>
             </div>
 
-            <!-- Tombol Login Admin/Operator -->
+            <!-- Tombol Login Admin/Operator hanya tampil jika belum login -->
             <div id="userLoginButton" style="display:none;">
                 <a href="/modules/login/login.html" class="landing-login-btn">Login Admin/Operator</a>
-            </div>
-
-            <div id="adminLoginButton" style="display:none;">
-                <a href="/modules/admin-reports/admin-reports.html" class="landing-login-btn">Login Admin</a>
             </div>
         </div>
     </section>
@@ -67,42 +74,29 @@
     <div id="footer-container"></div>
 
     <script>
-        // Muat header
-        fetch('/partials/header.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('header-container').innerHTML = html;
-            })
-            .catch(err => console.error('Error loading header:', err));
-
-        // Muat footer
-        fetch('/partials/footer.html')
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('footer-container').innerHTML = html;
-            })
-            .catch(err => console.error('Error loading footer:', err));
-
         // Cek status login dan peran pengguna
         window.onload = function() {
             const userRole = localStorage.getItem('userRole');
+
             if (userRole) {
-                // Jika pengguna sudah login
-                if (userRole === 'kalaksa' || userRole.includes('admin')) {
-                    // Jika role admin, tampilkan tombol untuk login ke admin panel
-                    document.getElementById('adminLoginButton').style.display = 'block';
-                    document.getElementById('userLoginButton').style.display = 'none';
-                } else {
-                    // Jika pengguna biasa, sembunyikan tombol admin
-                    document.getElementById('userLoginButton').style.display = 'block';
-                    document.getElementById('adminLoginButton').style.display = 'none';
-                }
+                // Jika sudah login, sembunyikan tombol login dan link report
+                document.getElementById('userLoginButton').style.display = 'none';
+                document.getElementById('reportLink').style.display = 'none'; // Disable link report
             } else {
-                // Jika belum login, tampilkan tombol login biasa
+                // Jika belum login, tampilkan tombol login
                 document.getElementById('userLoginButton').style.display = 'block';
-                document.getElementById('adminLoginButton').style.display = 'none';
+                document.getElementById('reportLink').style.display = 'block'; // Link report tetap bisa diakses
             }
+
+            // Inisialisasi peta setelah memeriksa status login
+            const map = L.map('map').setView([1.644, 104.526], 10); // Koordinat pusat peta, sesuaikan dengan lokasi yang relevan
+
+            // Menambahkan layer peta dari OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
         };
     </script>
+
 </body>
 </html>
