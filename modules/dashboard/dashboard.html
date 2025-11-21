@@ -1,4 +1,3 @@
-<!-- Contoh dashboard.html -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -10,57 +9,74 @@
 <body>
     <header>
         <div class="user-info">
-            <!-- Menampilkan nama user dari localStorage -->
+            <!-- Menampilkan nama user yang login -->
             <span id="user-name"></span>
+            <!-- Tombol Logout -->
             <button id="logout-btn" onclick="logout()">Logout</button>
         </div>
     </header>
 
     <div class="dashboard-content">
-        <h1>Selamat datang di Dashboard SiGap Dumai</h1>
+        <h1>Dashboard SiGap Dumai</h1>
 
-        <!-- Modul Admin Reports (Hanya untuk Kalaksa dan Sekre) -->
-        <div class="module" id="admin-reports-module">
-            <h2>Admin Reports</h2>
-            <p>Laporan dan informasi yang terkait dengan bencana dapat diakses di sini.</p>
-            <a href="../admin-reports/admin-reports.html" class="btn">Lihat Laporan Admin</a>
-        </div>
+        <!-- Statistik Laporan -->
+        <section id="report-statistics">
+            <h2>Statistik Laporan</h2>
+            <div id="total-reports">
+                <p><strong>Total Laporan: </strong><span id="total-report-count">0</span></p>
+                <p><strong>Total Admin Laporan: </strong><span id="total-admin-report-count">0</span></p>
+            </div>
+        </section>
 
-        <!-- Modul Lainnya (Disaster Guide) -->
-        <div class="module">
-            <h2>Disaster Guide</h2>
-            <p>Panduan terkait penanggulangan bencana.</p>
-            <a href="../disaster-guide/disaster-guide.html" class="btn">Lihat Panduan Bencana</a>
-        </div>
+        <!-- Modul Admin Report -->
+        <section id="admin-report-link">
+            <h2>Modul Admin Report</h2>
+            <p><a href="/modules/admin-reports/admin-reports.html" class="btn">Lihat Admin Report</a></p>
+        </section>
 
-        <!-- Modul Report -->
-        <div class="module">
-            <h2>Laporan</h2>
-            <p>Laporan-laporan terkini dapat dilihat di sini.</p>
-            <a href="../report/report.html" class="btn">Lihat Laporan</a>
-        </div>
+        <!-- Modul Quick Response -->
+        <section id="quick-response-link">
+            <h2>Quick Response</h2>
+            <p><a href="/modules/quick-response/quick-response.html" class="btn">Lihat Quick Response</a></p>
+        </section>
     </div>
 
     <script>
-        // Tampilkan nama user yang login
+        // Menampilkan nama user yang login
         document.getElementById('user-name').textContent = 'Hello, ' + localStorage.getItem('loggedInUser');
-
-        // Cek role user dan kontrol akses
-        const userRole = localStorage.getItem('userRole');
-        if (userRole !== 'kalaksa' && userRole !== 'sekre') {
-            // Jika bukan kalaksa atau sekre, sembunyikan modul Admin Reports
-            document.getElementById('admin-reports-module').style.display = 'none';
-        }
 
         // Fungsi untuk logout
         function logout() {
-            // Hapus user dari localStorage
             localStorage.removeItem('loggedInUser');
             localStorage.removeItem('userRole');
-            
-            // Redirect kembali ke halaman login
-            window.location.href = '/modules/login/login.html';
+            window.location.href = '/modules/login/login.html';  // Arahkan kembali ke halaman login
         }
+
+        // Ambil data statistik laporan
+        window.onload = function() {
+            const userRole = localStorage.getItem('userRole');
+
+            if (!userRole) {
+                // Jika pengguna tidak login, arahkan ke login
+                window.location.href = '/modules/login/login.html';
+                return;
+            }
+
+            // Ambil statistik laporan dari file JSON (misalnya, data laporan diambil dari `reports.json`)
+            fetch('../../json/reports.json')
+                .then(response => response.json())
+                .then(data => {
+                    const totalReports = data.filter(report => report.type === 'report').length;
+                    const totalAdminReports = data.filter(report => report.type === 'admin-report').length;
+
+                    // Tampilkan statistik laporan
+                    document.getElementById('total-report-count').textContent = totalReports;
+                    document.getElementById('total-admin-report-count').textContent = totalAdminReports;
+                })
+                .catch(error => {
+                    console.error('Error fetching reports data:', error);
+                });
+        };
     </script>
 </body>
 </html>
