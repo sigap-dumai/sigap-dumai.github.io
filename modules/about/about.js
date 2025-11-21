@@ -1,1 +1,0 @@
-console.log("Menampilkan informasi tentang aplikasi SiGap-Dumai.");

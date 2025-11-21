@@ -1,1 +1,0 @@
-console.log("Menampilkan panduan penanggulangan bencana.");
