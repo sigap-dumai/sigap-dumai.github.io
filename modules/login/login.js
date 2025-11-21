@@ -9,19 +9,19 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
     .then(response => response.json())
     .then(users => {
       const user = users.find(user => user.username === username && user.password === password);
-
+      
       if (user) {
         // Simpan nama user dan role ke localStorage
         localStorage.setItem('loggedInUser', user.username);
         localStorage.setItem('userRole', user.role);  // Menyimpan role user
 
-        // Cek peran pengguna dan arahkan ke halaman yang sesuai
-        if (user.role === 'admin_kecamatan' || user.role.includes('admin')) {
-          // Jika pengguna adalah admin, arahkan ke admin-reports
-          window.location.href = '/modules/admin-reports/admin-reports.html';
+        // Redirect berdasarkan role user
+        if (user.role === 'kalaksa' || user.role.includes('admin')) {
+          // Jika role admin (kalaksa atau lainnya), redirect ke halaman admin
+          window.location.href = '/modules/admin-reports/admin-reports.html'; // Halaman untuk admin
         } else {
-          // Jika pengguna biasa, arahkan ke report
-          window.location.href = '/modules/report/report.html';
+          // Jika pengguna biasa, redirect ke report
+          window.location.href = '/modules/report/report.html'; // Halaman untuk laporan biasa
         }
       } else {
         // Tampilkan pesan error jika login gagal
