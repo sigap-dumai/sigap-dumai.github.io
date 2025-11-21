@@ -24,9 +24,10 @@
     </style>
 </head>
 <body>
-    <!-- Header (partial) -->
+    <!-- Header -->
     <div id="header-container"></div>
 
+    <!-- Section Motivasi -->
     <section class="motivation-box">
         <h2>Motivasi Hari Ini</h2>
         <ul id="quote-list">
@@ -36,7 +37,7 @@
 
     <!-- Peta: Letakkan peta Leaflet di sini -->
     <section class="map-section">
-        <div id="map"></div>
+        <div id="map"></div> <!-- Peta Leaflet -->
     </section>
 
     <section class="landing">
@@ -75,9 +76,8 @@
     <div id="footer-container"></div>
 
     <script>
-        // Muat header dan footer
         window.onload = function() {
-            // Memuat header dari file partial
+            // Muat header dan footer
             fetch('/partials/header.html')
                 .then(response => response.text())
                 .then(html => {
@@ -85,7 +85,6 @@
                 })
                 .catch(err => console.error('Error loading header:', err));
 
-            // Memuat footer dari file partial
             fetch('/partials/footer.html')
                 .then(response => response.text())
                 .then(html => {
@@ -106,7 +105,7 @@
                 document.getElementById('reportLink').style.display = 'block'; // Link report tetap bisa diakses
             }
 
-            // Inisialisasi peta setelah memeriksa status login
+            // Inisialisasi peta Leaflet
             const map = L.map('map').setView([1.644, 104.526], 10); // Koordinat pusat peta, sesuaikan dengan lokasi yang relevan
 
             // Menambahkan layer peta dari OpenStreetMap
