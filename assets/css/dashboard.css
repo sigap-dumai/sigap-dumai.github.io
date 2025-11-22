@@ -1,24 +1,59 @@
+/* General Styles for Splash Screen and Dashboard */
 .splash-screen {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     height: 100vh;
-    background-color: #f0f0f0; /* Warna latar belakang */
+    background-color: #f0f0f0;
 }
 
 .logo {
-    max-width: 200px; /* Atur ukuran logo sesuai kebutuhan */
-    margin-bottom: 20px; /* Jarak antara logo dan teks */
+    max-width: 250px; /* Menyesuaikan ukuran logo */
+    margin-bottom: 20px;
 }
 
 h1 {
     font-size: 24px;
-    color: #007BFF; /* Warna teks */
+    color: #007BFF;
     margin-top: 10px;
 }
 
 p {
     font-size: 16px;
     color: #333;
+}
+
+/* Dashboard Styles */
+#map {
+    width: 100%;
+    height: 400px;
+}
+
+.info-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.info-cards div {
+    background-color: #F0F0F0;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 5px;
+    width: 45%;
+}
+
+.fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
 }
