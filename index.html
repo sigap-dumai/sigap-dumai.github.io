@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SiGap-Dumai - Aplikasi Manajemen Bencana</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header>
+    <h1>SiGap-Dumai - Aplikasi Manajemen Bencana</h1>
+    <div id="user-info">
+      <button id="login-btn">Login</button>
+      <span id="user-name"></span>
+      <button id="logout-btn" class="hidden">Logout</button>
+    </div>
+  </header>
+
+  <!-- Form Login -->
+  <div id="login-form" class="hidden">
+    <h2>Login</h2>
+    <form id="login-form-inner">
+      <label for="username">Username</label>
+      <input type="text" id="username" required>
+      <label for="password">Password</label>
+      <input type="password" id="password" required>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard" class="hidden">
+    <h2>Dashboard Bencana</h2>
+
+    <!-- Peta -->
+    <div id="map" style="height: 500px;"></div>
+
+    <!-- Statistik -->
+    <section id="statistik">
+      <h3>Statistik Bencana Terkini</h3>
+      <p>Total Bencana: <span id="total-bencana">0</span></p>
+      <p>Bencana Terkini: <span id="jenis-bencana">-</span></p>
+    </section>
+
+    <!-- Form Laporan Bencana -->
+    <button id="btn-lapor">Laporkan Bencana</button>
+  </div>
+
+  <div id="laporan-form" class="hidden">
+    <h2>Form Laporan Bencana</h2>
+    <form id="form-lapor">
+      <label for="jenis-bencana">Jenis Bencana</label>
+      <select id="jenis-bencana" required>
+        <option value="gempa">Gempa</option>
+        <option value="banjir">Banjir</option>
+        <option value="letusan">Letusan</option>
+      </select>
+      <label for="deskripsi">Deskripsi</label>
+      <textarea id="deskripsi" required></textarea>
+      <button type="submit">Kirim Laporan</button>
+    </form>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="assets/js/main.js"></script>
+
+</body>
+</html>

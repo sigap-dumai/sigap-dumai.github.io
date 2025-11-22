@@ -1,51 +1,47 @@
-document.addEventListener('DOMContentLoaded', function () {
+import { mapModule } from './modules/mapModule.js';
+import { statistikModule } from './modules/statistikModule.js';
+import { laporanModule } from './modules/laporanModule.js';
+import { authModule } from './modules/authModule.js';
+import { uiModule } from './modules/uiModule.js';
+import { weatherMapModule } from './modules/weatherMapModule.js';
+import { karhutlaMapModule } from './modules/karhutlaMapModule.js';
+import { earthquakeMapModule } from './modules/earthquakeMapModule.js';
 
-    // Mengambil dan menampilkan satu kutipan secara acak
-    function loadQuotes() {
-        fetch('/json/quotes.json')  // Pastikan path ini benar
-            .then(response => response.json())
-            .then(data => {
-                const quoteList = document.getElementById('quote-list');
-                quoteList.innerHTML = '';  // Mengosongkan daftar kutipan
-                
-                // Ambil kutipan acak dari array quotes
-                const randomQuote = data.quotes[Math.floor(Math.random() * data.quotes.length)];
+// Inisialisasi Peta
+const map = mapModule.initializeMap();
 
-                // Menampilkan kutipan acak di #quote-list
-                const listItem = document.createElement('li');
-                listItem.textContent = `"${randomQuote}"`;
-                quoteList.appendChild(listItem);
-            })
-            .catch(error => {
-                console.error('Error loading quotes:', error);
-            });
-    }
+// Load Data GeoJSON untuk bencana
+mapModule.loadBencanaData(map);
 
-    // Mengganti kutipan setiap 10 menit
-    function refreshQuotes() {
-        loadQuotes();
-        setInterval(loadQuotes, 600000);  // Memuat kutipan setiap 10 menit (600000 ms)
-    }
+// Tambahkan Peta Cuaca
+weatherMapModule.loadWeatherMap(map);
 
-    // Memastikan kutipan dimuat pertama kali saat halaman dimuat
-    refreshQuotes();
+// Tambahkan Peta Hotspot Karhutla
+karhutlaMapModule.loadKarhutlaMap(map);
 
-    // Inisialisasi Peta
-    function initMap() {
-        const map = L.map('map').setView([1.6406, 101.4475], 13);  // Koordinat Dumai
+// Tambahkan Peta Gempa Bumi
+earthquakeMapModule.loadEarthquakeMap(map);
 
-        // Menambahkan tile layer (OpenStreetMap)
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+// Update Statistik
+statistikModule.fetchAndUpdateStatistik();
 
-        // Menambahkan marker untuk Dumai
-        L.marker([1.6406, 101.4475]).addTo(map)
-            .bindPopup('Kota Dumai')
-            .openPopup();
-    }
+// Login
+authModule.checkLoginStatus();
 
-    // Pastikan peta dimuat setelah DOM dimuat
-    initMap();
+document.getElementById('login-btn').addEventListener('click', () => {
+  uiModule.showLoginForm();  // Menampilkan form login
+});
 
+document.getElementById('login-form-inner').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  authModule.login(username, password);
+  uiModule.hideLoginForm();  // Sembunyikan form login setelah login berhasil
+  uiModule.showDashboard();  // Tampilkan dashboard setelah login
+});
+
+document.getElementById('logout-btn').addEventListener('click', () => {
+  authModule.logout();
+  uiModule.showLoginForm();  // Tampilkan form login lagi
 });
