@@ -9,7 +9,7 @@
 <body>
 
   <header>
-    <h1>SiGap-Dumai - Aplikasi Manajemen Bencana</h1>
+    <h1>SiGap-Dumai</h1>
     <div id="user-info">
       <button id="login-btn">Login</button>
       <span id="user-name"></span>
@@ -17,26 +17,23 @@
     </div>
   </header>
 
-  <!-- Form Login -->
   <div id="login-form" class="hidden">
     <h2>Login ke SiGap-Dumai</h2>
     <form id="login-form-inner">
       <div class="input-group">
         <label for="username">Username</label>
-        <input type="text" id="username" placeholder="Masukkan username" required>
+        <input type="text" id="username" required>
       </div>
       <div class="input-group">
         <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Masukkan password" required>
+        <input type="password" id="password" required>
       </div>
       <button type="submit">Login</button>
     </form>
   </div>
 
-  <!-- Dashboard -->
   <div id="dashboard" class="hidden">
-    <h2>Dashboard SiGap-Dumai</h2>
-
+    <h2>Dashboard</h2>
     <div id="map-container">
       <div id="map"></div>
     </div>
@@ -46,7 +43,7 @@
       <p>Total Bencana: <span id="total-bencana">0</span></p>
       <p>Bencana Terkini: <span id="jenis-bencana">-</span></p>
     </div>
-    
+
     <button id="btn-lapor">Laporkan Bencana</button>
   </div>
 
@@ -64,7 +61,7 @@
 
       <div class="input-group">
         <label for="deskripsi">Deskripsi</label>
-        <textarea id="deskripsi" placeholder="Deskripsikan bencana yang terjadi..." required></textarea>
+        <textarea id="deskripsi" required></textarea>
       </div>
 
       <button type="submit">Kirim Laporan</button>
