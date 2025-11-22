@@ -6,11 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    // Menambahkan marker contoh (Posko Bantuan)
-    const poskoMarker = L.marker([0.4668, 101.4489]).addTo(map);
-    poskoMarker.bindPopup('<b>Posko Bantuan</b><br>Lokasi Posko Terdekat.');
-
-    // Memuat dan menampilkan GeoJSON
+    // Memuat GeoJSON
     fetch('/dumai.geojson')
         .then(response => response.json())
         .then(data => {
@@ -20,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error('Error loading GeoJSON:', error);
         });
 
-    // Pembaruan kartu informasi
+    // Pembaruan informasi kartu
     document.getElementById('status-card').innerHTML = 'Status Siaga Dumai: <span>WASPADA</span>';
     document.getElementById('laporan-card').innerHTML = 'Jumlah Laporan Baru: <span>12</span>';
     document.getElementById('posko-card').innerHTML = 'Posko Aktif: <span>5</span>';
