@@ -1,1 +1,24 @@
-<!-- Dummy content for dashboard.css -->
+.splash-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #f0f0f0; /* Warna latar belakang */
+}
+
+.logo {
+    max-width: 200px; /* Atur ukuran logo sesuai kebutuhan */
+    margin-bottom: 20px; /* Jarak antara logo dan teks */
+}
+
+h1 {
+    font-size: 24px;
+    color: #007BFF; /* Warna teks */
+    margin-top: 10px;
+}
+
+p {
+    font-size: 16px;
+    color: #333;
+}
