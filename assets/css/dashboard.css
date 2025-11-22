@@ -1,36 +1,33 @@
-/* Styling untuk Splash Screen */
-.splash-screen {
+/* General Styles for Dashboard */
+#map {
+    width: 100%;
+    height: 400px;
+}
+
+.info-cards {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 100vh;
-    background-color: #ffffff; /* Latar belakang putih */
-    text-align: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 20px;
 }
 
-.logo {
-    max-width: 250px; /* Ukuran logo yang lebih kecil agar proporsional */
-    margin-bottom: 20px; /* Jarak antara logo dan teks */
+.info-cards div {
+    background-color: #F0F0F0;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 5px;
+    width: 45%;
 }
 
-h1 {
-    font-size: 28px;
-    color: #007BFF; /* Warna biru untuk teks */
-    margin-top: 10px;
-}
-
-p {
-    font-size: 18px;
-    color: #333; /* Warna teks untuk pesan loading */
-}
-
-/* Animasi loading (opsional) */
-@keyframes loadingAnimation {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-}
-
-.splash-screen p {
-    animation: loadingAnimation 1.5s ease-in-out infinite; /* Animasi loading */
+.fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
 }
