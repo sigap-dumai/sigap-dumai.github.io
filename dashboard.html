@@ -1,1 +1,33 @@
-<!-- Dummy content for dashboard.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiGap - Dashboard</title>
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
+</head>
+<body>
+    <header>
+        <h1>Dashboard SiGap</h1>
+        <nav>
+            <ul>
+                <li><a href="/dashboard.html">Beranda</a></li>
+                <li><a href="/laporan.html">Laporan</a></li>
+                <li><a href="/informasi.html">Informasi/SOP</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div id="map"></div>
+    <div class="info-cards">
+        <div id="status-card">Status Siaga Dumai: <span>WASPADA</span></div>
+        <div id="laporan-card">Jumlah Laporan Baru: <span>12</span></div>
+        <div id="posko-card">Posko Aktif: <span>5</span></div>
+        <div id="edukasi-card">Edukasi Bencana: <span>Evakuasi Saat Banjir</span></div>
+    </div>
+    <div class="fab">
+        <button id="lapor-btn">+ Laporan Warga</button>
+    </div>
+    <script src="/assets/js/leaflet.js"></script>
+    <script src="/assets/js/dashboard.js"></script>
+</body>
+</html>

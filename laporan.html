@@ -1,1 +1,27 @@
-<!-- Dummy content for laporan.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiGap - Laporan Warga Cepat</title>
+    <link rel="stylesheet" href="/assets/css/laporan.css">
+</head>
+<body>
+    <header>
+        <h1>Laporan Warga Cepat</h1>
+    </header>
+    <form id="laporan-form">
+        <label for="jenis-insiden">Jenis Insiden</label>
+        <select id="jenis-insiden">
+            <option value="banjir">Banjir</option>
+            <option value="karhutla">Karhutla</option>
+            <option value="pohon-tumbang">Pohon Tumbang</option>
+            <option value="kecelakaan">Kecelakaan</option>
+        </select>
+        <label for="deskripsi">Deskripsi Laporan</label>
+        <textarea id="deskripsi" placeholder="Tambahkan deskripsi singkat..."></textarea>
+        <button type="submit">Kirim Laporan</button>
+    </form>
+    <script src="/assets/js/laporan.js"></script>
+</body>
+</html>
