@@ -1,32 +1,52 @@
 #laporan-form {
-  background-color: #f7f7f7;
-  padding: 20px;
-  border-radius: 8px;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   max-width: 500px;
   margin: 0 auto;
 }
 
 #laporan-form h2 {
   text-align: center;
+  color: #333;
+  margin-bottom: 20px;
 }
 
-#laporan-form select,
-#laporan-form textarea,
-#laporan-form button {
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  font-size: 14px;
+  color: #333;
+}
+
+.input-group select,
+.input-group textarea {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+  padding: 12px;
+  font-size: 16px;
+  margin-top: 8px;
+  border-radius: 5px;
   border: 1px solid #ccc;
-  border-radius: 4px;
 }
 
-#laporan-form button {
+.input-group textarea {
+  height: 150px;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
   background-color: #007bff;
   color: white;
   border: none;
+  border-radius: 5px;
   cursor: pointer;
 }
 
-#laporan-form button:hover {
+button:hover {
   background-color: #0056b3;
 }

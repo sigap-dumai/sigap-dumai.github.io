@@ -7,7 +7,7 @@ export const laporanModule = {
   handleLaporanSubmit: function (map) {
     document.getElementById('form-lapor').addEventListener('submit', (e) => {
       e.preventDefault();
-
+      
       const jenisBencana = document.getElementById('jenis-bencana').value;
       const deskripsi = document.getElementById('deskripsi').value;
 
