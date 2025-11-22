@@ -1,3 +1,4 @@
+// main.js
 import { mapModule } from './modules/mapModule.js';
 import { statistikModule } from './modules/statistikModule.js';
 import { laporanModule } from './modules/laporanModule.js';
