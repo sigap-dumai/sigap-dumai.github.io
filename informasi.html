@@ -3,118 +3,173 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Informasi - SiGap Dumai</title>
-    <link rel="stylesheet" href="assets/css/dashboard.css" />
-    <link rel="stylesheet" href="assets/css/laporan.css" />
-    <script src="https://kit.fontawesome.com/a2e0e9a66a.js" crossorigin="anonymous"></script>
-</head>
+    <title>SiGap Dumai – Informasi & Edukasi</title>
 
-<body class="bg-gray-100 flex flex-col h-screen">
+    <!-- Theme utama (header, bottom nav, dsb) -->
+    <link rel="stylesheet" href="/assets/css/dashboard.css" />
+    <!-- Styling khusus halaman informasi -->
+    <link rel="stylesheet" href="/assets/css/informasi.css" />
+</head>
+<body>
+
+<div class="app-shell">
 
     <!-- HEADER -->
-    <header class="bg-blue-700 text-white py-3 shadow-md flex justify-center items-center">
-        <h1 class="text-lg font-semibold">Informasi & Edukasi</h1>
+    <header class="app-header">
+        <div class="app-header-left">
+            <button class="back-button" onclick="window.location.href='/dashboard.html'">←</button>
+            <div class="app-title">
+                <span class="app-name">Informasi & Edukasi</span>
+                <span class="app-subtitle">Panduan singkat untuk warga Dumai</span>
+            </div>
+        </div>
     </header>
 
-    <!-- MAIN CONTENT -->
-    <main class="flex-1 overflow-y-auto p-4 space-y-4">
+    <!-- KONTEN UTAMA -->
+    <main class="info-main">
 
-        <!-- INFO: Banjir -->
-        <section class="bg-white shadow rounded-2xl p-4">
-            <h2 class="text-blue-700 font-semibold text-lg mb-2 flex items-center">
-                <i class="fa-solid fa-water mr-2 text-blue-500"></i> Tanggap Banjir
-            </h2>
-            <p class="text-gray-700 text-sm leading-relaxed">
-                Jika terjadi <strong>banjir</strong> di sekitar Anda:
-                <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600 text-sm">
-                    <li>Segera amankan dokumen penting dan barang berharga ke tempat yang lebih tinggi.</li>
-                    <li>Matikan aliran listrik untuk mencegah korsleting.</li>
-                    <li>Gunakan rute evakuasi yang aman dan hindari arus air deras.</li>
+        <!-- HERO / RINGKASAN -->
+        <section class="info-hero">
+            <div class="info-hero-text">
+                <h2>Siap sebelum bencana datang</h2>
+                <p>
+                    Pelajari langkah cepat saat banjir, karhutla, gempa bumi, dan kondisi darurat lainnya.
+                    Simpan halaman ini sebagai referensi ketika situasi genting.
+                </p>
+            </div>
+        </section>
+
+        <!-- GRID INFORMASI -->
+        <section class="info-grid">
+
+            <!-- BANJIR -->
+            <article class="info-card info-banjir">
+                <div class="info-card-header">
+                    <div class="info-icon">🌊</div>
+                    <div>
+                        <h3>Tanggap Banjir</h3>
+                        <span class="info-tag">Evakuasi & pengamanan rumah</span>
+                    </div>
+                </div>
+                <ul class="info-list">
+                    <li>Amankan dokumen penting dan barang berharga ke tempat yang lebih tinggi.</li>
+                    <li>Matikan aliran listrik bila air mulai masuk ke rumah.</li>
+                    <li>Hindari berjalan di arus air deras, terutama di malam hari.</li>
+                    <li>Ikuti arahan petugas jika diminta evakuasi ke posko.</li>
                 </ul>
-            </p>
-            <a href="https://www.bnpb.go.id/" target="_blank" class="text-blue-600 text-sm mt-3 inline-block hover:underline">
-                Sumber: BNPB Indonesia
-            </a>
-        </section>
+                <a href="https://www.bnpb.go.id/" target="_blank" class="info-link">
+                    Baca panduan lengkap dari BNPB →
+                </a>
+            </article>
 
-        <!-- INFO: Karhutla -->
-        <section class="bg-white shadow rounded-2xl p-4">
-            <h2 class="text-red-700 font-semibold text-lg mb-2 flex items-center">
-                <i class="fa-solid fa-fire mr-2 text-red-500"></i> Waspada Karhutla
-            </h2>
-            <p class="text-gray-700 text-sm leading-relaxed">
-                Musim kemarau meningkatkan risiko <strong>kebakaran hutan dan lahan</strong> (Karhutla). Hindari membakar lahan secara terbuka.
-                Jika melihat asap atau titik api, segera laporkan melalui tombol <strong>Lapor</strong> di aplikasi ini.
-            </p>
-            <a href="https://www.bmkg.go.id/cuaca/karhutla/" target="_blank" class="text-blue-600 text-sm mt-3 inline-block hover:underline">
-                Cek data hotspot terbaru di BMKG →
-            </a>
-        </section>
-
-        <!-- INFO: Gempa Bumi -->
-        <section class="bg-white shadow rounded-2xl p-4">
-            <h2 class="text-yellow-700 font-semibold text-lg mb-2 flex items-center">
-                <i class="fa-solid fa-house-crack mr-2 text-yellow-500"></i> Siaga Gempa Bumi
-            </h2>
-            <p class="text-gray-700 text-sm leading-relaxed">
-                Saat terjadi gempa:
-                <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600 text-sm">
-                    <li>Segera lindungi kepala, cari tempat aman di bawah meja kokoh.</li>
-                    <li>Jangan panik dan hindari penggunaan lift.</li>
-                    <li>Setelah gempa, evakuasi ke tempat terbuka dan waspadai gempa susulan.</li>
+            <!-- KARHUTLA -->
+            <article class="info-card info-karhutla">
+                <div class="info-card-header">
+                    <div class="info-icon">🔥</div>
+                    <div>
+                        <h3>Waspada Karhutla</h3>
+                        <span class="info-tag">Pencegahan & pelaporan</span>
+                    </div>
+                </div>
+                <p class="info-text">
+                    Musim kemarau meningkatkan risiko <strong>kebakaran hutan dan lahan</strong>.
+                    Hindari membakar sampah atau membuka lahan dengan api.
+                </p>
+                <ul class="info-list">
+                    <li>Jangan membakar lahan secara terbuka, meski skala kecil.</li>
+                    <li>Jika melihat asap/titik api, laporkan melalui menu <strong>Lapor</strong> di aplikasi atau hubungi Damkar.</li>
+                    <li>Gunakan masker saat kualitas udara memburuk.</li>
                 </ul>
-            </p>
-            <a href="https://www.bmkg.go.id/gempabumi/" target="_blank" class="text-blue-600 text-sm mt-3 inline-block hover:underline">
-                Info gempa terkini di BMKG →
-            </a>
-        </section>
+                <a href="https://www.bmkg.go.id/cuaca/karhutla/" target="_blank" class="info-link">
+                    Cek peta potensi karhutla BMKG →
+                </a>
+            </article>
 
-        <!-- INFO: Cuaca & Peringatan Dini -->
-        <section class="bg-white shadow rounded-2xl p-4">
-            <h2 class="text-green-700 font-semibold text-lg mb-2 flex items-center">
-                <i class="fa-solid fa-cloud-sun-rain mr-2 text-green-500"></i> Cuaca & Peringatan Dini
-            </h2>
-            <p class="text-gray-700 text-sm leading-relaxed">
-                Pantau terus prakiraan cuaca dan peringatan dini dari BMKG untuk wilayah Dumai dan sekitarnya.
-                Kondisi cuaca ekstrem dapat meningkatkan risiko banjir, longsor, dan gangguan transportasi.
-            </p>
-            <a href="https://www.bmkg.go.id/cuaca/prakiraan-cuaca-indonesia.bmkg?Prov=04&NamaProv=Riau"
-               target="_blank" class="text-blue-600 text-sm mt-3 inline-block hover:underline">
-                Lihat Prakiraan Cuaca Riau →
-            </a>
-        </section>
+            <!-- GEMPABUMI -->
+            <article class="info-card info-gempa">
+                <div class="info-card-header">
+                    <div class="info-icon">🏠</div>
+                    <div>
+                        <h3>Siaga Gempa Bumi</h3>
+                        <span class="info-tag">Saat & setelah gempa</span>
+                    </div>
+                </div>
+                <p class="info-text">
+                    Gempa bumi bisa terjadi tiba-tiba. Latih anggota keluarga untuk tahu apa yang harus dilakukan.
+                </p>
+                <ul class="info-list">
+                    <li>Saat gempa: lindungi kepala, berlindung di bawah meja kokoh atau dekat dinding dalam.</li>
+                    <li>Jauhi kaca, lemari tinggi, dan benda yang mudah roboh.</li>
+                    <li>Setelah gempa, segera menuju tempat terbuka dan hindari tiang listrik/bangunan retak.</li>
+                </ul>
+                <a href="https://www.bmkg.go.id/gempabumi/" target="_blank" class="info-link">
+                    Info gempa terkini di BMKG →
+                </a>
+            </article>
 
-        <!-- INFO: Posko & Kontak Darurat -->
-        <section class="bg-white shadow rounded-2xl p-4">
-            <h2 class="text-gray-700 font-semibold text-lg mb-2 flex items-center">
-                <i class="fa-solid fa-phone-volume mr-2 text-gray-500"></i> Kontak Darurat
-            </h2>
-            <ul class="list-disc list-inside mt-2 space-y-1 text-gray-600 text-sm">
-                <li>BPBD Dumai: <strong>0765-123456</strong></li>
-                <li>Damkar Dumai: <strong>0765-654321</strong></li>
-                <li>RSUD Dumai: <strong>0765-567890</strong></li>
-                <li>Polres Dumai: <strong>110</strong></li>
-            </ul>
+            <!-- CUACA & PERINGATAN DINI -->
+            <article class="info-card info-cuaca">
+                <div class="info-card-header">
+                    <div class="info-icon">⛅</div>
+                    <div>
+                        <h3>Cuaca & Peringatan Dini</h3>
+                        <span class="info-tag">Pantau kondisi harian</span>
+                    </div>
+                </div>
+                <p class="info-text">
+                    Kondisi cuaca ekstrem dapat memicu banjir, angin kencang, dan gangguan transportasi.
+                    Biasakan mengecek prakiraan cuaca sebelum beraktivitas.
+                </p>
+                <ul class="info-list">
+                    <li>Cek prakiraan cuaca harian untuk Dumai dan Riau.</li>
+                    <li>Perhatikan peringatan dini hujan lebat, angin kencang, dan gelombang tinggi.</li>
+                    <li>Sesuaikan jadwal perjalanan laut/darat dengan kondisi cuaca.</li>
+                </ul>
+                <a href="https://www.bmkg.go.id/cuaca/prakiraan-cuaca-indonesia.bmkg?Prov=04&NamaProv=Riau"
+                   target="_blank" class="info-link">
+                    Lihat prakiraan cuaca Riau →
+                </a>
+            </article>
+
+            <!-- KONTAK DARURAT -->
+            <article class="info-card info-kontak">
+                <div class="info-card-header">
+                    <div class="info-icon">📞</div>
+                    <div>
+                        <h3>Kontak Darurat Dumai</h3>
+                        <span class="info-tag">Hubungi saat keadaan genting</span>
+                    </div>
+                </div>
+                <ul class="info-list">
+                    <li>BPBD Kota Dumai: <a href="tel:0765xxxxxx">0765-xxxxxx</a></li>
+                    <li>Damkar Dumai: <a href="tel:0765xxxxxx">0765-xxxxxx</a></li>
+                    <li>RSUD Dumai: <a href="tel:0765xxxxxx">0765-xxxxxx</a></li>
+                    <li>Polres Dumai: <a href="tel:110">110</a></li>
+                </ul>
+                <p class="info-note">
+                    Simpan nomor penting ini di kontak ponsel Anda agar mudah diakses kapan saja.
+                </p>
+            </article>
+
         </section>
 
     </main>
 
-    <!-- BOTTOM NAV -->
-    <nav class="bg-white border-t shadow-inner flex justify-around py-2">
-        <div class="nav-item text-gray-600 text-center" onclick="location.href='dashboard.html'">
-            <i class="fa-solid fa-house text-lg"></i><br><span class="text-xs">Beranda</span>
-        </div>
-        <div class="nav-item text-gray-600 text-center" onclick="location.href='notifikasi.html'">
-            <i class="fa-solid fa-bell text-lg"></i><br><span class="text-xs">Notifikasi</span>
-        </div>
-        <div class="nav-item text-blue-700 text-center" onclick="location.href='informasi.html'">
-            <i class="fa-solid fa-info-circle text-lg"></i><br><span class="text-xs font-semibold">Informasi</span>
-        </div>
-        <div class="nav-item text-gray-600 text-center" onclick="location.href='laporan.html'">
-            <i class="fa-solid fa-plus-circle text-lg"></i><br><span class="text-xs">Lapor</span>
-        </div>
+    <!-- NAV BAWAH (SAMA SEPERTI DASHBOARD & LAPORAN) -->
+    <nav class="bottom-nav">
+        <a href="/dashboard.html" class="nav-item">
+            <span class="nav-label">Dasbor</span>
+        </a>
+        <a href="/informasi.html" class="nav-item active">
+            <span class="nav-label">Informasi/SOP</span>
+        </a>
+        <a href="/laporan.html" class="nav-item">
+            <span class="nav-label">Lapor</span>
+        </a>
     </nav>
 
-    <script src="assets/js/informasi.js"></script>
+</div>
+
+<script src="/assets/js/informasi.js"></script>
 </body>
 </html>
