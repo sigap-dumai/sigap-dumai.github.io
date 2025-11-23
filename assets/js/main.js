@@ -1,35 +1,15 @@
+// main.js - khusus untuk splash & inisialisasi ringan
+
 document.addEventListener("DOMContentLoaded", () => {
-    // Cek jika ini adalah kunjungan pertama
-    if (!localStorage.getItem('firstVisit')) {
-        localStorage.setItem('firstVisit', 'true');
-        console.log("First time visiting SiGap App!");
-    } else {
-        console.log("Welcome back to SiGap App!");
+    // Redirect otomatis dari splash ke dashboard
+    const path = window.location.pathname;
+
+    if (path === "/" || path === "/index.html") {
+        // Tunda 2.5 detik biar splash sempat kelihatan
+        setTimeout(() => {
+            window.location.href = "/dashboard.html";
+        }, 2500);
     }
 
-    // Fungsi untuk memeriksa konektivitas internet
-    function checkConnectivity() {
-        if (navigator.onLine) {
-            console.log("You are online!");
-        } else {
-            console.log("You are offline, please check your connection.");
-        }
-    }
-
-    // Mengecek konektivitas setiap 5 detik
-    setInterval(checkConnectivity, 5000); // setiap 5 detik
-
-    // Cek koneksi internet saat pertama kali aplikasi dimuat
-    checkConnectivity();
-    
-    // Simulasi Pengaturan Local Storage dan Cookie (opsional)
-    if (!localStorage.getItem('hasVisited')) {
-        console.log("Welcome new user!");
-        localStorage.setItem('hasVisited', 'true');
-    }
-
-    // Menambahkan event listener untuk interaksi lainnya
-    document.getElementById("lapor-btn").addEventListener("click", () => {
-        window.location.href = '/laporan.html';  // Pindah ke halaman laporan
-    });
+    // Di halaman lain (dashboard/laporan/informasi) file ini sengaja tidak melakukan apa-apa
 });
