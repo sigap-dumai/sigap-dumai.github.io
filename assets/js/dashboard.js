@@ -1,5 +1,5 @@
 // =============================================================
-// Dashboard.js – SiGap Dumai (API untuk Cuaca dan Gempa, Dummy untuk Lainnya)
+// Dashboard.js – SiGap Dumai (Muat Dummy Terlebih Dahulu, Baru API)
 // =============================================================
 
 // --- Konstanta ---
@@ -10,21 +10,21 @@ const BMKG_FWI_API = "https://api.bmkg.go.id/publik/prakiraan/karhutla.json"; //
 // INIT
 // =============================================================
 document.addEventListener("DOMContentLoaded", () => {
-    loadInitialData();  // Load cuaca dan gempa terlebih dahulu
-    setTimeout(loadAdditionalData, 1000); // Load data tambahan (laporan, status) setelah cuaca dan gempa
+    loadDummyData();  // Muat data dummy terlebih dahulu
+    setTimeout(loadAPIData, 1000); // Muat data cuaca dan gempa setelah data dummy
 });
 
-function loadInitialData() {
-    // Memuat Cuaca dan Gempa dari API
-    renderWeather();
-    renderEarthquake();
-}
-
-function loadAdditionalData() {
-    // Memuat data laporan dan status setelah cuaca dan gempa
+function loadDummyData() {
+    // Memuat data dummy (laporan, karhutla, dan notifikasi)
     renderReportStatistics();
     renderKarhutla();
     renderNotificationBadge();
+}
+
+function loadAPIData() {
+    // Memuat data cuaca dan gempa setelah data dummy
+    renderWeather();
+    renderEarthquake();
 }
 
 // =============================================================
