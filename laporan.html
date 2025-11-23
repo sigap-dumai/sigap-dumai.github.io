@@ -1,31 +1,96 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiGap - Laporan Warga Cepat</title>
-    <link rel="stylesheet" href="/assets/css/laporan.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SiGap Dumai – Lapor Warga</title>
+
+    <link rel="stylesheet" href="/assets/css/dashboard.css" />
+    <link rel="stylesheet" href="/assets/css/laporan.css" />
 </head>
+
 <body>
-    <header>
-        <h1>Laporan Warga Cepat</h1>
+<div class="app-shell">
+
+    <!-- Header -->
+    <header class="app-header">
+        <div class="app-header-left">
+            <button class="back-button" onclick="window.location.href='/dashboard.html'">←</button>
+            <div class="app-title">
+                <span class="app-name">Lapor Warga</span>
+                <span class="app-subtitle">Laporkan kejadian di sekitar Anda</span>
+            </div>
+        </div>
     </header>
-    <form id="laporan-form">
-        <label for="jenis-insiden">Jenis Insiden</label>
-        <select id="jenis-insiden">
-            <option value="banjir">Banjir</option>
-            <option value="karhutla">Karhutla</option>
-            <option value="pohon-tumbang">Pohon Tumbang</option>
-            <option value="kecelakaan">Kecelakaan</option>
-        </select>
-        <label for="deskripsi">Deskripsi Laporan</label>
-        <textarea id="deskripsi" placeholder="Tambahkan deskripsi singkat..."></textarea>
-        <label for="lokasi">Lokasi</label>
-        <input type="text" id="lokasi" placeholder="Lokasi Laporan">
-        <label for="foto">Upload Foto</label>
-        <input type="file" id="foto">
-        <button type="submit">Kirim Laporan</button>
-    </form>
-    <script src="/assets/js/laporan.js"></script>
+
+    <!-- Main -->
+    <main class="lapor-main">
+
+        <!-- Form -->
+        <form id="lapor-form" class="lapor-form">
+
+            <!-- Jenis Kejadian -->
+            <div class="form-group">
+                <label for="jenis">Jenis Kejadian</label>
+                <select id="jenis" required>
+                    <option value="">Pilih kejadian…</option>
+                    <option value="banjir">Banjir</option>
+                    <option value="karhutla">Karhutla / Hotspot</option>
+                    <option value="kebakaran">Kebakaran Permukiman</option>
+                    <option value="angin_kencang">Angin Kencang</option>
+                    <option value="longsor">Longsor</option>
+                    <option value="lainnya">Lainnya</option>
+                </select>
+            </div>
+
+            <!-- Lokasi otomatis GPS -->
+            <div class="form-group">
+                <label>Lokasi Kejadian</label>
+                <button type="button" id="btn-gps" class="gps-button">Gunakan GPS</button>
+
+                <input
+                    type="text"
+                    id="lokasi"
+                    placeholder="Atau ketik lokasi (nama jalan, dusun, dll)"
+                    required
+                />
+            </div>
+
+            <!-- Deskripsi -->
+            <div class="form-group">
+                <label for="deskripsi">Deskripsi Kejadian</label>
+                <textarea id="deskripsi" rows="4" placeholder="Jelaskan kondisi kejadian..." required></textarea>
+            </div>
+
+            <!-- Foto -->
+            <div class="form-group">
+                <label for="foto">Foto Kejadian</label>
+                <input type="file" id="foto" accept="image/*" capture="environment" />
+                <div id="foto-preview" class="foto-preview"></div>
+            </div>
+
+            <!-- Tombol submit -->
+            <button type="submit" class="lapor-submit">Kirim Laporan</button>
+        </form>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="/dashboard.html" class="nav-item">
+            <span class="nav-label">Dasbor</span>
+        </a>
+        <a href="/informasi.html" class="nav-item">
+            <span class="nav-label">Informasi/SOP</span>
+        </a>
+        <a href="/laporan.html" class="nav-item active">
+            <span class="nav-label">Lapor</span>
+        </a>
+    </nav>
+
+</div>
+
+<script src="/assets/js/laporan.js"></script>
+
 </body>
 </html>
