@@ -1,17 +1,17 @@
 // /assets/js/laporan.js
+// Versi tanpa backend, semua laporan disimpan di localStorage
 
 document.addEventListener("DOMContentLoaded", () => {
     initGPS();
     initForm();
 });
 
-// ============================================
-// GPS: isi input lokasi dengan "lat, lon"
-// ============================================
+// -------------------------------------------------
+// GPS: mengisi input lokasi dengan "lat, lon"
+// -------------------------------------------------
 function initGPS() {
     const btn = document.getElementById("btn-gps");
     const lokasi = document.getElementById("lokasi");
-
     if (!btn || !lokasi) return;
 
     btn.addEventListener("click", () => {
@@ -40,14 +40,31 @@ function initGPS() {
     });
 }
 
-// ============================================
-// Submit laporan ke /api/reports
-// ============================================
+// -------------------------------------------------
+// Helper: ambil & simpan laporan di localStorage
+// -------------------------------------------------
+function getStoredReports() {
+    try {
+        const raw = localStorage.getItem("sigap_laporan");
+        if (!raw) return [];
+        return JSON.parse(raw);
+    } catch {
+        return [];
+    }
+}
+
+function saveStoredReports(list) {
+    localStorage.setItem("sigap_laporan", JSON.stringify(list));
+}
+
+// -------------------------------------------------
+// Form submit → simpan ke localStorage
+// -------------------------------------------------
 function initForm() {
     const form = document.getElementById("lapor-form");
     if (!form) return;
 
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener("submit", (e) => {
         e.preventDefault();
 
         const jenis = document.getElementById("jenis").value;
@@ -59,26 +76,17 @@ function initForm() {
             return;
         }
 
-        const payload = { jenis, lokasi, deskripsi };
+        const reports = getStoredReports();
+        reports.push({
+            id: Date.now(),
+            jenis,
+            lokasi,
+            deskripsi,
+            waktu: new Date().toISOString()
+        });
+        saveStoredReports(reports);
 
-        try {
-            const res = await fetch("/api/reports", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
-
-            if (res.ok) {
-                alert("Laporan berhasil dikirim!");
-                form.reset();
-            } else {
-                const err = await res.json().catch(() => ({}));
-                console.error("Respon gagal:", err);
-                alert("Gagal membuat laporan!");
-            }
-        } catch (err) {
-            console.error("Error fetch /api/reports:", err);
-            alert("Terjadi kesalahan jaringan saat mengirim laporan.");
-        }
+        alert("Laporan tersimpan di perangkat ini (demo).");
+        form.reset();
     });
 }
