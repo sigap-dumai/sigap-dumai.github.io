@@ -3,219 +3,126 @@
 // =============================================================
 
 // --- Konstanta ---
-const LAST_VIEW_KEY = "sigap_notif_last_view";
-const REPORT_KEY = "sigap_laporan";
 const WEATHER_KEY = "d2482cbc5428fccde0297d4aab71e3ee";
 const BMKG_FWI_API = "https://api.bmkg.go.id/publik/prakiraan/karhutla.json"; // FWI nasional
 
 // =============================================================
 // INIT
 // =============================================================
-document.addEventListener("DOMContentLoaded", async () => {
-    initMap();
-    renderWeather();
-    renderEarthquake();
-    await renderKarhutla();
-    renderReportStatistics();
-    renderNotificationBadge();
+document.addEventListener("DOMContentLoaded", () => {
+    loadInitialData();  // Load cuaca dan gempa
+    setTimeout(loadAdditionalData, 500); // Load data tambahan (laporan, status) setelah beberapa waktu
 });
 
-// =============================================================
-// DATA LAPORAN
-// =============================================================
-function getStoredReports() {
-    try {
-        const raw = localStorage.getItem(REPORT_KEY);
-        if (!raw) return seedDummyReports([]);
-        const parsed = JSON.parse(raw);
-        if (!Array.isArray(parsed) || parsed.length < 80) {
-            return seedDummyReports(parsed || []);
-        }
-        return parsed;
-    } catch {
-        return seedDummyReports([]);
-    }
+function loadInitialData() {
+    // Memuat Cuaca dan Gempa terlebih dahulu
+    renderWeather();
+    renderEarthquake();
 }
 
-function seedDummyReports(existing) {
-    const target = 80;
-    const jenisList = ["banjir", "karhutla", "kebakaran", "angin_kencang", "lainnya"];
-    const areaList = [
-        { nama: "Bukit Kapur", lat: 1.727, lon: 101.372 },
-        { nama: "Dumai Timur", lat: 1.685, lon: 101.455 },
-        { nama: "Dumai Barat", lat: 1.668, lon: 101.420 },
-        { nama: "Dumai Kota", lat: 1.682, lon: 101.448 },
-        { nama: "Dumai Selatan", lat: 1.638, lon: 101.450 },
-        { nama: "Medang Kampai", lat: 1.590, lon: 101.540 },
-        { nama: "Sungai Sembilan", lat: 1.720, lon: 101.500 }
-    ];
-    const base = existing || [];
-    const needed = target - base.length;
-    for (let i = 0; i < needed; i++) {
-        const jenis = jenisList[Math.floor(Math.random() * jenisList.length)];
-        const area = areaList[Math.floor(Math.random() * areaList.length)];
-        const date = new Date();
-        date.setDate(date.getDate() - Math.floor(Math.random() * 7));
-        base.push({
-            id: Date.now() + i,
-            jenis,
-            lokasi: `${area.lat + Math.random() * 0.01}, ${area.lon + Math.random() * 0.01} – ${area.nama}`,
-            deskripsi: `Laporan ${jenis} di ${area.nama}.`,
-            waktu: date.toISOString()
-        });
-    }
-    localStorage.setItem(REPORT_KEY, JSON.stringify(base));
-    return base;
+function loadAdditionalData() {
+    // Memuat data laporan dan status setelah cuaca dan gempa
+    renderReportStatistics();
+    renderKarhutla();
+    renderNotificationBadge();
 }
 
 // =============================================================
-// MAP & MARKERS
-// =============================================================
-function initMap() {
-    const map = L.map("map").setView([1.667, 101.45], 11);
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "&copy; OpenStreetMap",
-        maxZoom: 19
-    }).addTo(map);
-
-    // Load boundary GeoJSON Dumai
-    fetch("/geojson/dumai.geojson")
-        .then((res) => res.json())
-        .then((data) => {
-            L.geoJSON(data, {
-                style: { color: "#2563eb", weight: 2, fillOpacity: 0.05 }
-            }).addTo(map);
-        })
-        .catch((err) => console.warn("Gagal load GeoJSON Dumai:", err));
-
-    loadLaporanMarkers(map);
-}
-
-function isInsideDumaiArea(lat, lon, dumaiBounds) {
-    // Pengecekan apakah koordinat berada dalam area Dumai
-    return dumaiBounds.contains([lat, lon]);
-}
-
-function loadLaporanMarkers(map) {
-    const reports = getStoredReports();
-    const dumaiBounds = L.latLngBounds(
-        L.latLng(1.6, 101.35), // batas bawah koordinat Dumai
-        L.latLng(1.8, 101.55)  // batas atas koordinat Dumai
-    );
-    
-    reports.forEach((r) => {
-        const match = r.lokasi.match(/([\d\.\-]+),\s*([\d\.\-]+)/);
-        if (match) {
-            const lat = parseFloat(match[1]);
-            const lon = parseFloat(match[2]);
-
-            // Filter koordinat, hanya tampilkan jika dalam area Dumai
-            if (isInsideDumaiArea(lat, lon, dumaiBounds)) {
-                L.marker([lat, lon])
-                    .addTo(map)
-                    .bindPopup(
-                        `<strong>${r.jenis.toUpperCase()}</strong><br>${r.deskripsi}<br><small>${new Date(
-                            r.waktu
-                        ).toLocaleString("id-ID")}</small>`
-                    );
-            }
-        }
-    });
-}
-
-// =============================================================
-// WEATHER
+// DATA CUACA & GEMPA - Cache dan Fetch
 // =============================================================
 function renderWeather() {
     const card = document.getElementById("card-cuaca");
     if (!card) return;
-    fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=Dumai&appid=${WEATHER_KEY}&units=metric&lang=id`
-    )
+
+    const cachedData = localStorage.getItem('cuacaData');
+    const cachedTime = localStorage.getItem('cuacaDataTime');
+    const now = new Date().getTime();
+
+    // Jika data ada di cache dan belum lebih dari 30 menit
+    if (cachedData && cachedTime && now - cachedTime < 30 * 60 * 1000) {
+        const data = JSON.parse(cachedData);
+        displayWeatherData(data, card);
+    } else {
+        fetchWeatherData(card);
+    }
+}
+
+function fetchWeatherData(card) {
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=Dumai&appid=${WEATHER_KEY}&units=metric&lang=id`)
         .then((r) => r.json())
         .then((data) => {
-            card.innerHTML = `
-                <h3>Cuaca</h3>
-                <p>${data.weather[0].description}</p>
-                <p><strong>${Math.round(data.main.temp)}°C</strong></p>
-                <small>Kelembapan ${data.main.humidity}% | ${data.name}</small>
-            `;
+            localStorage.setItem('cuacaData', JSON.stringify(data));
+            localStorage.setItem('cuacaDataTime', new Date().getTime());
+            displayWeatherData(data, card);
         })
         .catch(() => {
             card.innerHTML = `<h3>Cuaca</h3><p>Tidak tersedia</p>`;
         });
 }
 
-// =============================================================
-// GEMPA
-// =============================================================
+function displayWeatherData(data, card) {
+    card.innerHTML = `
+        <h3>Cuaca</h3>
+        <p>${data.weather[0].description}</p>
+        <p><strong>${Math.round(data.main.temp)}°C</strong></p>
+        <small>Kelembapan ${data.main.humidity}% | ${data.name}</small>
+    `;
+}
+
 function renderEarthquake() {
     const card = document.getElementById("card-gempa");
     if (!card) return;
+
+    const cachedData = localStorage.getItem('gempaData');
+    const cachedTime = localStorage.getItem('gempaDataTime');
+    const now = new Date().getTime();
+
+    // Jika data ada di cache dan belum lebih dari 30 menit
+    if (cachedData && cachedTime && now - cachedTime < 30 * 60 * 1000) {
+        const data = JSON.parse(cachedData);
+        displayEarthquakeData(data, card);
+    } else {
+        fetchEarthquakeData(card);
+    }
+}
+
+function fetchEarthquakeData(card) {
     fetch("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson")
         .then((r) => r.json())
         .then((data) => {
-            const sorted = data.features
-                .sort((a, b) => b.properties.mag - a.properties.mag)
-                .slice(0, 3);
-            const list = sorted
-                .map(
-                    (q) =>
-                        `M${q.properties.mag.toFixed(1)} • ${
-                            q.properties.place
-                        } • ${new Date(q.properties.time).toLocaleTimeString("id-ID")}`
-                )
-                .join("<br>");
-            card.innerHTML = `<h3>Gempa Terkini</h3><p>${list}</p>`;
+            localStorage.setItem('gempaData', JSON.stringify(data));
+            localStorage.setItem('gempaDataTime', new Date().getTime());
+            displayEarthquakeData(data, card);
         })
         .catch(() => {
             card.innerHTML = `<h3>Gempa</h3><p>Tidak tersedia</p>`;
         });
 }
 
-// =============================================================
-// KARHUTLA (API BMKG)
-// =============================================================
-async function renderKarhutla() {
-    const card = document.getElementById("card-karhutla");
-    if (!card) return;
-    try {
-        const res = await fetch(BMKG_FWI_API);
-        const data = await res.json();
-
-        // Ambil data wilayah Riau dari hasil JSON
-        const riau = data.data.find((p) => p.provinsi?.toLowerCase() === "riau");
-        if (riau) {
-            const risiko = riau.level;
-            card.innerHTML = `
-                <h3>Karhutla (BMKG)</h3>
-                <p>Provinsi: <strong>Riau</strong></p>
-                <p>Status Risiko: <strong>${risiko}</strong></p>
-                <small>Data: BMKG Fire Weather Index (FWI) - ${riau.update}</small>
-            `;
-        } else {
-            card.innerHTML = `
-                <h3>Karhutla (BMKG)</h3>
-                <p>Data tidak ditemukan untuk Riau.</p>
-            `;
-        }
-    } catch (e) {
-        console.warn("Gagal ambil data karhutla BMKG:", e);
-        card.innerHTML = `
-            <h3>Karhutla</h3>
-            <p>Gagal memuat data BMKG.</p>
-        `;
-    }
+function displayEarthquakeData(data, card) {
+    const sorted = data.features
+        .sort((a, b) => b.properties.mag - a.properties.mag)
+        .slice(0, 3);
+    const list = sorted
+        .map(
+            (q) =>
+                `M${q.properties.mag.toFixed(1)} • ${
+                    q.properties.place
+                } • ${new Date(q.properties.time).toLocaleTimeString("id-ID")}`
+        )
+        .join("<br>");
+    card.innerHTML = `<h3>Gempa Terkini</h3><p>${list}</p>`;
 }
 
 // =============================================================
-// STATISTIK
+// LAKUKAN LAINNYA (Laporan, Statistik, Notifikasi)
 // =============================================================
 function renderReportStatistics() {
-    const reports = getStoredReports();
     const card = document.getElementById("card-statistik");
     if (!card) return;
+
+    // Ambil data laporan dari localStorage atau dummy data
+    const reports = getStoredReports();
     const total = reports.length;
     const banjir = reports.filter((r) => r.jenis === "banjir").length;
     const karhutla = reports.filter((r) => r.jenis === "karhutla").length;
@@ -228,33 +135,43 @@ function renderReportStatistics() {
     `;
 }
 
-// =============================================================
-// BADGE NOTIFIKASI
-// =============================================================
-function getLastViewedTime() {
-    const raw = localStorage.getItem(LAST_VIEW_KEY);
-    return raw ? new Date(raw) : null;
+function getStoredReports() {
+    // Fungsi untuk mengambil data laporan
+    const reports = JSON.parse(localStorage.getItem('reports')) || [];
+    return reports;
 }
 
 function renderNotificationBadge() {
     const icon = document.querySelector(".nav-item[data-target='notifikasi']");
     if (!icon) return;
-    const lastViewed = getLastViewedTime();
-    const reports = getStoredReports();
-    const newReports = lastViewed
-        ? reports.filter((r) => new Date(r.waktu) > lastViewed)
-        : reports;
-    const count = newReports.length;
-
+    // Contoh notifikasi yang muncul, bisa dikembangkan lebih lanjut
+    const count = 5;  // Simulasi jumlah laporan baru
     let badge = icon.querySelector(".badge");
     if (!badge) {
         badge = document.createElement("span");
-        badge.className =
-            "badge absolute -top-1 -right-2 bg-red-600 text-white text-xs rounded-full px-1";
+        badge.className = "badge absolute -top-1 -right-2 bg-red-600 text-white text-xs rounded-full px-1";
         icon.style.position = "relative";
         icon.appendChild(badge);
     }
-
     badge.textContent = count > 99 ? "99+" : count;
     badge.style.display = count > 0 ? "inline" : "none";
+}
+
+// =============================================================
+// Dummy Data
+function seedDummyReports(existing) {
+    const target = 80;
+    const jenisList = ["banjir", "karhutla", "kebakaran", "angin_kencang", "lainnya"];
+    const base = existing || [];
+    while (base.length < target) {
+        base.push({
+            id: `report_${base.length}`,
+            jenis: jenisList[Math.floor(Math.random() * jenisList.length)],
+            lokasi: "Dumai",
+            deskripsi: "Deskripsi laporan...",
+            waktu: new Date().toISOString(),
+        });
+    }
+    localStorage.setItem('reports', JSON.stringify(base));
+    return base;
 }
