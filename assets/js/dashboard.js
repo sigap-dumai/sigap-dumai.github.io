@@ -146,7 +146,7 @@ function renderNotificationBadge() {
     const icon = document.querySelector(".nav-item[data-target='notifikasi']");
     if (!icon) return;
 
-    // Ganti ikon notifikasi dengan ikon tema waspada/alert
+    // Ganti ikon notifikasi dengan ikon tema peringatan (alert)
     icon.innerHTML = `
         <i class="fa-solid fa-triangle-exclamation text-lg text-yellow-600"></i>
     `;
