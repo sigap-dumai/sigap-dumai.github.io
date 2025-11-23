@@ -1,7 +1,5 @@
 // /assets/js/dashboard.js
-
-const LAPORAN_JSON_URL =
-    "https://raw.githubusercontent.com/sigap-dumai/sigap-dumai.github.io/main/data/laporan.json";
+// Dashboard end-user, semua data laporan diambil dari localStorage
 
 document.addEventListener("DOMContentLoaded", () => {
     const map = initMap();
@@ -13,15 +11,31 @@ document.addEventListener("DOMContentLoaded", () => {
     loadLaporanMarkers(map);
 });
 
-// ====================== PETA ======================
+/* =========================
+   Helper laporan (localStorage)
+   ========================= */
+function getStoredReports() {
+    try {
+        const raw = localStorage.getItem("sigap_laporan");
+        if (!raw) return [];
+        return JSON.parse(raw);
+    } catch {
+        return [];
+    }
+}
+
+/* =========================
+   PETA
+   ========================= */
 function initMap() {
     const map = L.map("map").setView([1.667, 101.45], 11);
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; OpenStreetMap',
         maxZoom: 19
     }).addTo(map);
 
-    // (Opsional) load geojson batas kota jika ada
+    // GeoJSON batas Dumai (kalau ada)
     const candidateUrls = ["/geojson/dumai.geojson", "/dumai.geojson"];
     (async () => {
         for (const url of candidateUrls) {
@@ -29,7 +43,16 @@ function initMap() {
                 const res = await fetch(url);
                 if (!res.ok) continue;
                 const data = await res.json();
-                L.geoJSON(data).addTo(map);
+                L.geoJSON(data, {
+                    style() {
+                        return {
+                            color: "#3498db",
+                            weight: 2,
+                            fillColor: "#2980b9",
+                            fillOpacity: 0.15
+                        };
+                    }
+                }).addTo(map);
                 return;
             } catch (e) {
                 console.warn("Gagal load GeoJSON:", url, e);
@@ -45,31 +68,6 @@ function initMap() {
     return map;
 }
 
-async function loadLaporanMarkers(map) {
-    try {
-        const res = await fetch(LAPORAN_JSON_URL + `?t=${Date.now()}`);
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        const data = await res.json();
-
-        data.forEach((row) => {
-            const loc = parseLokasi(row.lokasi);
-            if (!loc) return;
-            const { lat, lon } = loc;
-
-            const popupHtml = `
-                <b>${(row.jenis || "").toUpperCase()}</b><br/>
-                ${row.deskripsi || ""}<br/>
-                Lokasi: ${row.lokasi}<br/>
-                <small>${row.waktu || ""}</small>
-            `;
-
-            L.marker([lat, lon]).addTo(map).bindPopup(popupHtml);
-        });
-    } catch (e) {
-        console.error("Gagal memuat marker laporan:", e);
-    }
-}
-
 function parseLokasi(str) {
     if (!str) return null;
     const m = str.match(/-?\d+(\.\d+)?/g);
@@ -80,7 +78,28 @@ function parseLokasi(str) {
     return { lat, lon };
 }
 
-// ====================== KARTU RINGKASAN ======================
+async function loadLaporanMarkers(map) {
+    const data = getStoredReports();
+
+    data.forEach((row) => {
+        const loc = parseLokasi(row.lokasi);
+        if (!loc) return;
+
+        const { lat, lon } = loc;
+        const popupHtml = `
+            <b>${(row.jenis || "").toUpperCase()}</b><br/>
+            ${row.deskripsi || ""}<br/>
+            Lokasi: ${row.lokasi}<br/>
+            <small>${row.waktu ? new Date(row.waktu).toLocaleString("id-ID") : ""}</small>
+        `;
+
+        L.marker([lat, lon]).addTo(map).bindPopup(popupHtml);
+    });
+}
+
+/* =========================
+   KARTU RINGKASAN
+   ========================= */
 async function initSummaryCards() {
     // Status siaga (dummy)
     const statusLevel = "WASPADA";
@@ -91,33 +110,28 @@ async function initSummaryCards() {
     document.querySelector("#status-card .status-updated").textContent =
         updatedAt;
 
-    // Statistik laporan dari laporan.json
-    try {
-        const res = await fetch(LAPORAN_JSON_URL + `?t=${Date.now()}`);
-        const data = await res.json();
+    // Statistik laporan dari localStorage
+    const data = getStoredReports();
+    const stats = {
+        total: data.length,
+        banjir: data.filter((x) => x.jenis === "banjir").length,
+        karhutla: data.filter((x) => x.jenis === "karhutla").length,
+        kebakaran: data.filter((x) => x.jenis === "kebakaran").length,
+        lainnya: data.filter(
+            (x) =>
+                x.jenis !== "banjir" &&
+                x.jenis !== "karhutla" &&
+                x.jenis !== "kebakaran"
+        ).length
+    };
 
-        const stats = {
-            total: data.length,
-            banjir: data.filter((x) => x.jenis === "banjir").length,
-            karhutla: data.filter((x) => x.jenis === "karhutla").length,
-            kebakaran: data.filter((x) => x.jenis === "kebakaran").length,
-            lainnya: data.filter((x) => x.jenis === "lainnya").length
-        };
+    document.querySelector("#laporan-card .laporan-total").textContent =
+        `${stats.total} laporan`;
 
-        document.querySelector("#laporan-card .laporan-total").textContent =
-            `${stats.total} laporan`;
+    document.querySelector("#laporan-card .laporan-detail").textContent =
+        `Banjir: ${stats.banjir} • Karhutla: ${stats.karhutla} • Lainnya: ${stats.lainnya}`;
 
-        document.querySelector("#laporan-card .laporan-detail").textContent =
-            `Banjir: ${stats.banjir} • Karhutla: ${stats.karhutla} • Lainnya: ${stats.lainnya}`;
-    } catch (e) {
-        console.warn("Gagal memuat statistik laporan:", e);
-        document.querySelector("#laporan-card .laporan-total").textContent =
-            "0 laporan";
-        document.querySelector("#laporan-card .laporan-detail").textContent =
-            "Banjir: 0 • Karhutla: 0 • Lainnya: 0";
-    }
-
-    // Posko & edukasi masih dummy
+    // Posko & edukasi dummy
     document.querySelector("#posko-card .posko-total").textContent =
         "Posko aktif: 5";
     document.querySelector("#posko-card .posko-logistik").textContent =
@@ -131,7 +145,9 @@ async function initSummaryCards() {
         "Publikasi: " + new Date().toLocaleDateString("id-ID");
 }
 
-// ====================== CUACA ======================
+/* =========================
+   CUACA
+   ========================= */
 async function initWeatherCard() {
     const card = document.getElementById("weather-card");
     if (!card) return;
@@ -163,7 +179,9 @@ async function initWeatherCard() {
     }
 }
 
-// ====================== GEMPA ======================
+/* =========================
+   GEMPA
+   ========================= */
 async function initEarthquakeCard() {
     const container = document.querySelector("#earthquake-card .quake-list");
     if (!container) return;
@@ -206,7 +224,9 @@ async function initEarthquakeCard() {
     }
 }
 
-// ====================== KARHUTLA (dummy) ======================
+/* =========================
+   KARHUTLA (dummy)
+   ========================= */
 function initKarhutlaCard() {
     const card = document.getElementById("karhutla-card");
     if (!card) return;
@@ -222,7 +242,9 @@ function initKarhutlaCard() {
         `Area: ${area}. Integrasi API FIRMS/BMKG bisa ditambahkan di sini.`;
 }
 
-// ====================== ACTION BUTTONS ======================
+/* =========================
+   ACTIONS
+   ========================= */
 function initActions() {
     const laporBtn = document.getElementById("lapor-btn");
     if (laporBtn) {

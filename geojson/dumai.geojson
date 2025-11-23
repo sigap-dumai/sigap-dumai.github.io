@@ -1,1 +1,23 @@
-<!-- Dummy content for dumai.geojson -->
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "nama": "Kota Dumai"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [101.35, 1.60],
+            [101.55, 1.60],
+            [101.55, 1.75],
+            [101.35, 1.75],
+            [101.35, 1.60]
+          ]
+        ]
+      }
+    }
+  ]
+}
