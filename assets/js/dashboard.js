@@ -1,5 +1,5 @@
 // =============================================================
-// Dashboard.js – SiGap Dumai
+// Dashboard.js – SiGap Dumai (API untuk Cuaca dan Gempa, Dummy untuk Lainnya)
 // =============================================================
 
 // --- Konstanta ---
@@ -10,12 +10,12 @@ const BMKG_FWI_API = "https://api.bmkg.go.id/publik/prakiraan/karhutla.json"; //
 // INIT
 // =============================================================
 document.addEventListener("DOMContentLoaded", () => {
-    loadInitialData();  // Memuat cuaca dan gempa terlebih dahulu
+    loadInitialData();  // Load cuaca dan gempa terlebih dahulu
     setTimeout(loadAdditionalData, 1000); // Load data tambahan (laporan, status) setelah cuaca dan gempa
 });
 
 function loadInitialData() {
-    // Memuat Cuaca dan Gempa terlebih dahulu
+    // Memuat Cuaca dan Gempa dari API
     renderWeather();
     renderEarthquake();
 }
@@ -28,31 +28,19 @@ function loadAdditionalData() {
 }
 
 // =============================================================
-// DATA CUACA & GEMPA - Cache dan Fetch
+// DATA CUACA & GEMPA - Menggunakan API
 // =============================================================
 function renderWeather() {
     const card = document.getElementById("card-cuaca");
     if (!card) return;
 
-    const cachedData = localStorage.getItem('cuacaData');
-    const cachedTime = localStorage.getItem('cuacaDataTime');
-    const now = new Date().getTime();
-
-    // Jika data ada di cache dan belum lebih dari 30 menit
-    if (cachedData && cachedTime && now - cachedTime < 30 * 60 * 1000) {
-        const data = JSON.parse(cachedData);
-        displayWeatherData(data, card);
-    } else {
-        fetchWeatherData(card);
-    }
+    fetchWeatherData(card);
 }
 
 function fetchWeatherData(card) {
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=Dumai&appid=${WEATHER_KEY}&units=metric&lang=id`)
         .then((r) => r.json())
         .then((data) => {
-            localStorage.setItem('cuacaData', JSON.stringify(data));
-            localStorage.setItem('cuacaDataTime', new Date().getTime());
             displayWeatherData(data, card);
         })
         .catch(() => {
@@ -73,25 +61,13 @@ function renderEarthquake() {
     const card = document.getElementById("card-gempa");
     if (!card) return;
 
-    const cachedData = localStorage.getItem('gempaData');
-    const cachedTime = localStorage.getItem('gempaDataTime');
-    const now = new Date().getTime();
-
-    // Jika data ada di cache dan belum lebih dari 30 menit
-    if (cachedData && cachedTime && now - cachedTime < 30 * 60 * 1000) {
-        const data = JSON.parse(cachedData);
-        displayEarthquakeData(data, card);
-    } else {
-        fetchEarthquakeData(card);
-    }
+    fetchEarthquakeData(card);
 }
 
 function fetchEarthquakeData(card) {
     fetch("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson")
         .then((r) => r.json())
         .then((data) => {
-            localStorage.setItem('gempaData', JSON.stringify(data));
-            localStorage.setItem('gempaDataTime', new Date().getTime());
             displayEarthquakeData(data, card);
         })
         .catch(() => {
@@ -115,14 +91,14 @@ function displayEarthquakeData(data, card) {
 }
 
 // =============================================================
-// LAKUKAN LAINNYA (Laporan, Karhutla, Notifikasi)
+// DATA LAINNYA - Dummy
 // =============================================================
 function renderReportStatistics() {
     const card = document.getElementById("card-statistik");
     if (!card) return;
 
-    // Ambil data laporan dari localStorage atau dummy data
-    const reports = getStoredReports();
+    // Menggunakan data dummy untuk laporan
+    const reports = seedDummyReports();
     const total = reports.length;
     const banjir = reports.filter((r) => r.jenis === "banjir").length;
     const karhutla = reports.filter((r) => r.jenis === "karhutla").length;
@@ -135,34 +111,10 @@ function renderReportStatistics() {
     `;
 }
 
-function getStoredReports() {
-    // Fungsi untuk mengambil data laporan
-    const reports = JSON.parse(localStorage.getItem('reports')) || [];
-    return reports;
-}
-
-function renderNotificationBadge() {
-    const icon = document.querySelector(".nav-item[data-target='notifikasi']");
-    if (!icon) return;
-    // Contoh notifikasi yang muncul, bisa dikembangkan lebih lanjut
-    const count = 5;  // Simulasi jumlah laporan baru
-    let badge = icon.querySelector(".badge");
-    if (!badge) {
-        badge = document.createElement("span");
-        badge.className = "badge absolute -top-1 -right-2 bg-red-600 text-white text-xs rounded-full px-1";
-        icon.style.position = "relative";
-        icon.appendChild(badge);
-    }
-    badge.textContent = count > 99 ? "99+" : count;
-    badge.style.display = count > 0 ? "inline" : "none";
-}
-
-// =============================================================
-// Dummy Data
-function seedDummyReports(existing) {
+function seedDummyReports() {
     const target = 80;
     const jenisList = ["banjir", "karhutla", "kebakaran", "angin_kencang", "lainnya"];
-    const base = existing || [];
+    const base = [];
     while (base.length < target) {
         base.push({
             id: `report_${base.length}`,
@@ -172,6 +124,34 @@ function seedDummyReports(existing) {
             waktu: new Date().toISOString(),
         });
     }
-    localStorage.setItem('reports', JSON.stringify(base));
     return base;
+}
+
+function renderKarhutla() {
+    const card = document.getElementById("card-karhutla");
+    if (!card) return;
+
+    // Data dummy status karhutla
+    card.innerHTML = `
+        <h3>Karhutla</h3>
+        <p>Status: <strong>Tinggi</strong></p>
+        <small>Data terbaru: ${new Date().toLocaleString()}</small>
+    `;
+}
+
+function renderNotificationBadge() {
+    const icon = document.querySelector(".nav-item[data-target='notifikasi']");
+    if (!icon) return;
+
+    // Simulasi jumlah laporan baru
+    const count = 5;
+    let badge = icon.querySelector(".badge");
+    if (!badge) {
+        badge = document.createElement("span");
+        badge.className = "badge absolute -top-1 -right-2 bg-red-600 text-white text-xs rounded-full px-1";
+        icon.style.position = "relative";
+        icon.appendChild(badge);
+    }
+    badge.textContent = count > 99 ? "99+" : count;
+    badge.style.display = count > 0 ? "inline" : "none";
 }
