@@ -91,7 +91,7 @@ body {
     background: transparent;
     border: none;
     color: #f5f5f7;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     cursor: pointer;
 }
 
@@ -145,7 +145,7 @@ body {
 
 /* CARDS SECTION ---------------------------------------------------- */
 .cards-section {
-    padding: 10px 10px 70px;
+    padding: 10px 10px 80px;
     background: linear-gradient(to bottom, #05070c, #0b1018);
 }
 
@@ -255,11 +255,11 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 52px;
+    height: 64px; /* lebih tinggi, enak di-tap */
     background: rgba(5, 7, 12, 0.98);
     display: flex;
     justify-content: space-around;
-    align-items: center;
+    align-items: stretch;
     border-top: 1px solid rgba(255, 255, 255, 0.06);
     z-index: 30;
 }
@@ -267,27 +267,36 @@ body {
 .nav-item {
     flex: 1;
     text-align: center;
-    font-size: 0.7rem;
-    color: #9ea3b5;
     text-decoration: none;
+    color: #9ea3b5;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 0;
+}
+
+.nav-item .nav-label {
+    display: block;
 }
 
 .nav-item.active {
     color: #ffffff;
     font-weight: 600;
+    background: rgba(255, 255, 255, 0.04);
 }
 
 .fab-report {
     position: fixed;
     right: 16px;
-    bottom: 68px;
-    width: 52px;
-    height: 52px;
+    bottom: 80px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     border: none;
     background: #e74c3c;
     color: #ffffff;
-    font-size: 1.8rem;
+    font-size: 2rem;
     line-height: 0;
     display: flex;
     align-items: center;
@@ -297,7 +306,7 @@ body {
     z-index: 40;
 }
 
-/* Desktop tweak */
+/* Desktop tweak ---------------------------------------------------- */
 @media (min-width: 900px) {
     .app-shell {
         max-width: 480px;

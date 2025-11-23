@@ -14,7 +14,7 @@ function initMap() {
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> kontributor',
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         maxZoom: 19
     }).addTo(map);
 
@@ -31,10 +31,11 @@ function initMap() {
                 L.geoJSON(data, {
                     onEachFeature(feature, layer) {
                         const props = feature.properties || {};
-                        const name = props.nama || props.NAME || props.name || "Lokasi";
+                        const name =
+                            props.nama || props.NAME || props.name || "Lokasi";
                         layer.bindPopup(name);
                     },
-                    style(feature) {
+                    style() {
                         return {
                             color: "#3498db",
                             weight: 2,
@@ -64,18 +65,20 @@ function initMap() {
 // -------------------- KARTU RINGKASAN ---------------------
 
 function initSummaryCards() {
-    // Dummy untuk sekarang – nanti bisa diisi dari API backend
+    // Dummy untuk sekarang – bisa diganti API backend
     const statusLevel = "WASPADA";
     const updatedAt = "Diperbarui: " + new Date().toLocaleString("id-ID");
 
     document.querySelector("#status-card .status-level").textContent = statusLevel;
     document.querySelector("#status-card .status-updated").textContent = updatedAt;
 
-    document.querySelector("#laporan-card .laporan-total").textContent = "12 laporan";
+    document.querySelector("#laporan-card .laporan-total").textContent =
+        "12 laporan";
     document.querySelector("#laporan-card .laporan-detail").textContent =
         "Banjir: 8 • Karhutla: 2 • Lainnya: 2";
 
-    document.querySelector("#posko-card .posko-total").textContent = "Posko aktif: 5";
+    document.querySelector("#posko-card .posko-total").textContent =
+        "Posko aktif: 5";
     document.querySelector("#posko-card .posko-logistik").textContent =
         "Logistik: Cukup";
     document.querySelector("#posko-card .posko-medis").textContent =
@@ -132,7 +135,6 @@ async function initEarthquakeCard() {
         if (!res.ok) throw new Error("HTTP " + res.status);
         const data = await res.json();
 
-        // Ambil 3 gempa terkuat hari ini
         const features = (data.features || [])
             .sort((a, b) => (b.properties.mag || 0) - (a.properties.mag || 0))
             .slice(0, 3);
@@ -174,7 +176,8 @@ function initKarhutlaCard() {
     const area = "Sekitar Dumai & sekitarnya";
 
     summaryEl.textContent = `${hotspotCount} hotspot terpantau (dummy)`;
-    detailEl.textContent = `Sumber data karhutla simulasi. Integrasi API FIRMS/BMKG bisa ditambahkan di sini.`;
+    detailEl.textContent =
+        `Area: ${area}. Integrasi API FIRMS/BMKG bisa ditambahkan di sini.`;
 }
 
 // ------------------------ ACTIONS -------------------------
@@ -191,7 +194,7 @@ function initActions() {
     if (statusDetail) {
         statusDetail.addEventListener("click", () => {
             alert(
-                "Contoh kriteria siaga:\n\n• NORMAL\n• WASPADA\n• SIAGA I\n• TANGGAP DARURAT\n\n(Bisa diarahkan ke halaman penjelasan detail.)"
+                "Contoh kriteria siaga:\n\n• NORMAL\n• WASPADA\n• SIAGA I\n• TANGGAP DARURAT\n\n(Nanti bisa diarahkan ke halaman penjelasan detail.)"
             );
         });
     }
@@ -206,9 +209,7 @@ function initActions() {
     const poskoMap = document.getElementById("btn-posko-map");
     if (poskoMap) {
         poskoMap.addEventListener("click", () => {
-            alert(
-                "Aksi ini nantinya bisa memfilter peta hanya menampilkan marker posko & rute tercepat."
-            );
+            alert("Nanti peta difilter hanya menampilkan marker posko & rute.");
         });
     }
 
@@ -216,6 +217,13 @@ function initActions() {
     if (edukasiDetail) {
         edukasiDetail.addEventListener("click", () => {
             alert("Nanti diarahkan ke halaman artikel edukasi lengkap.");
+        });
+    }
+
+    const notifBtn = document.getElementById("notif-btn");
+    if (notifBtn) {
+        notifBtn.addEventListener("click", () => {
+            alert("Modul notifikasi belum diaktifkan. (placeholder)");
         });
     }
 }

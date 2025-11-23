@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SiGap - Dashboard</title>
 
+    <!-- CSS utama aplikasi -->
     <link rel="stylesheet" href="/assets/css/dashboard.css" />
 
-    <!-- Leaflet via CDN (lebih stabil di Vercel) -->
+    <!-- Leaflet via CDN (lebih aman di Vercel) -->
     <link
         rel="stylesheet"
         href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -27,8 +28,8 @@
                 </div>
             </div>
             <div class="app-header-right">
-                <!-- Icon notifikasi (belum diarahkan ke modul lain, hanya placeholder) -->
-                <button class="icon-button" aria-label="Notifikasi">
+                <!-- Icon notifikasi (sementara hanya alert kecil) -->
+                <button class="icon-button" id="notif-btn" aria-label="Notifikasi">
                     &#128276;
                 </button>
             </div>
