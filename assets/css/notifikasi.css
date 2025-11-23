@@ -1,0 +1,156 @@
+/* ============================================================
+   NOTIFIKASI PAGE
+   ============================================================ */
+
+.notif-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0.75rem 1rem 1rem;
+}
+
+/* ------------------------------------------------------------
+   FILTER BUTTONS (Semua / Peringatan / Informasi / Edukasi)
+   ------------------------------------------------------------ */
+.notif-filter {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    overflow-x: auto;
+    padding-bottom: 0.3rem;
+}
+
+.notif-filter::-webkit-scrollbar {
+    height: 4px;
+}
+.notif-filter::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.8);
+    border-radius: 999px;
+}
+
+.filter-button {
+    flex: 0 0 auto;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #4b5563;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.filter-button.active {
+    border-color: #0f766e;
+    background: #ccfbf1;
+    color: #115e59;
+}
+
+/* ------------------------------------------------------------
+   LIST & CARD NOTIFIKASI
+   ------------------------------------------------------------ */
+.notif-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    padding-bottom: 0.5rem;
+}
+
+.notif-empty {
+    font-size: 0.88rem;
+    color: #6b7280;
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+/* Card */
+.notif-card {
+    display: flex;
+    gap: 0.65rem;
+    align-items: flex-start;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+    cursor: pointer;
+    transition: background 0.1s ease, transform 0.08s ease,
+        box-shadow 0.08s ease;
+}
+
+.notif-card:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.15);
+}
+
+/* Status belum terbaca */
+.notif-card.unread {
+    border-color: #0ea5e9;
+    background: #eff6ff;
+}
+
+/* Badge di sisi kiri */
+.notif-type-badge {
+    width: 8px;
+    border-radius: 999px;
+    align-self: stretch;
+    margin-top: 0.1rem;
+}
+
+/* Warna kategori */
+.notif-type-badge.warning {
+    background: #f97316;
+}
+.notif-type-badge.info {
+    background: #0ea5e9;
+}
+.notif-type-badge.edu {
+    background: #10b981;
+}
+
+/* Isi card */
+.notif-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.notif-title {
+    margin: 0 0 0.15rem 0;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.notif-card.unread .notif-title {
+    font-weight: 700;
+}
+
+.notif-message {
+    margin: 0;
+    font-size: 0.82rem;
+    color: #4b5563;
+}
+
+.notif-meta {
+    margin-top: 0.3rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: #9ca3af;
+}
+
+.notif-source {
+    font-weight: 500;
+}
+
+/* ============================================================
+   RESPONSIVE (sesuai dengan shell dashboard)
+   ============================================================ */
+@media (min-width: 768px) {
+    .notif-main {
+        padding: 0.85rem 1.1rem 1.1rem;
+    }
+}
