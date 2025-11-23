@@ -139,19 +139,40 @@ function renderKarhutla() {
     `;
 }
 
+// =============================================================
+// Tombol Notifikasi - Perbaikan Responsif & Tema Alert
+// =============================================================
 function renderNotificationBadge() {
     const icon = document.querySelector(".nav-item[data-target='notifikasi']");
     if (!icon) return;
 
-    // Simulasi jumlah laporan baru
-    const count = 5;
+    // Ganti ikon notifikasi dengan ikon tema waspada/alert
+    icon.innerHTML = `
+        <i class="fa-solid fa-triangle-exclamation text-lg text-yellow-600"></i>
+    `;
+
+    const count = 5;  // Simulasi jumlah laporan baru
     let badge = icon.querySelector(".badge");
+
     if (!badge) {
         badge = document.createElement("span");
         badge.className = "badge absolute -top-1 -right-2 bg-red-600 text-white text-xs rounded-full px-1";
         icon.style.position = "relative";
         icon.appendChild(badge);
     }
+
+    // Menampilkan badge jika ada laporan baru
     badge.textContent = count > 99 ? "99+" : count;
     badge.style.display = count > 0 ? "inline" : "none";
+
+    // Tambahkan event listener klik pada tombol notifikasi
+    icon.addEventListener("click", () => {
+        // Aksi saat tombol notifikasi diklik
+        showAlertNotifikasi();
+    });
+}
+
+function showAlertNotifikasi() {
+    // Tampilkan alert atau notifikasi di bagian lain
+    alert("Ada 5 laporan baru yang perlu perhatian!");
 }

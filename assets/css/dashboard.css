@@ -465,3 +465,17 @@ body {
         background: radial-gradient(circle at top left, #eff6ff, #dbeafe);
     }
 }
+
+
+.nav-item[data-target='notifikasi'] {
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.nav-item[data-target='notifikasi']:hover {
+    transform: scale(1.1);
+}
+
+.nav-item[data-target='notifikasi']:active {
+    transform: scale(0.9);
+}
