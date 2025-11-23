@@ -12,7 +12,6 @@
 <body>
 <div class="app-shell">
 
-    <!-- Header -->
     <header class="app-header">
         <div class="app-header-left">
             <button class="back-button" onclick="window.location.href='/dashboard.html'">←</button>
@@ -23,12 +22,10 @@
         </div>
     </header>
 
-    <!-- Main -->
     <main class="lapor-main">
 
         <form id="lapor-form" class="lapor-form">
 
-            <!-- Jenis Kejadian -->
             <div class="form-group">
                 <label for="jenis">Jenis Kejadian</label>
                 <select id="jenis" required>
@@ -42,39 +39,21 @@
                 </select>
             </div>
 
-            <!-- Lokasi GPS -->
             <div class="form-group">
                 <label>Lokasi Kejadian</label>
                 <button type="button" id="btn-gps" class="gps-button">Gunakan GPS</button>
-
-                <input type="text" id="lokasi"
-                       placeholder="Atau isi manual lokasi kejadian"
-                       required />
+                <input type="text" id="lokasi" placeholder="Atau isi manual lokasi kejadian" required />
             </div>
 
-            <!-- Deskripsi -->
             <div class="form-group">
                 <label for="deskripsi">Deskripsi Kejadian</label>
-                <textarea id="deskripsi" rows="4"
-                    placeholder="Ceritakan kondisi kejadian secara ringkas..."
-                    required></textarea>
+                <textarea id="deskripsi" rows="4" placeholder="Ceritakan kondisi kejadian..." required></textarea>
             </div>
 
-            <!-- Foto -->
-            <div class="form-group">
-                <label for="foto">Foto Kejadian</label>
-                <input type="file" id="foto" accept="image/*" capture="environment" />
-                <div id="foto-preview" class="foto-preview"></div>
-            </div>
-
-            <!-- Submit -->
             <button type="submit" class="lapor-submit">Kirim Laporan</button>
-
         </form>
-
     </main>
 
-    <!-- Bottom Navigation -->
     <nav class="bottom-nav">
         <a href="/dashboard.html" class="nav-item">
             <span class="nav-label">Dasbor</span>
@@ -86,7 +65,6 @@
             <span class="nav-label">Lapor</span>
         </a>
     </nav>
-
 </div>
 
 <script src="/assets/js/laporan.js"></script>
