@@ -1,17 +1,37 @@
-// /assets/js/notifikasi.js
-// Notifikasi berbasis laporan di localStorage (sama seperti dashboard)
-// Dummy 80 laporan akan di-seed jika belum ada.
+// =============================================================
+// Notifikasi.js – SiGap Dumai
+// =============================================================
+const REPORT_KEY = "sigap_laporan";
+const LAST_VIEW_KEY = "sigap_notif_last_view";
+
+document.addEventListener("DOMContentLoaded", () => {
+    renderNotifications("all");
+    markNotificationsViewed();
+
+    document.querySelectorAll("[data-filter]").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+            const filter = e.target.dataset.filter;
+            renderNotifications(filter);
+        });
+    });
+});
+
+function getStoredReports() {
+    try {
+        const raw = localStorage.getItem(REPORT_KEY);
+        if (!raw) return seedDummyReports([]);
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed)) return seedDummyReports([]);
+        if (parsed.length < 80) return seedDummyReports(parsed);
+        return parsed;
+    } catch {
+        return seedDummyReports([]);
+    }
+}
 
 function seedDummyReports(existing) {
-    const reports = Array.isArray(existing) ? existing.slice() : [];
-    const targetTotal = 80;
-    const needed = targetTotal - reports.length;
-    if (needed <= 0) {
-        return reports;
-    }
-
+    const target = 80;
     const jenisList = ["banjir", "karhutla", "kebakaran", "angin_kencang", "lainnya"];
-
     const areaList = [
         { nama: "Bukit Kapur", lat: 1.727, lon: 101.372 },
         { nama: "Dumai Timur", lat: 1.685, lon: 101.455 },
@@ -21,167 +41,50 @@ function seedDummyReports(existing) {
         { nama: "Medang Kampai", lat: 1.590, lon: 101.540 },
         { nama: "Sungai Sembilan", lat: 1.720, lon: 101.500 }
     ];
-
-    const deskripsiTemplate = {
-        banjir: [
-            "Genangan air setinggi betis di pemukiman warga.",
-            "Air mulai masuk ke pekarangan rumah.",
-            "Akses jalan utama tergenang, kendaraan melambat.",
-            "Drainase meluap setelah hujan deras.",
-            "Banjir mengganggu aktivitas warga sekitar."
-        ],
-        karhutla: [
-            "Asap tipis terlihat dari arah kebun.",
-            "Tercium bau asap cukup kuat di sekitar lokasi.",
-            "Titik api kecil terlihat di lahan kosong.",
-            "Asap mulai menutupi pandangan di jalan sekitar.",
-            "Warga khawatir api merembet ke permukiman."
-        ],
-        kebakaran: [
-            "Asap tebal keluar dari salah satu rumah warga.",
-            "Terjadi percikan api di bangunan semi permanen.",
-            "Petugas damkar sedang menuju lokasi kebakaran.",
-            "Api sudah mulai dapat dikendalikan.",
-            "Warga membantu memadamkan api dengan alat seadanya."
-        ],
-        angin_kencang: [
-            "Angin kencang merobohkan beberapa pohon kecil.",
-            "Atap seng beberapa rumah terangkat angin.",
-            "Terlihat awan gelap dan hembusan angin kuat.",
-            "Spanduk dan papan reklame nyaris tumbang.",
-            "Warga diminta waspada potensi angin kencang."
-        ],
-        lainnya: [
-            "Laporan gangguan utilitas umum di lingkungan warga.",
-            "Ada kejadian yang berpotensi membahayakan keselamatan.",
-            "Aktivitas mencurigakan dilaporkan oleh warga.",
-            "Kondisi infrastruktur rusak dilaporkan.",
-            "Warga membutuhkan bantuan segera di lokasi."
-        ]
-    };
-
+    const base = existing || [];
+    const needed = target - base.length;
     for (let i = 0; i < needed; i++) {
-        const area = areaList[i % areaList.length];
-        const jenis = jenisList[i % jenisList.length];
-
-        const lat = area.lat + (Math.random() - 0.5) * 0.03;
-        const lon = area.lon + (Math.random() - 0.5) * 0.03;
-
-        const descList = deskripsiTemplate[jenis] || deskripsiTemplate.lainnya;
-        const deskripsi = descList[i % descList.length];
-
-        const daysAgo = Math.floor(Math.random() * 7);
-        const msAgo =
-            daysAgo * 24 * 60 * 60 * 1000 + Math.random() * 60 * 60 * 1000;
-        const waktu = new Date(Date.now() - msAgo).toISOString();
-
-        reports.push({
+        const jenis = jenisList[Math.floor(Math.random() * jenisList.length)];
+        const area = areaList[Math.floor(Math.random() * areaList.length)];
+        const date = new Date();
+        date.setDate(date.getDate() - Math.floor(Math.random() * 7));
+        base.push({
             id: Date.now() + i,
             jenis,
-            lokasi: `${lat.toFixed(6)}, ${lon.toFixed(6)} - ${area.nama}`,
-            deskripsi,
-            waktu
+            lokasi: `${area.lat + Math.random() * 0.01}, ${area.lon + Math.random() * 0.01} – ${area.nama}`,
+            deskripsi: `Laporan ${jenis} di ${area.nama}.`,
+            waktu: date.toISOString()
         });
     }
-
-    localStorage.setItem("sigap_laporan", JSON.stringify(reports));
-    return reports;
+    localStorage.setItem(REPORT_KEY, JSON.stringify(base));
+    return base;
 }
 
-function getStoredReports() {
-    try {
-        const raw = localStorage.getItem("sigap_laporan");
-        if (!raw) {
-            return seedDummyReports([]);
-        }
-        const parsed = JSON.parse(raw);
-        if (!Array.isArray(parsed)) {
-            return seedDummyReports([]);
-        }
-        if (parsed.length < 80) {
-            return seedDummyReports(parsed);
-        }
-        return parsed;
-    } catch {
-        return seedDummyReports([]);
-    }
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    initFilterButtons();
-    renderNotifications("all");
-});
-
-/* FILTER BUTTONS */
-function initFilterButtons() {
-    const buttons = document.querySelectorAll(".filter-button");
-    buttons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            buttons.forEach((b) => b.classList.remove("active"));
-            btn.classList.add("active");
-            const filter = btn.dataset.filter || "all";
-            renderNotifications(filter);
-        });
-    });
-}
-
-/* RENDER LIST */
 function renderNotifications(filter) {
-    const container = document.getElementById("notif-list");
-    if (!container) return;
+    const container = document.getElementById("notif-container");
+    const reports = getStoredReports();
+    const filtered =
+        filter === "all" ? reports : reports.filter((r) => r.jenis === filter);
+    filtered.sort((a, b) => new Date(b.waktu) - new Date(a.waktu));
 
-    let reports = getStoredReports().slice().reverse(); // terbaru di atas
-
-    // mapping laporan → notifikasi
-    let items = reports.map((r) => ({
-        type: mapJenisToType(r.jenis),
-        title: `Laporan ${r.jenis || "kejadian"}`,
-        message: r.deskripsi || "",
-        time: r.waktu
-            ? new Date(r.waktu).toLocaleString("id-ID")
-            : "",
-        source: "Laporan Warga",
-        unread: true
-    }));
-
-    if (filter !== "all") {
-        items = items.filter((n) => n.type === filter);
-    }
-
-    container.innerHTML = "";
-
-    if (!items.length) {
-        container.innerHTML =
-            '<p class="notif-empty">Belum ada notifikasi. Kirim laporan dulu.</p>';
-        return;
-    }
-
-    items.forEach((item) => {
-        const card = document.createElement("div");
-        card.className = `notif-card ${item.type} ${
-            item.unread ? "unread" : ""
-        }`;
-
-        card.innerHTML = `
-            <div class="notif-type-badge ${item.type}"></div>
-            <div class="notif-content">
-                <h4 class="notif-title">${item.title}</h4>
-                <p class="notif-message">${item.message}</p>
-                <div class="notif-meta">
-                    <span class="notif-source">${item.source}</span>
-                    <span class="notif-time">${item.time}</span>
+    container.innerHTML = filtered
+        .map((r) => {
+            const type =
+                ["banjir", "karhutla", "kebakaran"].includes(r.jenis) ? "warning" : "info";
+            return `
+                <div class="notif-item ${type}">
+                    <h4>Laporan ${r.jenis.toUpperCase()}</h4>
+                    <p>${r.deskripsi}</p>
+                    <small>${new Date(r.waktu).toLocaleString("id-ID")}</small>
                 </div>
-            </div>
-        `;
-
-        container.appendChild(card);
-    });
+            `;
+        })
+        .join("");
 }
 
-function mapJenisToType(jenis) {
-    if (!jenis) return "info";
-    if (jenis === "banjir" || jenis === "karhutla" || jenis === "kebakaran") {
-        return "warning";
-    }
-    return "info";
+// =============================================================
+// TANDAI SUDAH DILIHAT
+// =============================================================
+function markNotificationsViewed() {
+    localStorage.setItem(LAST_VIEW_KEY, new Date().toISOString());
 }
