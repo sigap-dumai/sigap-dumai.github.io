@@ -1,33 +1,316 @@
-/* General Styles for Dashboard */
+/* Reset ringan */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background-color: #0b1018;
+    color: #f5f5f7;
+}
+
+/* SPLASH SCREEN ---------------------------------------------------- */
+.splash-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: radial-gradient(circle at top, #13233a 0, #05070c 60%);
+    text-align: center;
+}
+
+.splash-screen .logo {
+    width: 120px;
+    height: auto;
+    margin-bottom: 24px;
+}
+
+.splash-screen h1 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #f5f5f7;
+    margin-bottom: 8px;
+}
+
+.splash-screen p {
+    font-size: 0.95rem;
+    color: #c5c6d0;
+}
+
+/* APP SHELL -------------------------------------------------------- */
+.app-shell {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #05070c;
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: rgba(5, 7, 12, 0.96);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+.app-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+}
+
+.app-title {
+    display: flex;
+    flex-direction: column;
+}
+
+.app-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.app-subtitle {
+    font-size: 0.75rem;
+    color: #9ea3b5;
+}
+
+.icon-button {
+    background: transparent;
+    border: none;
+    color: #f5f5f7;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.app-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* MAP SECTION ------------------------------------------------------ */
+.map-section {
+    position: relative;
+    height: 55vh;
+    min-height: 320px;
+}
+
 #map {
     width: 100%;
-    height: 400px;
+    height: 100%;
 }
 
-.info-cards {
+.map-legend {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    margin-top: 20px;
+    gap: 6px;
+    background: rgba(5, 7, 12, 0.82);
+    padding: 6px 8px;
+    border-radius: 999px;
+    font-size: 0.7rem;
 }
 
-.info-cards div {
-    background-color: #F0F0F0;
-    padding: 10px;
-    border-radius: 8px;
-    margin: 5px;
-    width: 45%;
+.legend-item {
+    padding: 3px 8px;
+    border-radius: 999px;
+    color: #f5f5f7;
 }
 
-.fab {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: red;
-    color: white;
+.legend-item.hotspot {
+    background: #e74c3c;
+}
+
+.legend-item.banjir {
+    background: #3498db;
+}
+
+.legend-item.posko {
+    background: #2ecc71;
+}
+
+/* CARDS SECTION ---------------------------------------------------- */
+.cards-section {
+    padding: 10px 10px 70px;
+    background: linear-gradient(to bottom, #05070c, #0b1018);
+}
+
+.cards-row {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+}
+
+.cards-row::-webkit-scrollbar {
+    height: 4px;
+}
+
+.cards-row::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+}
+
+.cards-row.secondary {
+    margin-top: 4px;
+}
+
+.info-card {
+    min-width: 260px;
+    max-width: 280px;
+    background: rgba(19, 29, 48, 0.96);
+    border-radius: 14px;
+    padding: 10px 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    font-size: 0.8rem;
+}
+
+.info-card h3 {
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+/* Warna khusus kartu */
+.info-card.status {
+    border-left: 4px solid #f1c40f;
+}
+
+.info-card.laporan {
+    border-left: 4px solid #3498db;
+}
+
+.info-card.posko {
+    border-left: 4px solid #2ecc71;
+}
+
+.info-card.edukasi {
+    border-left: 4px solid #9b59b6;
+}
+
+.info-card.weather {
+    border-left: 4px solid #1abc9c;
+}
+
+.info-card.quake {
+    border-left: 4px solid #e67e22;
+}
+
+.info-card.fire {
+    border-left: 4px solid #e74c3c;
+}
+
+.status-level {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.status-updated,
+.laporan-detail,
+.posko-logistik,
+.posko-medis,
+.edukasi-date,
+.weather-extra,
+.fire-detail {
+    color: #a5aac1;
+    font-size: 0.75rem;
+}
+
+.card-link {
+    margin-top: 6px;
     border: none;
-    padding: 15px;
-    border-radius: 50%;
-    font-size: 24px;
+    background: transparent;
+    color: #5dade2;
+    font-size: 0.75rem;
+    padding: 0;
     cursor: pointer;
+    text-decoration: underline;
+}
+
+.quake-list {
+    max-height: 90px;
+    overflow-y: auto;
+    font-size: 0.75rem;
+}
+
+/* BOTTOM NAV & FAB ------------------------------------------------- */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 52px;
+    background: rgba(5, 7, 12, 0.98);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    z-index: 30;
+}
+
+.nav-item {
+    flex: 1;
+    text-align: center;
+    font-size: 0.7rem;
+    color: #9ea3b5;
+    text-decoration: none;
+}
+
+.nav-item.active {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.fab-report {
+    position: fixed;
+    right: 16px;
+    bottom: 68px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: none;
+    background: #e74c3c;
+    color: #ffffff;
+    font-size: 1.8rem;
+    line-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 12px 24px rgba(231, 76, 60, 0.6);
+    cursor: pointer;
+    z-index: 40;
+}
+
+/* Desktop tweak */
+@media (min-width: 900px) {
+    .app-shell {
+        max-width: 480px;
+        margin: 0 auto;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+    }
+
+    body {
+        background: radial-gradient(circle at top, #141e30, #0b1018 55%, #020307 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
