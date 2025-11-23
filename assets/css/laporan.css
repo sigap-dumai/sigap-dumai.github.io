@@ -13,10 +13,8 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    margin-top: 0.3rem;
 }
 
-/* FORM INPUTS */
 .form-group {
     display: flex;
     flex-direction: column;
@@ -34,71 +32,43 @@ select,
 textarea {
     padding: 0.7rem 0.8rem;
     border-radius: 10px;
-    font-size: 0.9rem;
     border: 1px solid #d1d5db;
     background: #ffffff;
+    font-size: 0.9rem;
     color: #1f2937;
     outline: none;
-}
-
-select {
-    cursor: pointer;
 }
 
 textarea {
     resize: vertical;
 }
 
-/* GPS Button */
 .gps-button {
     background: #0ea5e9;
     color: #ffffff;
-    border: none;
     padding: 0.55rem 0.9rem;
     border-radius: 999px;
+    border: none;
     font-size: 0.8rem;
-    cursor: pointer;
     width: fit-content;
-}
-
-.gps-button:active {
-    transform: scale(0.97);
-}
-
-/* FOTO PREVIEW */
-.foto-preview {
-    margin-top: 0.4rem;
-    max-width: 100%;
+    cursor: pointer;
 }
 
 .foto-preview img {
+    margin-top: 0.5rem;
     width: 100%;
     border-radius: 12px;
-    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.15);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.20);
 }
 
-/* SUBMIT */
 .lapor-submit {
-    margin-top: 0.6rem;
+    margin-top: 0.5rem;
     padding: 0.9rem;
     border: none;
-    border-radius: 14px;
     background: #e53935;
+    border-radius: 14px;
     color: #ffffff;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(229, 57, 53, 0.45);
-}
-
-.lapor-submit:active {
-    transform: scale(0.98);
-}
-
-/* RESPONSIVE */
-@media (min-width: 768px) {
-    .lapor-main {
-        max-width: 480px;
-        margin: 0 auto;
-    }
 }
