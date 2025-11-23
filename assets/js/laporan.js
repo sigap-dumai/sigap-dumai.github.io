@@ -3,7 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
     initForm();
 });
 
+// ======================================
 // GPS
+// ======================================
 function initGPS() {
     const btn = document.getElementById("btn-gps");
     const lokasi = document.getElementById("lokasi");
@@ -17,8 +19,8 @@ function initGPS() {
                 btn.textContent = "Lokasi ditemukan ✔";
                 btn.style.background = "#16a34a";
             },
-            err => {
-                alert("Tidak bisa mengambil GPS.");
+            () => {
+                alert("Gagal mengambil GPS. Isi lokasi secara manual.");
                 btn.textContent = "Gunakan GPS";
             },
             { enableHighAccuracy: true }
@@ -26,7 +28,9 @@ function initGPS() {
     });
 }
 
-// Submit laporan
+// ======================================
+// Submit Laporan ke API /api/reports
+// ======================================
 function initForm() {
     const form = document.getElementById("lapor-form");
 
@@ -38,7 +42,7 @@ function initForm() {
         const deskripsi = document.getElementById("deskripsi").value.trim();
 
         if (!jenis || !lokasi || !deskripsi) {
-            alert("Mohon isi semua kolom.");
+            alert("Semua kolom wajib diisi.");
             return;
         }
 
@@ -54,7 +58,7 @@ function initForm() {
             alert("Laporan berhasil dikirim!");
             form.reset();
         } else {
-            alert("Gagal mengirim laporan.");
+            alert("Gagal membuat laporan!");
         }
     });
 }
