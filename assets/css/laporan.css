@@ -1,9 +1,5 @@
-/* ============================================================
-   LAPORAN WARGA – STYLE FINAL
-   Tanpa upload foto, ringan, responsif
-   ============================================================ */
+/* /assets/css/laporan.css */
 
-/* Wrapper utama halaman laporan */
 .lapor-main {
     flex: 1;
     display: flex;
@@ -12,28 +8,24 @@
     background: #f9fafb;
 }
 
-/* Form container */
 .lapor-form {
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
 }
 
-/* Setiap group input */
 .form-group {
     display: flex;
     flex-direction: column;
     gap: 0.45rem;
 }
 
-/* Label input */
 .form-group label {
     font-size: 0.92rem;
     font-weight: 600;
     color: #0f172a;
 }
 
-/* Input text, select, textarea */
 input[type="text"],
 select,
 textarea {
@@ -48,7 +40,6 @@ textarea {
     transition: border 0.2s ease;
 }
 
-/* Fokus state */
 input[type="text"]:focus,
 select:focus,
 textarea:focus {
@@ -56,12 +47,10 @@ textarea:focus {
     box-shadow: 0 0 0 2px rgba(59,130,246,0.25);
 }
 
-/* Textarea bisa resize vertikal */
 textarea {
     resize: vertical;
 }
 
-/* Tombol GPS */
 .gps-button {
     width: fit-content;
     padding: 0.55rem 1.1rem;
@@ -75,13 +64,11 @@ textarea {
     transition: background 0.15s ease, transform 0.1s ease;
 }
 
-/* Saat ditekan */
 .gps-button:active {
     background: #0284c7;
     transform: scale(0.97);
 }
 
-/* Tombol kirim laporan */
 .lapor-submit {
     width: 100%;
     margin-top: 0.4rem;
@@ -98,13 +85,11 @@ textarea {
     transition: background 0.15s ease, transform 0.1s ease;
 }
 
-/* Saat ditekan */
 .lapor-submit:active {
     background: #c62828;
     transform: scale(0.98);
 }
 
-/* Responsif layout untuk layar besar */
 @media (min-width: 768px) {
     .lapor-main {
         max-width: 480px;

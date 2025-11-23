@@ -1,26 +1,38 @@
+// /assets/js/laporan.js
+
 document.addEventListener("DOMContentLoaded", () => {
     initGPS();
     initForm();
 });
 
-// ======================================
-// GPS
-// ======================================
+// ============================================
+// GPS: isi input lokasi dengan "lat, lon"
+// ============================================
 function initGPS() {
     const btn = document.getElementById("btn-gps");
     const lokasi = document.getElementById("lokasi");
 
+    if (!btn || !lokasi) return;
+
     btn.addEventListener("click", () => {
         btn.textContent = "Mengambil lokasi…";
 
+        if (!navigator.geolocation) {
+            alert("Perangkat tidak mendukung GPS. Isi lokasi manual.");
+            btn.textContent = "Gunakan GPS";
+            return;
+        }
+
         navigator.geolocation.getCurrentPosition(
-            pos => {
-                lokasi.value = `${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}`;
+            (pos) => {
+                const lat = pos.coords.latitude.toFixed(6);
+                const lon = pos.coords.longitude.toFixed(6);
+                lokasi.value = `${lat}, ${lon}`;
                 btn.textContent = "Lokasi ditemukan ✔";
                 btn.style.background = "#16a34a";
             },
             () => {
-                alert("Gagal mengambil GPS. Isi lokasi secara manual.");
+                alert("Gagal mengambil koordinat. Isi lokasi manual.");
                 btn.textContent = "Gunakan GPS";
             },
             { enableHighAccuracy: true }
@@ -28,13 +40,14 @@ function initGPS() {
     });
 }
 
-// ======================================
-// Submit Laporan ke API /api/reports
-// ======================================
+// ============================================
+// Submit laporan ke /api/reports
+// ============================================
 function initForm() {
     const form = document.getElementById("lapor-form");
+    if (!form) return;
 
-    form.addEventListener("submit", async e => {
+    form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         const jenis = document.getElementById("jenis").value;
@@ -48,17 +61,24 @@ function initForm() {
 
         const payload = { jenis, lokasi, deskripsi };
 
-        const res = await fetch("/api/reports", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        });
+        try {
+            const res = await fetch("/api/reports", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
 
-        if (res.ok) {
-            alert("Laporan berhasil dikirim!");
-            form.reset();
-        } else {
-            alert("Gagal membuat laporan!");
+            if (res.ok) {
+                alert("Laporan berhasil dikirim!");
+                form.reset();
+            } else {
+                const err = await res.json().catch(() => ({}));
+                console.error("Respon gagal:", err);
+                alert("Gagal membuat laporan!");
+            }
+        } catch (err) {
+            console.error("Error fetch /api/reports:", err);
+            alert("Terjadi kesalahan jaringan saat mengirim laporan.");
         }
     });
 }
