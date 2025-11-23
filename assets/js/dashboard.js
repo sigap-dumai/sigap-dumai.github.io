@@ -10,8 +10,8 @@ const BMKG_FWI_API = "https://api.bmkg.go.id/publik/prakiraan/karhutla.json"; //
 // INIT
 // =============================================================
 document.addEventListener("DOMContentLoaded", () => {
-    loadInitialData();  // Load cuaca dan gempa
-    setTimeout(loadAdditionalData, 500); // Load data tambahan (laporan, status) setelah beberapa waktu
+    loadInitialData();  // Memuat cuaca dan gempa terlebih dahulu
+    setTimeout(loadAdditionalData, 1000); // Load data tambahan (laporan, status) setelah cuaca dan gempa
 });
 
 function loadInitialData() {
@@ -115,7 +115,7 @@ function displayEarthquakeData(data, card) {
 }
 
 // =============================================================
-// LAKUKAN LAINNYA (Laporan, Statistik, Notifikasi)
+// LAKUKAN LAINNYA (Laporan, Karhutla, Notifikasi)
 // =============================================================
 function renderReportStatistics() {
     const card = document.getElementById("card-statistik");
