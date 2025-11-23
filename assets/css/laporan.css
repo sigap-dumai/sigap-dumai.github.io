@@ -1,74 +1,116 @@
 /* ============================================================
-   LAPOR WARGA – CSS
+   LAPORAN WARGA – STYLE FINAL
+   Tanpa upload foto, ringan, responsif
    ============================================================ */
 
+/* Wrapper utama halaman laporan */
 .lapor-main {
     flex: 1;
-    padding: 1rem 1.2rem 1.5rem;
     display: flex;
     flex-direction: column;
+    padding: 1.2rem 1.2rem 1.6rem;
+    background: #f9fafb;
 }
 
+/* Form container */
 .lapor-form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.2rem;
 }
 
+/* Setiap group input */
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.45rem;
 }
 
+/* Label input */
 .form-group label {
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     font-weight: 600;
     color: #0f172a;
 }
 
+/* Input text, select, textarea */
 input[type="text"],
 select,
 textarea {
-    padding: 0.7rem 0.8rem;
-    border-radius: 10px;
-    border: 1px solid #d1d5db;
+    width: 100%;
+    padding: 0.8rem 0.9rem;
     background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #d1d5db;
     font-size: 0.9rem;
     color: #1f2937;
     outline: none;
+    transition: border 0.2s ease;
 }
 
+/* Fokus state */
+input[type="text"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59,130,246,0.25);
+}
+
+/* Textarea bisa resize vertikal */
 textarea {
     resize: vertical;
 }
 
+/* Tombol GPS */
 .gps-button {
+    width: fit-content;
+    padding: 0.55rem 1.1rem;
     background: #0ea5e9;
     color: #ffffff;
-    padding: 0.55rem 0.9rem;
+    border: none;
     border-radius: 999px;
-    border: none;
     font-size: 0.8rem;
-    width: fit-content;
-    cursor: pointer;
-}
-
-.foto-preview img {
-    margin-top: 0.5rem;
-    width: 100%;
-    border-radius: 12px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.20);
-}
-
-.lapor-submit {
-    margin-top: 0.5rem;
-    padding: 0.9rem;
-    border: none;
-    background: #e53935;
-    border-radius: 14px;
-    color: #ffffff;
-    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+/* Saat ditekan */
+.gps-button:active {
+    background: #0284c7;
+    transform: scale(0.97);
+}
+
+/* Tombol kirim laporan */
+.lapor-submit {
+    width: 100%;
+    margin-top: 0.4rem;
+    padding: 0.95rem;
+    border: none;
+    border-radius: 14px;
+    background: #e53935;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(229, 57, 53, 0.35);
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+/* Saat ditekan */
+.lapor-submit:active {
+    background: #c62828;
+    transform: scale(0.98);
+}
+
+/* Responsif layout untuk layar besar */
+@media (min-width: 768px) {
+    .lapor-main {
+        max-width: 480px;
+        margin: 0 auto;
+        border-left: 1px solid #e5e7eb;
+        border-right: 1px solid #e5e7eb;
+        background: #ffffff;
+    }
 }
