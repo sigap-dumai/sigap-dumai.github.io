@@ -26,7 +26,6 @@
     <!-- Main -->
     <main class="lapor-main">
 
-        <!-- Form -->
         <form id="lapor-form" class="lapor-form">
 
             <!-- Jenis Kejadian -->
@@ -35,7 +34,7 @@
                 <select id="jenis" required>
                     <option value="">Pilih kejadian…</option>
                     <option value="banjir">Banjir</option>
-                    <option value="karhutla">Karhutla / Hotspot</option>
+                    <option value="karhutla">Karhutla</option>
                     <option value="kebakaran">Kebakaran Permukiman</option>
                     <option value="angin_kencang">Angin Kencang</option>
                     <option value="longsor">Longsor</option>
@@ -43,23 +42,22 @@
                 </select>
             </div>
 
-            <!-- Lokasi otomatis GPS -->
+            <!-- Lokasi GPS -->
             <div class="form-group">
                 <label>Lokasi Kejadian</label>
                 <button type="button" id="btn-gps" class="gps-button">Gunakan GPS</button>
 
-                <input
-                    type="text"
-                    id="lokasi"
-                    placeholder="Atau ketik lokasi (nama jalan, dusun, dll)"
-                    required
-                />
+                <input type="text" id="lokasi"
+                       placeholder="Atau isi manual lokasi kejadian"
+                       required />
             </div>
 
             <!-- Deskripsi -->
             <div class="form-group">
                 <label for="deskripsi">Deskripsi Kejadian</label>
-                <textarea id="deskripsi" rows="4" placeholder="Jelaskan kondisi kejadian..." required></textarea>
+                <textarea id="deskripsi" rows="4"
+                    placeholder="Ceritakan kondisi kejadian secara ringkas..."
+                    required></textarea>
             </div>
 
             <!-- Foto -->
@@ -69,8 +67,9 @@
                 <div id="foto-preview" class="foto-preview"></div>
             </div>
 
-            <!-- Tombol submit -->
+            <!-- Submit -->
             <button type="submit" class="lapor-submit">Kirim Laporan</button>
+
         </form>
 
     </main>
