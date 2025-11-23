@@ -92,20 +92,34 @@ function initMap() {
     loadLaporanMarkers(map);
 }
 
+function isInsideDumaiArea(lat, lon, dumaiBounds) {
+    // Pengecekan apakah koordinat berada dalam area Dumai
+    return dumaiBounds.contains([lat, lon]);
+}
+
 function loadLaporanMarkers(map) {
     const reports = getStoredReports();
+    const dumaiBounds = L.latLngBounds(
+        L.latLng(1.6, 101.35), // batas bawah koordinat Dumai
+        L.latLng(1.8, 101.55)  // batas atas koordinat Dumai
+    );
+    
     reports.forEach((r) => {
         const match = r.lokasi.match(/([\d\.\-]+),\s*([\d\.\-]+)/);
         if (match) {
             const lat = parseFloat(match[1]);
             const lon = parseFloat(match[2]);
-            L.marker([lat, lon])
-                .addTo(map)
-                .bindPopup(
-                    `<strong>${r.jenis.toUpperCase()}</strong><br>${r.deskripsi}<br><small>${new Date(
-                        r.waktu
-                    ).toLocaleString("id-ID")}</small>`
-                );
+
+            // Filter koordinat, hanya tampilkan jika dalam area Dumai
+            if (isInsideDumaiArea(lat, lon, dumaiBounds)) {
+                L.marker([lat, lon])
+                    .addTo(map)
+                    .bindPopup(
+                        `<strong>${r.jenis.toUpperCase()}</strong><br>${r.deskripsi}<br><small>${new Date(
+                            r.waktu
+                        ).toLocaleString("id-ID")}</small>`
+                    );
+            }
         }
     });
 }

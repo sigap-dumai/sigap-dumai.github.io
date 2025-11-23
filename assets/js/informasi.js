@@ -1,4 +1,4 @@
-// informasi.js – SiGap Dumai
+// /assets/js/informasi.js
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("Informasi module loaded");
+    console.log("Halaman Informasi & Edukasi siap.");
 });
