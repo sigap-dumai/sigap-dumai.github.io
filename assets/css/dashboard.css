@@ -1,325 +1,467 @@
-/* Reset ringan */
-* {
+/* ============================================================
+   GLOBAL & THEME
+   ============================================================ */
+:root {
+    --color-primary: #1565c0;
+    --color-primary-soft: #e3f2fd;
+    --color-danger: #e53935;
+    --color-bg: #f5f5f7;
+    --color-text: #1f2933;
+    --color-muted: #6b7280;
+    --color-border: #e0e0e0;
+    --radius-lg: 16px;
+    --radius-xl: 999px;
+    --shadow-soft: 0 4px 10px rgba(15, 23, 42, 0.08);
+    --shadow-strong: 0 10px 24px rgba(15, 23, 42, 0.18);
+}
+
+*,
+*::before,
+*::after {
     box-sizing: border-box;
+}
+
+html,
+body {
     margin: 0;
     padding: 0;
+    height: 100%;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    background: var(--color-bg);
+    color: var(--color-text);
 }
 
 body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background-color: #0b1018;
-    color: #f5f5f7;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* SPLASH SCREEN ---------------------------------------------------- */
+/* Hilangkan scroll horizontal */
+body {
+    overflow-x: hidden;
+}
+
+/* ============================================================
+   SPLASH SCREEN (index.html)
+   ============================================================ */
 .splash-screen {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    height: 100vh;
-    background: radial-gradient(circle at top, #13233a 0, #05070c 60%);
+    justify-content: center;
+    padding: 2rem 1.5rem;
     text-align: center;
+    background: radial-gradient(circle at top, #e3f2fd, #bbdefb, #90caf9);
+    color: #0f172a;
 }
 
 .splash-screen .logo {
     width: 120px;
     height: auto;
-    margin-bottom: 24px;
+    margin-bottom: 1.5rem;
 }
 
 .splash-screen h1 {
-    font-size: 1.6rem;
-    font-weight: 600;
-    color: #f5f5f7;
-    margin-bottom: 8px;
+    font-size: 1.4rem;
+    margin: 0 0 0.5rem 0;
+    font-weight: 700;
 }
 
 .splash-screen p {
+    margin: 0;
     font-size: 0.95rem;
-    color: #c5c6d0;
+    color: #111827;
+    opacity: 0.8;
 }
 
-/* APP SHELL -------------------------------------------------------- */
+/* ============================================================
+   APP SHELL (dashboard & notifikasi & halaman lain)
+   ============================================================ */
 .app-shell {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: #05070c;
+    padding-bottom: 4.5rem; /* ruang untuk bottom nav */
 }
 
+/* ------------------------------------------------------------
+   HEADER
+   ------------------------------------------------------------ */
 .app-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 14px;
-    background: rgba(5, 7, 12, 0.96);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
     position: sticky;
     top: 0;
     z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 1rem;
+    background: #ffffffd9;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.25);
 }
 
 .app-header-left {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.75rem;
 }
 
 .header-logo {
-    width: 32px;
-    height: 32px;
-    border-radius: 999px;
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    object-fit: contain;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
+    background: #ffffff;
 }
 
 .app-title {
     display: flex;
     flex-direction: column;
+    line-height: 1.2;
 }
 
 .app-name {
     font-size: 0.95rem;
-    font-weight: 600;
+    font-weight: 700;
+    color: #0f172a;
 }
 
 .app-subtitle {
     font-size: 0.75rem;
-    color: #9ea3b5;
+    color: var(--color-muted);
 }
 
+.app-header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Tombol icon header (lonceng / dll) */
 .icon-button {
-    background: transparent;
     border: none;
-    color: #f5f5f7;
+    background: #ffffff;
+    border-radius: 999px;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(15, 23, 42, 0.15);
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+}
+
+.icon-button:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 0 1px 5px rgba(15, 23, 42, 0.25);
+    background: #f3f4f6;
+}
+
+/* Back button (dipakai di notifikasi.html) */
+.back-button {
+    border: none;
+    background: #e5e7eb;
+    border-radius: 999px;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.5rem;
     font-size: 1.2rem;
     cursor: pointer;
 }
 
+/* ------------------------------------------------------------
+   MAIN CONTENT
+   ------------------------------------------------------------ */
 .app-main {
     flex: 1;
     display: flex;
     flex-direction: column;
+    padding-bottom: 1rem;
 }
 
-/* MAP SECTION ------------------------------------------------------ */
+/* ============================================================
+   PETA (dashboard.html)
+   ============================================================ */
 .map-section {
     position: relative;
-    height: 55vh;
-    min-height: 320px;
+    padding: 0.75rem 1rem 0.25rem;
 }
 
 #map {
     width: 100%;
-    height: 100%;
+    height: 42vh;
+    min-height: 230px;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    background: #d1d5db;
 }
 
+/* Legend di atas peta */
 .map-legend {
     position: absolute;
-    left: 12px;
-    bottom: 12px;
-    display: flex;
-    gap: 6px;
-    background: rgba(5, 7, 12, 0.82);
-    padding: 6px 8px;
+    bottom: 0.9rem;
+    left: 1.5rem;
+    display: inline-flex;
+    gap: 0.4rem;
+    background: rgba(15, 23, 42, 0.78);
+    padding: 0.35rem 0.55rem;
     border-radius: 999px;
-    font-size: 0.7rem;
+    color: #e5e7eb;
+    font-size: 0.72rem;
+    align-items: center;
 }
 
 .legend-item {
-    padding: 3px 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.15rem 0.5rem;
     border-radius: 999px;
-    color: #f5f5f7;
+    background: rgba(148, 163, 184, 0.35);
 }
 
-.legend-item.hotspot {
-    background: #e74c3c;
+.legend-item::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
 }
 
-.legend-item.banjir {
-    background: #3498db;
+/* Warna tiap legenda */
+.legend-item.hotspot::before {
+    background: #f97316;
+}
+.legend-item.banjir::before {
+    background: #1d4ed8;
+}
+.legend-item.posko::before {
+    background: #16a34a;
 }
 
-.legend-item.posko {
-    background: #2ecc71;
-}
-
-/* CARDS SECTION ---------------------------------------------------- */
+/* ============================================================
+   KARTU RINGKASAN (dashboard)
+   ============================================================ */
 .cards-section {
-    padding: 10px 10px 80px;
-    background: linear-gradient(to bottom, #05070c, #0b1018);
+    padding: 0.5rem 0 0.5rem;
 }
 
+/* Baris utama: horizontal scroll, snap */
 .cards-row {
     display: flex;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem 0.75rem;
     overflow-x: auto;
-    gap: 10px;
-    padding-bottom: 8px;
-    margin-bottom: 8px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
 }
 
 .cards-row::-webkit-scrollbar {
     height: 4px;
 }
-
 .cards-row::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(148, 163, 184, 0.7);
     border-radius: 999px;
 }
 
-.cards-row.secondary {
-    margin-top: 4px;
-}
-
 .info-card {
+    scroll-snap-align: start;
     min-width: 260px;
-    max-width: 280px;
-    background: rgba(19, 29, 48, 0.96);
-    border-radius: 14px;
-    padding: 10px 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    font-size: 0.8rem;
+    max-width: 320px;
+    flex: 0 0 auto;
+    background: #ffffff;
+    border-radius: var(--radius-lg);
+    padding: 0.9rem 0.9rem 0.8rem;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 .info-card h3 {
+    font-size: 0.95rem;
+    margin: 0 0 0.35rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.info-card p {
+    margin: 0;
     font-size: 0.85rem;
-    margin-bottom: 6px;
+    color: var(--color-muted);
+}
+
+/* Kartu status khusus */
+.info-card.status .status-level {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-top: 0.15rem;
+    color: #dc2626;
+}
+
+.info-card.status .status-updated {
+    margin-top: 0.25rem;
+}
+
+/* Kartu laporan */
+.info-card.laporan .laporan-total {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-top: 0.15rem;
+    color: #0f172a;
+}
+
+/* Kartu posko */
+.info-card.posko .posko-total {
     font-weight: 600;
 }
 
-/* Warna khusus kartu */
-.info-card.status {
-    border-left: 4px solid #f1c40f;
+/* Kartu edukasi */
+.info-card.edukasi .edukasi-title {
+    font-weight: 600;
+}
+.info-card.edukasi .edukasi-date {
+    margin-top: 0.25rem;
 }
 
-.info-card.laporan {
-    border-left: 4px solid #3498db;
-}
-
-.info-card.posko {
-    border-left: 4px solid #2ecc71;
-}
-
-.info-card.edukasi {
-    border-left: 4px solid #9b59b6;
+/* Kartu dinamis (cuaca, gempa, karhutla) */
+.cards-row.secondary {
+    padding-top: 0.25rem;
+    padding-bottom: 1rem;
 }
 
 .info-card.weather {
-    border-left: 4px solid #1abc9c;
+    border-left: 4px solid #0ea5e9;
 }
-
 .info-card.quake {
-    border-left: 4px solid #e67e22;
+    border-left: 4px solid #f97316;
 }
-
 .info-card.fire {
-    border-left: 4px solid #e74c3c;
+    border-left: 4px solid #dc2626;
 }
 
-.status-level {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin-bottom: 2px;
+/* Isi kartu cuaca */
+.weather-main {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 0.25rem;
+    color: #0f172a;
+}
+.weather-extra {
+    margin-top: 0.1rem;
 }
 
-.status-updated,
-.laporan-detail,
-.posko-logistik,
-.posko-medis,
-.edukasi-date,
-.weather-extra,
-.fire-detail {
-    color: #a5aac1;
-    font-size: 0.75rem;
+/* Isi kartu gempa */
+.quake-list p {
+    margin: 0.2rem 0;
+    font-size: 0.8rem;
 }
 
+/* Tombol link pada kartu */
 .card-link {
-    margin-top: 6px;
+    margin-top: 0.55rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
     border: none;
-    background: transparent;
-    color: #5dade2;
-    font-size: 0.75rem;
-    padding: 0;
+    font-size: 0.78rem;
+    font-weight: 500;
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
     cursor: pointer;
-    text-decoration: underline;
 }
 
-.quake-list {
-    max-height: 90px;
-    overflow-y: auto;
-    font-size: 0.75rem;
-}
-
-/* BOTTOM NAV & FAB ------------------------------------------------- */
+/* ============================================================
+   BOTTOM NAV (SEMUA HALAMAN)
+   ============================================================ */
 .bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 64px; /* lebih tinggi, enak di-tap */
-    background: rgba(5, 7, 12, 0.98);
-    display: flex;
-    justify-content: space-around;
-    align-items: stretch;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
     z-index: 30;
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.45rem 0.8rem 0.7rem;
+    background: #f9fafb;
+    border-top: 1px solid rgba(209, 213, 219, 0.8);
+    box-shadow: 0 -6px 20px rgba(15, 23, 42, 0.12);
 }
 
-.nav-item {
+.bottom-nav .nav-item {
     flex: 1;
     text-align: center;
     text-decoration: none;
-    color: #9ea3b5;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #4b5563;
+    padding: 0.6rem 0.4rem;
+    border-radius: var(--radius-xl);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 8px 0;
+    min-height: 2.7rem;
+    background: #ffffff;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
 }
 
-.nav-item .nav-label {
-    display: block;
-}
-
-.nav-item.active {
+/* State aktif */
+.bottom-nav .nav-item.active {
+    background: var(--color-primary);
     color: #ffffff;
     font-weight: 600;
-    background: rgba(255, 255, 255, 0.04);
 }
 
+/* Label */
+.nav-label {
+    display: inline-block;
+}
+
+/* ============================================================
+   FAB (TOMBOL LAPOR MELAYANG)
+   ============================================================ */
 .fab-report {
     position: fixed;
-    right: 16px;
-    bottom: 80px;
+    right: 1.25rem;
+    bottom: 4.7rem; /* di atas bottom-nav */
     width: 56px;
     height: 56px;
     border-radius: 50%;
     border: none;
-    background: #e74c3c;
+    background: var(--color-danger);
     color: #ffffff;
     font-size: 2rem;
     line-height: 0;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 12px 24px rgba(231, 76, 60, 0.6);
+    box-shadow: var(--shadow-strong);
     cursor: pointer;
     z-index: 40;
 }
 
-/* Desktop tweak ---------------------------------------------------- */
-@media (min-width: 900px) {
+/* ============================================================
+   RESPONSIVE (LAYAR LEBIH LEBAR)
+   ============================================================ */
+@media (min-width: 768px) {
     .app-shell {
         max-width: 480px;
         margin: 0 auto;
-        border-radius: 18px;
-        overflow: hidden;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+        border-left: 1px solid rgba(209, 213, 219, 0.7);
+        border-right: 1px solid rgba(209, 213, 219, 0.7);
+        box-shadow: 0 0 30px rgba(15, 23, 42, 0.15);
+        background: #f9fafb;
     }
 
     body {
-        background: radial-gradient(circle at top, #141e30, #0b1018 55%, #020307 100%);
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        background: radial-gradient(circle at top left, #eff6ff, #dbeafe);
     }
 }
