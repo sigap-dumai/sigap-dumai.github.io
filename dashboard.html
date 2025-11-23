@@ -5,15 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SiGap - Dashboard</title>
 
-    <!-- CSS utama aplikasi -->
     <link rel="stylesheet" href="/assets/css/dashboard.css" />
 
-    <!-- Leaflet asli dari folder leaflet/dist -->
-    <link rel="stylesheet" href="/leaflet/dist/leaflet.css" />
+    <!-- Leaflet via CDN (lebih stabil di Vercel) -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""
+    />
 </head>
 <body>
     <div class="app-shell">
-        <!-- Top bar -->
+        <!-- Header -->
         <header class="app-header">
             <div class="app-header-left">
                 <img src="/images/sigap_dumai.png" alt="Logo SiGap" class="header-logo" />
@@ -23,7 +27,7 @@
                 </div>
             </div>
             <div class="app-header-right">
-                <!-- Placeholder notif -->
+                <!-- Icon notifikasi (belum diarahkan ke modul lain, hanya placeholder) -->
                 <button class="icon-button" aria-label="Notifikasi">
                     &#128276;
                 </button>
@@ -83,7 +87,7 @@
                     </article>
                 </div>
 
-                <!-- Baris kartu info dinamis: cuaca, gempa, karhutla -->
+                <!-- Baris kartu info dinamis -->
                 <div class="cards-row secondary">
                     <article class="info-card weather" id="weather-card">
                         <h3>Info Cuaca Dumai</h3>
@@ -107,30 +111,33 @@
             </section>
         </main>
 
-        <!-- Bottom nav + FAB -->
+        <!-- Bottom nav: 3 tombol besar -->
         <nav class="bottom-nav">
             <a href="/dashboard.html" class="nav-item active">
-                <span>Dasbor/Peta</span>
+                <span class="nav-label">Dasbor</span>
             </a>
             <a href="/informasi.html" class="nav-item">
-                <span>Informasi/SOP</span>
+                <span class="nav-label">Informasi/SOP</span>
             </a>
             <a href="/laporan.html" class="nav-item">
-                <span>Notifikasi</span>
-            </a>
-            <a href="/laporan.html" class="nav-item">
-                <span>Profil/Akun</span>
+                <span class="nav-label">Lapor</span>
             </a>
         </nav>
 
+        <!-- FAB Lapor Warga -->
         <button class="fab-report" id="lapor-btn" aria-label="Lapor Warga">
             +
         </button>
     </div>
 
-    <!-- Leaflet asli -->
-    <script src="/leaflet/dist/leaflet.js"></script>
-    <!-- Logika dashboard -->
+    <!-- Leaflet JS via CDN -->
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""
+    ></script>
+
+    <!-- Script logika dashboard -->
     <script src="/assets/js/dashboard.js"></script>
 </body>
 </html>
