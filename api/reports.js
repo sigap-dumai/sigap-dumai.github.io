@@ -1,43 +1,64 @@
-// reports.js - Menangani Laporan dan Pengiriman Laporan ke Server
+import { createClient } from "@supabase/supabase-js";
 
-import { sendReport } from './api.js'; // Mengimpor fungsi sendReport dari api.js
+const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
+);
 
-// Fungsi untuk menangani pengiriman laporan
-document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById('laporan-form');
+export default async function handler(req, res) {
+    if (req.method !== "POST") {
+        return res.status(405).json({ error: "Method Not Allowed" });
+    }
 
-    // Validasi dan kirim laporan
-    form.addEventListener('submit', (event) => {
-        event.preventDefault();
+    try {
+        const { jenis, lokasi, deskripsi, foto } = req.body;
 
-        // Ambil nilai dari form
-        const jenisInsiden = document.getElementById('jenis-insiden').value;
-        const deskripsi = document.getElementById('deskripsi').value;
-        const lokasi = document.getElementById('lokasi').value;
-        const foto = document.getElementById('foto').files[0];
-
-        // Validasi form
-        if (!jenisInsiden || !deskripsi || !lokasi) {
-            alert("Semua bidang harus diisi!");
-            return;
+        if (!jenis || !lokasi || !deskripsi) {
+            return res.status(400).json({ error: "Data tidak lengkap" });
         }
 
-        // Siapkan data laporan
-        const reportData = {
-            jenisInsiden,
-            deskripsi,
-            lokasi,
-            foto: foto ? foto.name : null,  // Mengirim nama file foto, bisa disesuaikan
-        };
+        let foto_url = null;
 
-        // Kirim laporan ke server
-        sendReport(reportData).then(response => {
-            if (response) {
-                alert("Laporan berhasil dikirim!");
-                form.reset();  // Reset form setelah pengiriman
-            } else {
-                alert("Gagal mengirim laporan.");
+        // Upload foto (base64 → Supabase Storage)
+        if (foto) {
+            const base64 = foto.split("base64,")[1];
+            const buffer = Buffer.from(base64, "base64");
+            const fileName = `laporan-${Date.now()}.jpg`;
+
+            const { error: uploadError } = await supabase.storage
+                .from("laporan-foto")
+                .upload(fileName, buffer, {
+                    contentType: "image/jpeg"
+                });
+
+            if (!uploadError) {
+                foto_url =
+                    `${process.env.SUPABASE_URL}/storage/v1/object/public/laporan-foto/${fileName}`;
             }
+        }
+
+        // Simpan ke tabel reports
+        const { error } = await supabase
+            .from("reports")
+            .insert({
+                jenis,
+                lokasi,
+                deskripsi,
+                foto_url
+            });
+
+        if (error) {
+            console.error(error);
+            return res.status(500).json({ error: "Gagal menyimpan data" });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Laporan berhasil dikirim!"
         });
-    });
-});
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Server error" });
+    }
+}
