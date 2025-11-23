@@ -34,18 +34,35 @@ function renderWeather() {
     const card = document.getElementById("card-cuaca");
     if (!card) return;
 
+    // Menampilkan placeholder "Memuat Cuaca..." sebelum data muncul
+    card.innerHTML = "<p>Memuat Cuaca...</p>";
+
     fetchWeatherData(card);
 }
 
 function fetchWeatherData(card) {
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=Dumai&appid=${WEATHER_KEY}&units=metric&lang=id`)
-        .then((r) => r.json())
-        .then((data) => {
-            displayWeatherData(data, card);
-        })
-        .catch(() => {
-            card.innerHTML = `<h3>Cuaca</h3><p>Tidak tersedia</p>`;
-        });
+    // Caching untuk cuaca, jika sudah ada di localStorage, gunakan
+    const cachedData = localStorage.getItem('cuacaData');
+    const cachedTime = localStorage.getItem('cuacaDataTime');
+    const now = new Date().getTime();
+
+    // Jika data ada di cache dan belum lebih dari 30 menit
+    if (cachedData && cachedTime && now - cachedTime < 30 * 60 * 1000) {
+        const data = JSON.parse(cachedData);
+        displayWeatherData(data, card);
+    } else {
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=Dumai&appid=${WEATHER_KEY}&units=metric&lang=id`)
+            .then((r) => r.json())
+            .then((data) => {
+                // Simpan data cuaca di localStorage
+                localStorage.setItem('cuacaData', JSON.stringify(data));
+                localStorage.setItem('cuacaDataTime', new Date().getTime());
+                displayWeatherData(data, card);
+            })
+            .catch(() => {
+                card.innerHTML = `<h3>Cuaca</h3><p>Tidak tersedia</p>`;
+            });
+    }
 }
 
 function displayWeatherData(data, card) {
@@ -61,18 +78,35 @@ function renderEarthquake() {
     const card = document.getElementById("card-gempa");
     if (!card) return;
 
+    // Menampilkan placeholder "Memuat Gempa..." sebelum data muncul
+    card.innerHTML = "<p>Memuat Gempa...</p>";
+
     fetchEarthquakeData(card);
 }
 
 function fetchEarthquakeData(card) {
-    fetch("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson")
-        .then((r) => r.json())
-        .then((data) => {
-            displayEarthquakeData(data, card);
-        })
-        .catch(() => {
-            card.innerHTML = `<h3>Gempa</h3><p>Tidak tersedia</p>`;
-        });
+    // Caching untuk gempa, jika sudah ada di localStorage, gunakan
+    const cachedData = localStorage.getItem('gempaData');
+    const cachedTime = localStorage.getItem('gempaDataTime');
+    const now = new Date().getTime();
+
+    // Jika data ada di cache dan belum lebih dari 30 menit
+    if (cachedData && cachedTime && now - cachedTime < 30 * 60 * 1000) {
+        const data = JSON.parse(cachedData);
+        displayEarthquakeData(data, card);
+    } else {
+        fetch("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson")
+            .then((r) => r.json())
+            .then((data) => {
+                // Simpan data gempa di localStorage
+                localStorage.setItem('gempaData', JSON.stringify(data));
+                localStorage.setItem('gempaDataTime', new Date().getTime());
+                displayEarthquakeData(data, card);
+            })
+            .catch(() => {
+                card.innerHTML = `<h3>Gempa</h3><p>Tidak tersedia</p>`;
+            });
+    }
 }
 
 function displayEarthquakeData(data, card) {
