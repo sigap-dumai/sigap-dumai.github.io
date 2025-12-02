@@ -1,21 +1,11 @@
 // =============================================================
 // Notifikasi.js – SiGap Dumai
 // =============================================================
+
 const REPORT_KEY = "sigap_laporan";
 const LAST_VIEW_KEY = "sigap_notif_last_view";
 
-document.addEventListener("DOMContentLoaded", () => {
-    renderNotifications("all");
-    markNotificationsViewed();
-
-    document.querySelectorAll("[data-filter]").forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-            const filter = e.target.dataset.filter;
-            renderNotifications(filter);
-        });
-    });
-});
-
+// Fungsi untuk mendapatkan laporan yang disimpan
 function getStoredReports() {
     try {
         const raw = localStorage.getItem(REPORT_KEY);
@@ -29,6 +19,7 @@ function getStoredReports() {
     }
 }
 
+// Fungsi untuk membuat laporan dummy jika tidak ada laporan
 function seedDummyReports(existing) {
     const target = 80;
     const jenisList = ["banjir", "karhutla", "kebakaran", "angin_kencang", "lainnya"];
@@ -49,42 +40,47 @@ function seedDummyReports(existing) {
         const date = new Date();
         date.setDate(date.getDate() - Math.floor(Math.random() * 7));
         base.push({
-            id: Date.now() + i,
-            jenis,
-            lokasi: `${area.lat + Math.random() * 0.01}, ${area.lon + Math.random() * 0.01} – ${area.nama}`,
-            deskripsi: `Laporan ${jenis} di ${area.nama}.`,
-            waktu: date.toISOString()
+            id: Date.now(),
+            jenis: jenis,
+            area: area,
+            date: date.toISOString().split('T')[0]
         });
     }
-    localStorage.setItem(REPORT_KEY, JSON.stringify(base));
     return base;
 }
 
+// Fungsi untuk merender notifikasi
 function renderNotifications(filter) {
-    const container = document.getElementById("notif-container");
     const reports = getStoredReports();
-    const filtered =
-        filter === "all" ? reports : reports.filter((r) => r.jenis === filter);
-    filtered.sort((a, b) => new Date(b.waktu) - new Date(a.waktu));
+    const filteredReports = reports.filter(report => {
+        if (filter === "all") return true;
+        return report.jenis === filter;
+    });
+    
+    const notificationContainer = document.getElementById("notification-container");
+    notificationContainer.innerHTML = ""; // Clear existing notifications
 
-    container.innerHTML = filtered
-        .map((r) => {
-            const type =
-                ["banjir", "karhutla", "kebakaran"].includes(r.jenis) ? "warning" : "info";
-            return `
-                <div class="notif-item ${type}">
-                    <h4>Laporan ${r.jenis.toUpperCase()}</h4>
-                    <p>${r.deskripsi}</p>
-                    <small>${new Date(r.waktu).toLocaleString("id-ID")}</small>
-                </div>
-            `;
-        })
-        .join("");
+    filteredReports.forEach(report => {
+        const notification = document.createElement("div");
+        notification.className = "notification";
+        notification.textContent = `${report.jenis} - ${report.area.nama} - ${report.date}`;
+        notificationContainer.appendChild(notification);
+    });
 }
 
-// =============================================================
-// TANDAI SUDAH DILIHAT
-// =============================================================
+// Menandai notifikasi sebagai telah dibaca
 function markNotificationsViewed() {
     localStorage.setItem(LAST_VIEW_KEY, new Date().toISOString());
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    renderNotifications("all");
+    markNotificationsViewed();
+
+    document.querySelectorAll("[data-filter]").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+            const filter = e.target.dataset.filter;
+            renderNotifications(filter);
+        });
+    });
+});
