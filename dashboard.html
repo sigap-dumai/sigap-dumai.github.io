@@ -54,7 +54,6 @@
         <!-- KARTU RINGKASAN -->
         <section class="cards-section">
 
-            <!-- Baris Utama -->
             <div class="cards-row">
                 <!-- Status -->
                 <article class="info-card status" id="status-card">
@@ -71,49 +70,8 @@
                     <p class="laporan-detail">Memuat...</p>
                     <button class="card-link" id="btn-laporan-detail">Tinjau laporan detail</button>
                 </article>
-
-                <!-- Posko & Bantuan -->
-                <article class="info-card posko" id="posko-card">
-                    <h3>Ketersediaan Bantuan</h3>
-                    <p class="posko-total">Memuat...</p>
-                    <p class="posko-logistik"></p>
-                    <p class="posko-medis"></p>
-                    <button class="card-link" id="btn-posko-map">Lihat peta posko</button>
-                </article>
-
-                <!-- Edukasi -->
-                <article class="info-card edukasi" id="edukasi-card">
-                    <h3>Siap Siaga (Edukasi)</h3>
-                    <p class="edukasi-title">Memuat artikel...</p>
-                    <p class="edukasi-date"></p>
-                    <button class="card-link" id="btn-edukasi-detail">Baca selengkapnya</button>
-                </article>
+                <!-- Additional cards go here -->
             </div>
-
-            <!-- Baris Kedua: Dinamis -->
-            <div class="cards-row secondary">
-
-                <!-- Cuaca -->
-                <article class="info-card weather" id="weather-card">
-                    <h3>Info Cuaca Dumai</h3>
-                    <p class="weather-main">Memuat cuaca...</p>
-                    <p class="weather-extra"></p>
-                </article>
-
-                <!-- Gempa -->
-                <article class="info-card quake" id="earthquake-card">
-                    <h3>Aktivitas Gempa</h3>
-                    <div class="quake-list"><p>Memuat data gempa...</p></div>
-                </article>
-
-                <!-- Karhutla -->
-                <article class="info-card fire" id="karhutla-card">
-                    <h3>Hotspot / Karhutla</h3>
-                    <p class="fire-summary">Memuat data hotspot...</p>
-                    <p class="fire-detail"></p>
-                </article>
-            </div>
-
         </section>
     </main>
 
@@ -135,14 +93,7 @@
 
 </div>
 
-<!-- Leaflet JS -->
-<script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-    crossorigin=""
-></script>
-
-<!-- JS Dashboard -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="/assets/js/dashboard.js"></script>
 
 </body>
