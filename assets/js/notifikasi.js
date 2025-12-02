@@ -1,7 +1,3 @@
-// =============================================================
-// Notifikasi.js – SiGap Dumai
-// =============================================================
-
 document.addEventListener("DOMContentLoaded", () => {
     renderNotifications("all");  // Render all notifications by default
     markNotificationsViewed();   // Mark notifications as viewed
