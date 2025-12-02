@@ -206,28 +206,7 @@ function renderNotificationBadge() {
     });
 }
 
-<<<<<<< HEAD
-// Ambil laporan dari localStorage atau gunakan laporan dummy
-let reports = getStoredReports();
-
-// Gabungkan data dummy dengan laporan warga
-const dashboardData = {
-    ...dummyData,
-    reports: reports
-};
-
-// Panggil fungsi updateDashboard untuk menampilkan data
-updateDashboard(dashboardData);
-
-// Menambahkan event listener untuk card
-document.querySelectorAll('.info-card').forEach(card => {
-    card.addEventListener('click', function() {
-        alert(`${card.querySelector('h3').innerText} clicked!`);
-    });
-});
-=======
 function showAlertNotifikasi() {
     // Tampilkan alert atau notifikasi di bagian lain
     alert("Ada 5 laporan baru yang perlu perhatian!");
 }
->>>>>>> parent of 1634695 (Update dashboard.js)
