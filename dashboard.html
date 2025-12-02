@@ -9,39 +9,141 @@
     <link rel="stylesheet" href="/assets/css/dashboard.css" />
 
     <!-- Leaflet Map CDN -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""
+    />
 </head>
-<body>
-    <div class="app-shell">
-        <!-- HEADER -->
-        <header class="app-header">
-            <div class="app-header-left">
-                <button class="back-button" onclick="window.history.back()">Back</button>
-            </div>
-            <div class="app-header-right">
-                <!-- Tombol Lonceng untuk Menampilkan Notifikasi -->
-                <button id="notif-bell" class="notif-bell">
-                    <img src="/assets/images/icon-bell.png" alt="Notifikasi">
-                </button>
-            </div>
-        </header>
 
-        <!-- Map Section -->
+<body>
+<div class="app-shell">
+
+    <!-- HEADER -->
+    <header class="app-header">
+        <div class="app-header-left">
+            <img src="/images/sigap_dumai.png" class="header-logo" alt="Logo SiGap" />
+            <div class="app-title">
+                <span class="app-name">SiGap Dumai</span>
+                <span class="app-subtitle">Dashboard Kebencanaan</span>
+            </div>
+        </div>
+
+        <div class="app-header-right">
+            <button id="notif-btn" class="icon-button" aria-label="Notifikasi">
+                &#128276;
+            </button>
+        </div>
+    </header>
+
+    <!-- KONTEN UTAMA -->
+    <main class="app-main">
+
+        <!-- PETA -->
         <section class="map-section">
-            <div id="map" style="height: 400px;"></div>
+            <div id="map"></div>
+
             <div class="map-legend">
-                <button class="card-link" id="btn-posko-map">Lihat peta posko</button>
+                <span class="legend-item hotspot">Hotspot</span>
+                <span class="legend-item banjir">Banjir</span>
+                <span class="legend-item posko">Posko</span>
             </div>
         </section>
 
-        <!-- Panel Notifikasi -->
-        <div id="notifications-panel" class="notifications-panel">
-            <!-- Pemberitahuan akan muncul di sini -->
-        </div>
-    </div>
+        <!-- KARTU RINGKASAN -->
+        <section class="cards-section">
 
-    <!-- Scripts -->
-    <script src="/assets/js/dashboard.js"></script>
-    <script src="/assets/js/notifikasi.js"></script>
+            <!-- Baris Utama -->
+            <div class="cards-row">
+                <!-- Status -->
+                <article class="info-card status" id="status-card">
+                    <h3>Status Siaga Dumai</h3>
+                    <p class="status-level">-</p>
+                    <p class="status-updated">Memuat status...</p>
+                    <button class="card-link" id="btn-status-detail">Lihat kriteria siaga</button>
+                </article>
+
+                <!-- Laporan -->
+                <article class="info-card laporan" id="laporan-card">
+                    <h3>Aktivitas Laporan (24 Jam)</h3>
+                    <p class="laporan-total">- laporan</p>
+                    <p class="laporan-detail">Memuat...</p>
+                    <button class="card-link" id="btn-laporan-detail">Tinjau laporan detail</button>
+                </article>
+
+                <!-- Posko & Bantuan -->
+                <article class="info-card posko" id="posko-card">
+                    <h3>Ketersediaan Bantuan</h3>
+                    <p class="posko-total">Memuat...</p>
+                    <p class="posko-logistik"></p>
+                    <p class="posko-medis"></p>
+                    <button class="card-link" id="btn-posko-map">Lihat peta posko</button>
+                </article>
+
+                <!-- Edukasi -->
+                <article class="info-card edukasi" id="edukasi-card">
+                    <h3>Siap Siaga (Edukasi)</h3>
+                    <p class="edukasi-title">Memuat artikel...</p>
+                    <p class="edukasi-date"></p>
+                    <button class="card-link" id="btn-edukasi-detail">Baca selengkapnya</button>
+                </article>
+            </div>
+
+            <!-- Baris Kedua: Dinamis -->
+            <div class="cards-row secondary">
+
+                <!-- Cuaca -->
+                <article class="info-card weather" id="weather-card">
+                    <h3>Info Cuaca Dumai</h3>
+                    <p class="weather-main">Memuat cuaca...</p>
+                    <p class="weather-extra"></p>
+                </article>
+
+                <!-- Gempa -->
+                <article class="info-card quake" id="earthquake-card">
+                    <h3>Aktivitas Gempa</h3>
+                    <div class="quake-list"><p>Memuat data gempa...</p></div>
+                </article>
+
+                <!-- Karhutla -->
+                <article class="info-card fire" id="karhutla-card">
+                    <h3>Hotspot / Karhutla</h3>
+                    <p class="fire-summary">Memuat data hotspot...</p>
+                    <p class="fire-detail"></p>
+                </article>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+        <a href="/dashboard.html" class="nav-item active">
+            <span class="nav-label">Dasbor</span>
+        </a>
+        <a href="/informasi.html" class="nav-item">
+            <span class="nav-label">Informasi/SOP</span>
+        </a>
+        <a href="/laporan.html" class="nav-item">
+            <span class="nav-label">Lapor</span>
+        </a>
+    </nav>
+
+    <!-- FAB -->
+    <button id="lapor-btn" class="fab-report" aria-label="Lapor Warga">+</button>
+
+</div>
+
+<!-- Leaflet JS -->
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+></script>
+
+<!-- JS Dashboard -->
+<script src="/assets/js/dashboard.js"></script>
+
 </body>
 </html>

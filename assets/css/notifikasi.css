@@ -154,33 +154,3 @@
         padding: 0.85rem 1.1rem 1.1rem;
     }
 }
-
-/* Gaya untuk tombol lonceng */
-.notif-bell {
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-/* Panel Notifikasi */
-.notifications-panel {
-    display: none;
-    position: absolute;
-    top: 50px;
-    right: 20px;
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    z-index: 1000;
-}
-
-/* Tampilkan panel notifikasi ketika diberi kelas 'show' */
-.notifications-panel.show {
-    display: block;
-}
-
-/* Gaya item notifikasi */
-.notification-item {
-    margin-bottom: 10px;
-}
