@@ -31,6 +31,7 @@
         </div>
 
         <div class="app-header-right">
+            <!-- Tombol Lonceng untuk Menampilkan Notifikasi -->
             <button id="notif-btn" class="icon-button" aria-label="Notifikasi">
                 &#128276;
             </button>
@@ -51,9 +52,13 @@
             </div>
         </section>
 
+        <!-- PANEL NOTIFIKASI -->
+        <div id="notifications-panel" class="notifications-panel">
+            <div id="notification-container"></div>
+        </div>
+
         <!-- KARTU RINGKASAN -->
         <section class="cards-section">
-
             <!-- Baris Utama -->
             <div class="cards-row">
                 <!-- Status -->
@@ -89,31 +94,6 @@
                     <button class="card-link" id="btn-edukasi-detail">Baca selengkapnya</button>
                 </article>
             </div>
-
-            <!-- Baris Kedua: Dinamis -->
-            <div class="cards-row secondary">
-
-                <!-- Cuaca -->
-                <article class="info-card weather" id="weather-card">
-                    <h3>Info Cuaca Dumai</h3>
-                    <p class="weather-main">Memuat cuaca...</p>
-                    <p class="weather-extra"></p>
-                </article>
-
-                <!-- Gempa -->
-                <article class="info-card quake" id="earthquake-card">
-                    <h3>Aktivitas Gempa</h3>
-                    <div class="quake-list"><p>Memuat data gempa...</p></div>
-                </article>
-
-                <!-- Karhutla -->
-                <article class="info-card fire" id="karhutla-card">
-                    <h3>Hotspot / Karhutla</h3>
-                    <p class="fire-summary">Memuat data hotspot...</p>
-                    <p class="fire-detail"></p>
-                </article>
-            </div>
-
         </section>
     </main>
 
@@ -144,6 +124,7 @@
 
 <!-- JS Dashboard -->
 <script src="/assets/js/dashboard.js"></script>
+<script src="/assets/js/notifikasi.js"></script>
 
 </body>
 </html>

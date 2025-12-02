@@ -2,20 +2,33 @@
 // Notifikasi.js – SiGap Dumai
 // =============================================================
 
-const REPORT_KEY = "sigap_laporan";
-const LAST_VIEW_KEY = "sigap_notif_last_view";
+document.addEventListener("DOMContentLoaded", () => {
+    renderNotifications("all");  // Render all notifications by default
+    markNotificationsViewed();   // Mark notifications as viewed
+
+    // Add event listener untuk tombol lonceng (notifikasi)
+    document.getElementById("notif-btn").addEventListener("click", function() {
+        const notificationsPanel = document.getElementById("notifications-panel");
+        notificationsPanel.classList.toggle("show");  // Toggle visibility of notification panel
+    });
+
+    // Event listener untuk filter berdasarkan kategori
+    document.querySelectorAll("[data-filter]").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+            const filter = e.target.dataset.filter;
+            renderNotifications(filter);
+        });
+    });
+});
 
 // Fungsi untuk mendapatkan laporan yang disimpan
 function getStoredReports() {
     try {
-        const raw = localStorage.getItem(REPORT_KEY);
+        const raw = localStorage.getItem("sigap_laporan");
         if (!raw) return seedDummyReports([]);
-        const parsed = JSON.parse(raw);
-        if (!Array.isArray(parsed)) return seedDummyReports([]);
-        if (parsed.length < 80) return seedDummyReports(parsed);
-        return parsed;
+        return JSON.parse(raw);  // Parse and return reports from localStorage
     } catch {
-        return seedDummyReports([]);
+        return seedDummyReports([]);  // Return dummy data in case of error
     }
 }
 
@@ -70,17 +83,5 @@ function renderNotifications(filter) {
 
 // Menandai notifikasi sebagai telah dibaca
 function markNotificationsViewed() {
-    localStorage.setItem(LAST_VIEW_KEY, new Date().toISOString());
+    localStorage.setItem("sigap_notif_last_view", new Date().toISOString());
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    renderNotifications("all");
-    markNotificationsViewed();
-
-    document.querySelectorAll("[data-filter]").forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-            const filter = e.target.dataset.filter;
-            renderNotifications(filter);
-        });
-    });
-});
