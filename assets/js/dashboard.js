@@ -105,3 +105,10 @@ const dashboardData = {
 
 // Panggil fungsi updateDashboard untuk menampilkan data
 updateDashboard(dashboardData);
+
+// Menambahkan event listener untuk card
+document.querySelectorAll('.info-card').forEach(card => {
+    card.addEventListener('click', function() {
+        alert(`${card.querySelector('h3').innerText} clicked!`);
+    });
+});
