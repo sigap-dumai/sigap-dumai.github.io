@@ -479,3 +479,49 @@ body {
 .nav-item[data-target='notifikasi']:active {
     transform: scale(0.9);
 }
+
+
+/* ============================================================
+   PETA (dashboard.html)
+   ============================================================ */
+.map-section {
+    position: relative;
+    padding: 0.75rem 1rem 0.25rem;
+}
+
+#map {
+    width: 70%;
+    height: 42vh;
+    min-height: 230px;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    background: #d1d5db;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.cards-section {
+    padding: 0.5rem 0 0.5rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30%;
+    padding-top: 4rem;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 10;
+    box-shadow: var(--shadow-soft);
+}
+
+/* Memastikan card bisa diklik */
+.info-card {
+    position: relative;
+    z-index: 10;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.info-card:hover {
+    transform: scale(1.05);
+}
