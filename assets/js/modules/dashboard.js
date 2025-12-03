@@ -6,26 +6,25 @@ document.addEventListener("DOMContentLoaded", () => {
     // 2. Load Data Utama
     loadDashboardStats();
     getRealTimeWeather();
-    fetchEarthquakeData(); // BARU: Gempa Nasional
+    fetchEarthquakeData();
     
-    // 3. Load Marker POSKO (Sesuai 7 Kecamatan Dumai)
+    // 3. Load Marker POSKO (Sesuai 7 Titik Akurat dari Pak Tami)
     loadPoskoMarkers(map);
 
-    // Dummy Data Marker Hotspot
+    // Dummy Data Marker Hotspot (Titik panas tetap dummy)
     const hotspots = [{lat: 1.6900, lng: 101.4500}, {lat: 1.6700, lng: 101.4300}];
     hotspots.forEach(h => L.circleMarker([h.lat, h.lng], {color: '#ff4757', radius: 8, fillOpacity: 1}).addTo(map).bindPopup("Hotspot"));
 });
 
-// --- FUNGSI POSKO 7 KECAMATAN ---
+// --- DATA POSKO AKURAT (DARI PAK TAMI) ---
 const POSKO_DATA = [
-    { name: "Posko Utama BPBD Kota", lat: 1.6750, lng: 101.4450 },
-    { name: "Posko Siaga Dumai Kota", lat: 1.6700, lng: 101.4420 },
-    { name: "Posko Siaga Dumai Barat", lat: 1.6800, lng: 101.4300 },
-    { name: "Posko Siaga Dumai Timur", lat: 1.6780, lng: 101.4650 },
-    { name: "Posko Siaga Dumai Selatan", lat: 1.6600, lng: 101.4400 },
-    { name: "Posko Siaga Dumai Utara", lat: 1.7000, lng: 101.4500 },
-    { name: "Posko Siaga Bukit Kapur", lat: 1.6000, lng: 101.5500 },
-    { name: "Posko Siaga Medang Kampai", lat: 1.7500, lng: 101.5000 }
+    { name: "Posko Utama Dumai Kota", lat: 1.67724, lng: 101.43969 },
+    { name: "Posko Siaga Dumai Timur", lat: 1.66969, lng: 101.45865 },
+    { name: "Posko Siaga Dumai Barat", lat: 1.69156, lng: 101.40407 },
+    { name: "Posko Siaga Dumai Selatan", lat: 1.6374, lng: 101.3890 },
+    { name: "Posko Siaga Sungai Sembilan", lat: 1.8522, lng: 101.3022 },
+    { name: "Posko Siaga Bukit Kapur", lat: 1.5537, lng: 101.3853 },
+    { name: "Posko Siaga Medang Kampai", lat: 1.6285, lng: 101.5487 }
 ];
 
 function loadPoskoMarkers(map) {
@@ -50,20 +49,19 @@ async function fetchEarthquakeData() {
     try {
         const response = await fetch(proxyUrl + bmkgApiUrl);
         const data = await response.json();
-        const gempa = data.Infogempa.gempa; // Ambil data gempa terbaru
+        const gempa = data.Infogempa.gempa; 
 
         if (gempa) {
             const banner = document.getElementById('earthquake-banner');
-            
             const waktu = gempa.Tanggal + ', ' + gempa.Jam.split(" ")[0];
 
             document.getElementById('eq-magnitude').innerText = `M${gempa.Magnitude} | ${gempa.Kedalaman}`;
             document.getElementById('eq-location').innerText = `${gempa.Wilayah}`;
             document.getElementById('eq-time').innerText = waktu;
 
-            banner.classList.remove('d-none'); // Tampilkan banner
+            banner.classList.remove('d-none');
             
-            // Tambahkan marker gempa di peta
+            // Marker gempa
             const eqLat = parseFloat(gempa.Lintang.replace(/[A-Z]/g, ''));
             const eqLng = parseFloat(gempa.Bujur.replace(/[A-Z]/g, ''));
 
@@ -81,6 +79,7 @@ async function fetchEarthquakeData() {
 
 
 // --- FUNGSI STATS & CUACA ---
+
 function loadDashboardStats() {
     // A. Laporan Masuk (Mengambil dari LocalStorage)
     const dataLaporan = JSON.parse(localStorage.getItem("dataLaporan_SIGAP")) || [];
