@@ -15,8 +15,19 @@
 </nav>
 <div class="container mt-4">
     <h5>Laporan Masuk: <span id="countLaporan" class="badge bg-danger">0</span></h5>
-    <div class="table-responsive"><table class="table table-bordered bg-white" id="tabelLaporan">
-    <thead><tr><th>Waktu</th><th>Jenis</th><th>Lokasi</th><th>Aksi</th></tr></thead>
-    <tbody id="laporanBody"></tbody></table></div>
+    <div class="table-responsive">
+        <table class="table table-bordered bg-white" id="tabelLaporan">
+            <thead><tr><th>Waktu</th><th>Jenis</th><th>Lokasi</th><th>Aksi</th></tr></thead>
+            <tbody id="laporanBody"></tbody>
+        </table>
+        <div id="loadingStatus" class="text-center p-3 text-muted">Memuat data Laporan Real-time...</div>
+    </div>
 </div>
-<script src="assets/js/modules/trc.js"></script></body></html>
+
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+
+<script src="assets/js/firebase-config.js"></script> 
+<script src="assets/js/modules/trc.js"></script>
+</body>
+</html>
