@@ -36,6 +36,19 @@
             </div>
         </div>
 
+        <div id="earthquake-banner" class="card shadow-sm border-0 mt-3 p-3 bg-danger text-white d-none">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
+                    <div>
+                        <h6 class="m-0 fw-bold">GEMPA TERKINI DI INDONESIA</h6>
+                        <small id="eq-magnitude" class="fw-bold">-- Magnitude</small> | 
+                        <small id="eq-location">-- Lokasi</small>
+                    </div>
+                </div>
+                <i id="eq-time" class="fas fa-clock"> -- WIB</i>
+            </div>
+        </div>
         <div class="row g-3 mt-1">
             <div class="col-6">
                 <div class="stat-card">
@@ -48,30 +61,48 @@
             <div class="col-6">
                 <div class="stat-card">
                     <div class="stat-title">Laporan (24j)</div>
-                    <div class="stat-value text-primary">3 <small class="fs-6 text-muted">masuk</small></div>
+                    <div class="stat-value text-primary" id="laporan-count">3 <small class="fs-6 text-muted">masuk</small></div>
                     <div class="stat-desc">Menunggu respon</div>
                     <a href="login.html" class="stat-btn">Login Petugas</a>
                 </div>
             </div>
+            
             <div class="col-6">
                 <div class="stat-card border-start border-4 border-info">
                     <div class="stat-title">Cuaca Dumai</div>
                     <div class="d-flex align-items-center gap-2 my-1">
-                        <i class="fas fa-cloud-sun text-warning fs-4"></i>
-                        <span class="fw-bold fs-5">32°C</span>
+                        <i id="cuaca-icon" class="fas fa-spinner fa-spin text-secondary fs-4"></i>
+                        <span id="cuaca-suhu" class="fw-bold fs-5">--°C">--°C</span>
                     </div>
-                    <div class="stat-desc">Cerah Berawan</div>
+                    <div id="cuaca-desc" class="stat-desc">Memuat data...</div>
                 </div>
             </div>
+            
             <div class="col-6">
                 <div class="stat-card border-start border-4 border-warning">
-                    <div class="stat-title">Hotspot Riau</div>
-                    <div class="d-flex align-items-center gap-2 my-1">
-                        <i class="fas fa-fire text-danger fs-4"></i>
-                        <span class="fw-bold fs-5">12</span>
+                    <div class="stat-title">Hotspot & Udara</div>
+                    <div class="d-flex align-items-center justify-content-between my-1">
+                        <div class="d-flex flex-column">
+                            <span class="fw-bold text-danger fs-5" id="hotspot-count">--</span>
+                            <small class="stat-desc">Hotspot Aktif</small>
+                        </div>
+                        <div class="d-flex flex-column text-end">
+                            <span class="fw-bold text-success fs-5" id="ispu-status">--</span>
+                            <small class="stat-desc">Kualitas Udara (ISPU)</small>
+                        </div>
                     </div>
-                    <div class="stat-desc">Titik terpantau</div>
+                    <a href="https://ispu.menlhk.go.id/" target="_blank" class="stat-btn">Lihat Sumber</a>
                 </div>
+            </div>
+
+            <div class="col-12 mt-3">
+                <a href="tel:0811777xxxx" class="text-decoration-none">
+                    <div class="card p-3 border-0 shadow-sm text-center bg-danger text-white">
+                        <h5 class="m-0"><i class="fas fa-phone-volume me-2"></i> Hotline Siaga BPBD</h5>
+                        <h3 class="m-0 fw-bold mt-1">113 (Damkar) / 0811 777 XXXX</h3>
+                        <small class="mt-2 opacity-75">Tekan untuk menelpon</small>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
