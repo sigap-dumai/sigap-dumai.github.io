@@ -6,17 +6,22 @@ document.addEventListener("DOMContentLoaded", () => {
     // 2. Load Data Utama
     loadDashboardStats();
     getRealTimeWeather();
-    fetchEarthquakeData();
+    fetchEarthquakeData(); 
     
     // 3. Load Marker POSKO (Sesuai 7 Titik Akurat dari Pak Tami)
     loadPoskoMarkers(map);
 
-    // Dummy Data Marker Hotspot (Titik panas tetap dummy)
+    // Dummy Marker Laporan Warga (Menggunakan marker ungu untuk membedakan)
+    // Marker ini akan diganti saat integrasi Firebase selesai.
+    L.circleMarker([1.685, 101.440], {color: 'purple', radius: 6, fillOpacity: 0.8}).addTo(map)
+        .bindPopup("<b>Laporan Warga Dummy</b><br>Asap terlihat!");
+
+    // Dummy Data Marker Hotspot (Titik panas tetap merah lingkaran)
     const hotspots = [{lat: 1.6900, lng: 101.4500}, {lat: 1.6700, lng: 101.4300}];
     hotspots.forEach(h => L.circleMarker([h.lat, h.lng], {color: '#ff4757', radius: 8, fillOpacity: 1}).addTo(map).bindPopup("Hotspot"));
 });
 
-// --- DATA POSKO AKURAT (DARI PAK TAMI) ---
+// --- DATA POSKO AKURAT ---
 const POSKO_DATA = [
     { name: "Posko Utama Dumai Kota", lat: 1.67724, lng: 101.43969 },
     { name: "Posko Siaga Dumai Timur", lat: 1.66969, lng: 101.45865 },
@@ -28,8 +33,9 @@ const POSKO_DATA = [
 ];
 
 function loadPoskoMarkers(map) {
+    // FIX BUG: Marker Posko diubah menjadi Hijau
     const poskoIcon = L.icon({
-        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
         iconSize: [25, 41], iconAnchor: [12, 41], popupAnchor: [1, -34], shadowSize: [41, 41]
     });
@@ -40,19 +46,19 @@ function loadPoskoMarkers(map) {
     });
 }
 
-// --- FUNGSI GEMPA REAL-TIME (BMKG) ---
+// --- FUNGSI GEMPA REAL-TIME (BMKG) - FIX API ERROR ---
 async function fetchEarthquakeData() {
-    // Menggunakan Proxy CORS agar bisa diakses dari GitHub Pages
-    const proxyUrl = 'https://corsproxy.io/?'; 
-    const bmkgApiUrl = 'https://data.bmkg.go.id/DataMKG/TEWS/gempadirasakan.json';
+    // Menggunakan endpoint autogempa.json yang lebih stabil
+    const bmkgApiUrl = 'https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json';
     
     try {
-        const response = await fetch(proxyUrl + bmkgApiUrl);
+        const response = await fetch(bmkgApiUrl);
         const data = await response.json();
         const gempa = data.Infogempa.gempa; 
 
         if (gempa) {
             const banner = document.getElementById('earthquake-banner');
+            
             const waktu = gempa.Tanggal + ', ' + gempa.Jam.split(" ")[0];
 
             document.getElementById('eq-magnitude').innerText = `M${gempa.Magnitude} | ${gempa.Kedalaman}`;
@@ -61,7 +67,6 @@ async function fetchEarthquakeData() {
 
             banner.classList.remove('d-none');
             
-            // Marker gempa
             const eqLat = parseFloat(gempa.Lintang.replace(/[A-Z]/g, ''));
             const eqLng = parseFloat(gempa.Bujur.replace(/[A-Z]/g, ''));
 
@@ -73,21 +78,18 @@ async function fetchEarthquakeData() {
             }
         }
     } catch (error) {
-        console.warn("Gagal mengambil data Gempa BMKG.");
+        console.warn("Gagal mengambil data Gempa BMKG. Cek koneksi internet.");
     }
 }
 
 
-// --- FUNGSI STATS & CUACA ---
+// --- FUNGSI STATS & CUACA (NO CHANGE) ---
 
 function loadDashboardStats() {
-    // A. Laporan Masuk (Mengambil dari LocalStorage)
     const dataLaporan = JSON.parse(localStorage.getItem("dataLaporan_SIGAP")) || [];
     document.getElementById('laporan-count').innerHTML = `${dataLaporan.length} <small class="fs-6 text-muted">masuk</small>`;
 
-    // B. Hotspot & ISPU (Simulasi Data Statis)
     document.getElementById('hotspot-count').innerText = '5'; 
-    
     const ispuValue = 45; 
     let ispuStatus = "Baik";
     let ispuColor = "text-success";
