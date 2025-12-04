@@ -3,7 +3,10 @@ let layerLaporanWarga;
 let mapInstance;
 
 document.addEventListener("DOMContentLoaded", () => {
+    // 1. Data Dummy Aman (Hanya dibuat jika benar-benar kosong)
     seedDummyReports();
+
+    // 2. Inisialisasi Fitur Utama
     initMap();         
     initCuacaBMKG();   
     initGempaBMKG();   
@@ -11,9 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
     updateStatusSiaga();
     updateJumlahLaporan();
     initNotificationBtn();
-    initProximityAlertButton(); // FITUR BARU: Aktifkan Tombol Cek Radius
+    initProximityAlertButton(); // Tombol Radius sekarang akan bekerja
 
-    // INTEGRASI REAL-TIME: Mendengarkan perubahan data dari tab lain (Lapor / Admin)
+    // 3. INTEGRASI REAL-TIME: Dasbor mendengar perubahan data dari tab lain (Lapor / Admin)
     window.addEventListener('storage', (e) => {
         if (e.key === 'dataLaporan_SIGAP') {
             refreshLayerLaporan();
@@ -22,51 +25,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// --- FUNGSI HAVERSINE (PENGHITUNG JARAK DUA TITIK DI BUMI) ---
-function getDistanceKm(lat1, lon1, lat2, lon2) {
-    const R = 6371; // Radius Bumi dalam kilometer
-    const dLat = (lat2 - lat1) * (Math.PI / 180);
-    const dLon = (lon2 - lon1) * (Math.PI / 180);
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c; // Jarak dalam KM
+// --- FUNGSI BARU: PERLINDUNGAN DATA DUMMY ---
+function seedDummyReports() {
+    // Data dummy HANYA dibuat jika data di LocalStorage KOSONG.
+    const data = JSON.parse(localStorage.getItem("dataLaporan_SIGAP")) || [];
+    if (data.length === 0) { 
+        const d=[
+            {waktu:"5/12/2023, 10:00:00",jenis:"Jalan Rusak",lat:1.6780,lng:101.4450,wilayah:"Kec. Dumai Kota",status:"Menunggu",namaPelapor:"Simulasi 1"},
+            {waktu:"5/12/2023, 14:30:00",jenis:"Banjir",lat:1.7010,lng:101.3950,wilayah:"Kec. Dumai Barat",status:"Proses",namaPelapor:"Simulasi 2"},
+            {waktu:"5/12/2023, 16:15:00",jenis:"Karhutla",lat:1.6600,lng:101.4700,wilayah:"Kec. Dumai Timur",status:"Selesai",namaPelapor:"Simulasi 3"}
+        ];
+        localStorage.setItem("dataLaporan_SIGAP",JSON.stringify(d));
+    }
 }
 
-// --- FUNGSI UTAMA: CEK RADIUS ---
-function checkProximity(userLat, userLng, radiusKm) {
-    let nearReports = [];
-
-    // Mengumpulkan semua titik bahaya statis dan dinamis
-    const allReports = [];
-
-    // 1. Laporan Warga (Ungu)
-    const userReports = JSON.parse(localStorage.getItem("dataLaporan_SIGAP")) || [];
-    userReports.forEach(r => allReports.push({ type: "Laporan Warga", name: `${r.jenis} (${r.wilayah})`, lat: r.lat, lng: r.lng }));
-
-    // 2. Hotspot (Merah)
-    const hotspots = [{lat:1.6900,lng:101.4500,loc:"Jl. Putri Tujuh"},{lat:1.6700,lng:101.4300,loc:"Area Kilang"}];
-    hotspots.forEach(h => allReports.push({ type: "Hotspot", name: h.loc, lat: h.lat, lng: h.lng }));
-    
-    // 3. Banjir (Biru)
-    const floods = [{lat:1.6850,lng:101.4400,loc:"Jl. Cempedak"},{lat:1.6920,lng:101.4150,loc:"Pangkalan Sesai"}];
-    floods.forEach(f => allReports.push({ type: "Banjir/Rob", name: f.loc, lat: f.lat, lng: f.lng }));
-
-    // Cek Jarak
-    allReports.forEach(r => {
-        if(r.lat && r.lng) {
-            const dist = getDistanceKm(userLat, userLng, r.lat, r.lng);
-            if (dist <= radiusKm) {
-                nearReports.push({ type: r.type, name: r.name, distance: dist });
-            }
-        }
-    });
-
-    return nearReports;
-}
-
+// --- FUNGSI TOMBOL RADIUS 1 KM (Proximity Alert) ---
 function initProximityAlertButton() {
     const btn = document.getElementById('btnCekRadius');
     if (!btn) return;
@@ -109,9 +82,15 @@ function initProximityAlertButton() {
     });
 }
 
+// --- FUNGSI NOTIFIKASI LONCENG ---
+function initNotificationBtn(){ 
+    const b=document.getElementById('btnNotifikasi'); 
+    if(b) b.addEventListener('click', ()=>{ 
+        alert("⚠️ INFO PERINGATAN DINI BPBD DUMAI:\n\n" + document.getElementById('notifikasi-jalan').innerText); 
+    }); 
+}
 
-// --- FUNGSI LAMA (INIT UTAMA) ---
-
+// --- FUNGSI MAP LENGKAP (TIDAK BERUBAH) ---
 function initMap() {
     const satelit = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Tiles © Esri' });
     const petaJalan = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' });
@@ -168,15 +147,39 @@ function refreshLayerLaporan() {
         }
     });
 }
-function initCuacaBMKG() {
+// Helper: Haversine & Proximity
+function getDistanceKm(lat1, lon1, lat2, lon2) {
+    const R = 6371; const dLat = (lat2 - lat1) * (Math.PI / 180); const dLon = (lon2 - lon1) * (Math.PI / 180);
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); return R * c;
+}
+function checkProximity(userLat, userLng, radiusKm) {
+    let nearReports = [];
+    const allReports = [];
+    const userReports = JSON.parse(localStorage.getItem("dataLaporan_SIGAP")) || [];
+    userReports.forEach(r => allReports.push({ type: "Laporan Warga", name: `${r.jenis} (${r.wilayah})`, lat: r.lat, lng: r.lng }));
+    const hotspots = [{lat:1.6900,lng:101.4500,loc:"Jl. Putri Tujuh"},{lat:1.6700,lng:101.4300,loc:"Area Kilang"}];
+    hotspots.forEach(h => allReports.push({ type: "Hotspot", name: h.loc, lat: h.lat, lng: h.lng }));
+    const floods = [{lat:1.6850,lng:101.4400,loc:"Jl. Cempedak"},{lat:1.6920,lng:101.4150,loc:"Pangkalan Sesai"}];
+    floods.forEach(f => allReports.push({ type: "Banjir/Rob", name: f.loc, lat: f.lat, lng: f.lng }));
+
+    allReports.forEach(r => {
+        if(r.lat && r.lng) {
+            const dist = getDistanceKm(userLat, userLng, r.lat, r.lng);
+            if (dist <= radiusKm) { nearReports.push({ type: r.type, name: r.name, distance: dist }); }
+        }
+    });
+    return nearReports;
+}
+// Fungsi Cuaca, Gempa, Berita, Status (Tidak Berubah)
+async function initCuacaBMKG() {
     const dSuhu=document.getElementById('cuaca-suhu'), dDesc=document.getElementById('cuaca-desc'), dIcon=document.getElementById('cuaca-icon');
     dDesc.innerText="Koneksi BMKG...";
-    fetch("https://data.bmkg.go.id/DataMKG/MEWS/DigitalForecast/DigitalForecast-Riau.xml")
-    .then(response => response.text())
-    .then(strXML => {
-        const xml = new DOMParser().parseFromString(strXML, "text/xml");
-        const areas = xml.getElementsByTagName("area");
+    try {
+        const res = await fetch("https://data.bmkg.go.id/DataMKG/MEWS/DigitalForecast/DigitalForecast-Riau.xml");
+        const xml = new DOMParser().parseFromString(await res.text(),"text/xml");
         let areaDumai = null;
+        const areas = xml.getElementsByTagName("area");
         for(let i=0; i<areas.length; i++) { if(areas[i].getAttribute("description").includes("Dumai")) { areaDumai = areas[i]; break; } }
         if(areaDumai) {
             let temp="--", wCode="0";
@@ -192,15 +195,13 @@ function initCuacaBMKG() {
             if(wCode=="0") ico="fa-sun text-warning";
             dIcon.className=`fas ${ico} fs-4`;
         } else { throw new Error("404"); }
-    }).catch(e => { initWeatherFallback(); });
+    } catch(e) { initWeatherFallback(); }
 }
-
 function translateKode(c) {
     const map={"0":"Cerah","1":"Cerah Berawan","2":"Cerah Berawan","3":"Berawan","4":"Berawan Tebal","5":"Udara Kabur","60":"Hujan Ringan","61":"Hujan Sedang","63":"Hujan Lebat","95":"Hujan Petir"};
     return map[c] || "Berawan";
 }
 async function initWeatherFallback() { try { const r=await fetch("https://api.open-meteo.com/v1/forecast?latitude=1.68&longitude=101.45&current_weather=true&timezone=Asia%2FBangkok");const d=await r.json(); document.getElementById('cuaca-suhu').innerText=d.current_weather.temperature+"°C"; document.getElementById('cuaca-desc').innerText="Cerah (OM)"; } catch(e){} }
-
 async function initGempaBMKG() {
     const c = document.getElementById('list-gempa');
     try {
@@ -212,14 +213,6 @@ async function initGempaBMKG() {
         });
     } catch(e) { c.innerHTML=`<div class="gempa-item"><span class="gempa-mag">5.0</span> Simulasi Gempa (Offline)<br><small>Baru saja</small></div>`; }
 }
-
-function seedDummyReports(){
-    if(!localStorage.getItem("dataLaporan_SIGAP")) {
-        const d=[{waktu:"5/12/2023, 10:00",jenis:"Jalan Rusak",lat:1.6780,lng:101.4450,wilayah:"Kec. Dumai Kota",status:"Menunggu"},{waktu:"5/12/2023, 14:30",jenis:"Banjir",lat:1.7010,lng:101.3950,wilayah:"Kec. Dumai Barat",status:"Proses"},{waktu:"5/12/2023, 16:15",jenis:"Karhutla",lat:1.6600,lng:101.4700,wilayah:"Kec. Dumai Timur",status:"Selesai"}];
-        localStorage.setItem("dataLaporan_SIGAP",JSON.stringify(d));
-    }
-}
-function initNotificationBtn(){ const b=document.getElementById('btnNotifikasi'); if(b) b.addEventListener('click', ()=>{ alert("⚠️ INFO PERINGATAN DINI BPBD DUMAI:\n\n" + document.getElementById('notifikasi-jalan').innerText); }); }
 function initNews(){
     const c = document.getElementById('berita-container'); c.innerHTML = "";
     const n = [
@@ -233,3 +226,4 @@ function initNews(){
     n.forEach(x => { c.innerHTML += `<div class="news-item"><img src="${x.i}" class="news-thumb"><div><h6>${x.t}</h6><p>${x.d}</p><span class="news-date">${x.w}</span></div></div>`; });
 }
 function updateStatusSiaga(){document.getElementById('status-text').innerText="SIAGA 1";document.getElementById('status-text').className="fw-bold fs-5 mb-1 text-danger";document.getElementById('status-desc').innerText="Waspada Banjir Rob";document.getElementById('notifikasi-jalan').innerText="⚠️ PERINGATAN DINI: Waspada potensi hujan lebat & angin kencang di Dumai Pesisir.";}
+function updateJumlahLaporan(){const d=JSON.parse(localStorage.getItem("dataLaporan_SIGAP"))||[];document.getElementById("jml-laporan").innerText=d.length+" Laporan";}
