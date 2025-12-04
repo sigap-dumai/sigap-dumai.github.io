@@ -16,46 +16,54 @@ selectJenis.addEventListener('change', () => {
     }
 });
 
-// 2. Ambil Lokasi & Deteksi Kelurahan
+// 2. Ambil Lokasi & Deteksi Kelurahan (REAL OSM API)
 btnLokasi.addEventListener('click', () => {
     if (!navigator.geolocation) { alert("Browser tidak support GPS"); return; }
     
     lokasiStatus.innerText = "Mencari titik koordinat...";
     lokasiStatus.className = "text-muted d-block text-center";
+    inputKelurahan.value = "Sedang melacak wilayah...";
 
     navigator.geolocation.getCurrentPosition(
-        (pos) => {
+        async (pos) => {
             userCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
             
-            // Simulasi Deteksi Kelurahan (Mocking Reverse Geocoding)
-            // Di aplikasi asli, ini memanggil API Google Maps / OpenStreetMap
-            const namaKelurahan = simulasiCekKelurahan(userCoords.lat, userCoords.lng);
-            
-            inputKelurahan.value = namaKelurahan;
-            lokasiStatus.innerText = `✅ Terkunci: ${userCoords.lat.toFixed(4)}, ${userCoords.lng.toFixed(4)}`;
+            // Tampilkan koordinat sementara
+            lokasiStatus.innerText = `✅ GPS Terkunci: ${userCoords.lat.toFixed(5)}, ${userCoords.lng.toFixed(5)}`;
             lokasiStatus.className = "text-success d-block text-center fw-bold";
+
+            // PANGGIL API OPENSTREETMAP (NOMINATIM) UNTUK NAMA KELURAHAN
+            try {
+                const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${userCoords.lat}&lon=${userCoords.lng}&zoom=18&addressdetails=1`;
+                const response = await fetch(url);
+                const data = await response.json();
+
+                // Ambil data spesifik: Village (Desa/Kelurahan) atau Suburb (Kecamatan/Wilayah)
+                // Nominatim kadang menaruh nama kelurahan di 'village', 'suburb', atau 'residential'
+                const kelurahan = data.address.village || data.address.suburb || data.address.residential || data.address.city_district || "Wilayah Tidak Terdeteksi";
+                
+                inputKelurahan.value = "Kel. " + kelurahan.replace("Kelurahan ", ""); // Bersihkan nama jika ada duplikasi
+            } catch (error) {
+                console.error(error);
+                inputKelurahan.value = "Gagal deteksi nama wilayah (Offline?)";
+            }
         },
         () => { 
-            lokasiStatus.innerText = "Gagal ambil lokasi. Coba lagi.";
+            lokasiStatus.innerText = "Gagal ambil lokasi. Pastikan Izin GPS Aktif.";
             lokasiStatus.className = "text-danger d-block text-center";
+            inputKelurahan.value = "";
         },
         { enableHighAccuracy: true }
     );
 });
-
-// Fungsi Simulasi Nama Kelurahan (Hanya Contoh)
-function simulasiCekKelurahan(lat, lng) {
-    const listKel = ["Kel. Bintan", "Kel. Sukajadi", "Kel. Dumai Kota", "Kel. Teluk Binjai", "Kel. Purnama"];
-    // Pilih acak untuk demo
-    return listKel[Math.floor(Math.random() * listKel.length)];
-}
 
 // 3. Kirim Laporan
 document.getElementById('formLapor').addEventListener('submit', (e) => {
     e.preventDefault();
     if(!userCoords) { alert("Wajib ambil lokasi dulu!"); return; }
     
-    // Tentukan Jenis Kejadian (Pilihan atau Ketik Sendiri)
+    // Ambil Data Input
+    const nama = document.getElementById('namaPelapor').value;
     let jenisFinal = selectJenis.value;
     if(jenisFinal === 'Lainnya') {
         jenisFinal = document.getElementById('ketLainnya').value;
@@ -63,16 +71,17 @@ document.getElementById('formLapor').addEventListener('submit', (e) => {
 
     const laporan = { 
         waktu: new Date().toLocaleString(), 
+        namaPelapor: nama,   // Simpan Nama Pelapor
         jenis: jenisFinal, 
         lat: userCoords.lat, 
         lng: userCoords.lng,
-        kelurahan: inputKelurahan.value // Simpan data kelurahan
+        kelurahan: inputKelurahan.value 
     };
 
     let data = JSON.parse(localStorage.getItem("dataLaporan_SIGAP")) || [];
     data.push(laporan);
     localStorage.setItem("dataLaporan_SIGAP", JSON.stringify(data));
     
-    alert("Laporan Berhasil Terkirim!\nPetugas akan segera memverifikasi.");
+    alert("Terima kasih, " + nama + "!\nLaporan Anda berhasil dikirim.");
     window.location.href = "index.html";
 });

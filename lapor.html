@@ -18,6 +18,11 @@
             <div class="card-body">
                 <form id="formLapor">
                     <div class="mb-3">
+                        <label class="form-label fw-bold">Nama Pelapor</label>
+                        <input type="text" id="namaPelapor" class="form-control" placeholder="Nama Lengkap Anda" required>
+                    </div>
+
+                    <div class="mb-3">
                         <label class="form-label fw-bold">Jenis Kejadian</label>
                         <select class="form-select" id="jenisKejadian" required>
                             <option value="" selected disabled>Pilih kejadian...</option>
@@ -37,14 +42,14 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Lokasi Anda</label>
+                        <label class="form-label fw-bold">Lokasi & Kelurahan</label>
                         <div class="input-group mb-2">
-                            <input type="text" id="inputKelurahan" class="form-control bg-light" placeholder="Kelurahan akan muncul otomatis" readonly>
+                            <input type="text" id="inputKelurahan" class="form-control bg-light" placeholder="Auto-deteksi Kelurahan..." readonly>
                             <button type="button" id="btnLokasi" class="btn btn-primary">
                                 📍 Ambil Lokasi
                             </button>
                         </div>
-                        <small id="lokasiStatus" class="text-muted d-block text-center" style="font-size: 11px;">Pastikan GPS Aktif</small>
+                        <small id="lokasiStatus" class="text-muted d-block text-center" style="font-size: 11px;">Wajib aktifkan GPS</small>
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100 py-2 mt-2">Kirim Laporan</button>
