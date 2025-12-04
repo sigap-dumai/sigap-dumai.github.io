@@ -17,6 +17,14 @@
         .gempa-item:last-child { border-bottom: none; }
         .gempa-mag { font-weight: bold; color: #d63031; background: #ffeaa7; padding: 1px 4px; border-radius: 4px; }
         .btn-login-admin { font-size: 10px; padding: 2px 8px; margin-top: 5px; }
+        
+        /* Style untuk Berita */
+        .news-item { padding: 10px; border-bottom: 1px solid #f0f0f0; display: flex; gap: 10px; }
+        .news-item:last-child { border-bottom: none; }
+        .news-thumb { width: 60px; height: 60px; background: #eee; border-radius: 8px; object-fit: cover; }
+        .news-content h6 { font-size: 13px; font-weight: bold; margin: 0 0 3px 0; color: #333; }
+        .news-content p { font-size: 11px; color: #666; margin: 0; line-height: 1.3; }
+        .news-date { font-size: 10px; color: #999; margin-top: 3px; display: block; }
     </style>
 </head>
 <body class="with-nav">
@@ -81,7 +89,7 @@
                         <i class="fas fa-file-alt text-muted"></i>
                     </div>
                     <div class="stat-value text-primary" id="jml-laporan">0</div>
-                    <div class="stat-desc mb-1">Belum diproses</div>
+                    <div class="stat-desc mb-1">Masuk (24 Jam)</div>
                     <a href="login.html" class="btn btn-outline-primary btn-sm btn-login-admin rounded-pill">
                         <i class="fas fa-lock"></i> Login Admin
                     </a>
@@ -94,6 +102,16 @@
                     <div id="list-gempa" style="min-height: 50px;">
                         <small class="text-muted">Mengambil data BMKG...</small>
                     </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white py-2">
+                        <h6 class="m-0 fw-bold text-dark"><i class="fas fa-newspaper text-danger me-2"></i>Berita Bencana</h6>
+                    </div>
+                    <div class="card-body p-0" id="berita-container">
+                        </div>
                 </div>
             </div>
         </div>
