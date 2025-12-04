@@ -18,24 +18,36 @@
             <div class="card-body">
                 <form id="formLapor">
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Foto Kejadian</label>
-                        <input type="file" id="foto" class="form-control" accept="image/*" capture="camera">
-                    </div>
-                    <div class="mb-3">
                         <label class="form-label fw-bold">Jenis Kejadian</label>
-                        <select class="form-select" id="jenisKejadian">
-                            <option value="Karhutla">Kebakaran Hutan</option>
-                            <option value="Banjir">Banjir</option>
-                            <option value="Lainnya">Lainnya</option>
+                        <select class="form-select" id="jenisKejadian" required>
+                            <option value="" selected disabled>Pilih kejadian...</option>
+                            <option value="Karhutla">Kebakaran Hutan/Lahan</option>
+                            <option value="Banjir">Banjir / Pasang Rob</option>
+                            <option value="Pohon Tumbang">Pohon Tumbang</option>
+                            <option value="Hewan Buas">Gangguan Hewan Buas</option>
+                            <option value="Kecelakaan">Kecelakaan Lalu Lintas</option>
+                            <option value="Jalan Rusak">Infrastruktur/Jalan Rusak</option>
+                            <option value="Lainnya">Lainnya (Isi Manual)</option>
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <button type="button" id="btnLokasi" class="btn btn-outline-primary w-100">
-                            📍 Ambil Lokasi Saya
-                        </button>
-                        <small id="lokasiStatus" class="text-muted d-block mt-1 text-center"></small>
+
+                    <div class="mb-3 d-none" id="divLainnya">
+                        <label class="form-label fw-bold">Sebutkan Kejadian</label>
+                        <input type="text" id="ketLainnya" class="form-control" placeholder="Contoh: Tiang Listrik Miring">
                     </div>
-                    <button type="submit" class="btn btn-primary w-100 py-2">Kirim Laporan</button>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Lokasi Anda</label>
+                        <div class="input-group mb-2">
+                            <input type="text" id="inputKelurahan" class="form-control bg-light" placeholder="Kelurahan akan muncul otomatis" readonly>
+                            <button type="button" id="btnLokasi" class="btn btn-primary">
+                                📍 Ambil Lokasi
+                            </button>
+                        </div>
+                        <small id="lokasiStatus" class="text-muted d-block text-center" style="font-size: 11px;">Pastikan GPS Aktif</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 mt-2">Kirim Laporan</button>
                 </form>
             </div>
         </div>

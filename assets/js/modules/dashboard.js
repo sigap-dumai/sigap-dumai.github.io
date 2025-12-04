@@ -1,11 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // 1. GENERATE DUMMY DATA (Jika belum ada laporan)
+    seedDummyReports();
+
+    // 2. JALANKAN FITUR UTAMA
     initMap();
     initWeather();
     initGempa();
     updateStatusSiaga();
     updateJumlahLaporan();
 
-    // Tombol Notifikasi
+    // 3. Tombol Notifikasi
     const btnNotif = document.getElementById('btnNotifikasi');
     if(btnNotif){
         btnNotif.addEventListener('click', () => {
@@ -15,7 +19,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// --- 1. INISIALISASI PETA (SATELIT + SEMUA MARKER) ---
+// --- FUNGSI BARU: MEMBUAT DATA PALSU LAPORAN WARGA (SIMULASI) ---
+function seedDummyReports() {
+    const data = JSON.parse(localStorage.getItem("dataLaporan_SIGAP"));
+    // Hanya buat data dummy jika database kosong
+    if (!data || data.length === 0) {
+        const dummy = [
+            { waktu: "4/12/2023, 10:00:00", jenis: "Jalan Rusak", lat: 1.6780, lng: 101.4450, kelurahan: "Kel. Bintan" },
+            { waktu: "4/12/2023, 14:30:00", jenis: "Hewan Buas", lat: 1.7010, lng: 101.3950, kelurahan: "Kel. Purnama" },
+            { waktu: "4/12/2023, 16:15:00", jenis: "Tiang Listrik Roboh", lat: 1.6600, lng: 101.4700, kelurahan: "Kel. Jaya Mukti" },
+            { waktu: "5/12/2023, 09:00:00", jenis: "Kecelakaan", lat: 1.6850, lng: 101.4200, kelurahan: "Kel. Ratu Sima" }
+        ];
+        localStorage.setItem("dataLaporan_SIGAP", JSON.stringify(dummy));
+        console.log("Data simulasi laporan warga berhasil dibuat.");
+    }
+}
+
+// --- INISIALISASI PETA (SATELIT + SEMUA MARKER) ---
 function initMap() {
     const map = L.map('map').setView([CONFIG.defaultLat, CONFIG.defaultLng], 11);
     
@@ -54,7 +74,7 @@ function initMap() {
     ];
     wind.forEach(w => L.circleMarker([w.lat, w.lng], { color: '#ffa500', fillColor: '#ffa500', fillOpacity: 0.8, radius: 7 }).addTo(map).bindPopup(`<b>💨 ANGIN KENCANG:</b> ${w.loc}`));
 
-    // D. Marker Banjir/Pasang (BIRU) - BARU!
+    // D. Marker Banjir/Pasang (BIRU)
     const floods = [
         { lat: 1.6850, lng: 101.4400, loc: "Banjir Rob Jl. Cempedak" },
         { lat: 1.6920, lng: 101.4150, loc: "Pasang Kel. Pangkalan Sesai" },
@@ -62,14 +82,30 @@ function initMap() {
         { lat: 1.6600, lng: 101.4250, loc: "Banjir Ratu Sima" }
     ];
     floods.forEach(f => L.circleMarker([f.lat, f.lng], { 
-        color: '#1e90ff',       // Warna Biru Laut
-        fillColor: '#1e90ff', 
-        fillOpacity: 0.8, 
-        radius: 7 
+        color: '#1e90ff', fillColor: '#1e90ff', fillOpacity: 0.8, radius: 7 
     }).addTo(map).bindPopup(`<b>🌊 BANJIR/PASANG:</b> ${f.loc}`));
+
+    // E. MARKER LAPORAN WARGA (UNGU) - [FITUR TAMBAHAN BARU]
+    // Mengambil data dari LocalStorage yang diisi oleh seedDummyReports atau input manual
+    const laporanWarga = JSON.parse(localStorage.getItem("dataLaporan_SIGAP")) || [];
+    laporanWarga.forEach(lap => {
+        // Kita pakai warna UNGU (#9c27b0) agar beda dengan Banjir (Biru)
+        L.circleMarker([lap.lat, lap.lng], {
+            color: '#fff',          // Garis putih biar kontras
+            weight: 1,
+            fillColor: '#9c27b0',   // Isi Ungu
+            fillOpacity: 1,
+            radius: 5               // Ukuran kecil tapi solid
+        }).addTo(map).bindPopup(`
+            <b>👤 LAPORAN WARGA</b><br>
+            Jenis: <b>${lap.jenis}</b><br>
+            Area: ${lap.kelurahan || '-'}<br>
+            <small>${lap.waktu}</small>
+        `);
+    });
 }
 
-// --- 2. FITUR LAIN (SAMA SEPERTI SEBELUMNYA) ---
+// --- FITUR LAIN (TETAP ADA) ---
 async function initWeather() {
     try {
         const response = await fetch("https://api.open-meteo.com/v1/forecast?latitude=1.68&longitude=101.45&current_weather=true&timezone=Asia%2FBangkok");
