@@ -5,7 +5,6 @@ const selectJenis = document.getElementById('jenisKejadian');
 const divLainnya = document.getElementById('divLainnya');
 let userCoords = null;
 
-// 1. Logika Tampilkan Input "Lainnya"
 selectJenis.addEventListener('change', () => {
     if (selectJenis.value === 'Lainnya') {
         divLainnya.classList.remove('d-none');
@@ -16,7 +15,6 @@ selectJenis.addEventListener('change', () => {
     }
 });
 
-// 2. Ambil Lokasi (GPS)
 btnLokasi.addEventListener('click', () => {
     if (!navigator.geolocation) { alert("Browser tidak support GPS"); return; }
     
@@ -26,7 +24,6 @@ btnLokasi.addEventListener('click', () => {
 
     navigator.geolocation.getCurrentPosition(
         async (pos) => {
-            // Pastikan format angka (Float)
             userCoords = { 
                 lat: parseFloat(pos.coords.latitude), 
                 lng: parseFloat(pos.coords.longitude) 
@@ -35,13 +32,12 @@ btnLokasi.addEventListener('click', () => {
             lokasiStatus.innerHTML = `✅ Terkunci: <b>${userCoords.lat.toFixed(5)}, ${userCoords.lng.toFixed(5)}</b>`;
             lokasiStatus.className = "text-success d-block text-center fw-bold";
 
-            // Reverse Geocoding (Cari Nama Wilayah)
+            // Reverse Geocoding (Cari Nama Wilayah dari OSM)
             try {
                 const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${userCoords.lat}&lon=${userCoords.lng}&zoom=18&addressdetails=1`;
                 const res = await fetch(url, { headers: { 'User-Agent': 'SIGAP-Dumai/1.0' } });
                 const data = await res.json();
                 
-                // Logika Penamaan Wilayah
                 const addr = data.address || {};
                 const desa = addr.village || addr.suburb || addr.residential || "";
                 const kec = addr.city_district || addr.county || addr.district || "";
@@ -51,10 +47,9 @@ btnLokasi.addEventListener('click', () => {
                 if(!hasil) hasil = addr.city || "Wilayah Dumai";
 
                 inputWilayah.value = hasil.replace(/(Kelurahan|Kecamatan)\s/gi, "");
-                inputWilayah.readOnly = false; // Boleh diedit user kalau kurang pas
+                inputWilayah.readOnly = false;
             } catch (e) {
-                inputWilayah.value = "";
-                inputWilayah.placeholder = "Gagal deteksi otomatis. Ketik manual...";
+                inputWilayah.value = "Gagal deteksi otomatis. Ketik manual.";
                 inputWilayah.readOnly = false;
             }
         },
@@ -66,7 +61,6 @@ btnLokasi.addEventListener('click', () => {
     );
 });
 
-// 3. Kirim Laporan
 document.getElementById('formLapor').addEventListener('submit', (e) => {
     e.preventDefault();
     if(!userCoords) { alert("Wajib ambil lokasi dulu!"); return; }
@@ -76,7 +70,7 @@ document.getElementById('formLapor').addEventListener('submit', (e) => {
     if(jenisFinal === 'Lainnya') jenisFinal = document.getElementById('ketLainnya').value;
     
     const laporan = { 
-        id: Date.now(), // ID Unik untuk setiap laporan
+        id: Date.now(), 
         waktu: new Date().toLocaleString("id-ID"), 
         namaPelapor: nama,
         jenis: jenisFinal, 
@@ -86,11 +80,10 @@ document.getElementById('formLapor').addEventListener('submit', (e) => {
         status: "Menunggu" // Status Default untuk Admin
     };
 
-    // Simpan ke LocalStorage
     let data = JSON.parse(localStorage.getItem("dataLaporan_SIGAP")) || [];
     data.push(laporan);
     localStorage.setItem("dataLaporan_SIGAP", JSON.stringify(data));
     
     alert("Laporan Berhasil Masuk Sistem!");
-    window.location.href = "index.html"; // Balik ke dashboard
+    window.location.href = "index.html"; 
 });

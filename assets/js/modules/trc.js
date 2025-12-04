@@ -1,17 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Cek Login (Keamanan)
+    // 1. Cek Login
     if(!localStorage.getItem("isLoggedIn")) { 
         window.location.href = "login.html"; 
         return; 
     }
     
-    // 2. Tampilkan Nama User
     const user = localStorage.getItem("currentUser");
     if(user) {
         document.getElementById("userDisplay").innerText = "Halo, " + user.toUpperCase();
     }
 
-    // 3. Fungsi Logout
+    // 2. Fungsi Logout
     document.getElementById('btnLogout').addEventListener('click', () => {
         if(confirm("Yakin ingin keluar?")) {
             localStorage.removeItem("isLoggedIn"); 
@@ -20,42 +19,43 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // 4. Render Tabel Laporan
+    // 3. Render Tabel Laporan
     renderTable();
+
+    // Listener untuk memastikan tabel Admin update jika ada laporan baru dari tab lain
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'dataLaporan_SIGAP') {
+            renderTable();
+        }
+    });
 });
 
 function renderTable() {
-    // Ambil data dari LocalStorage
-    // Perhatikan: Kita tidak pakai 'reverse()' langsung di array asli agar index tidak berantakan saat update
     let data = JSON.parse(localStorage.getItem("dataLaporan_SIGAP")) || [];
     
     const countBadge = document.getElementById("countLaporan");
     const tbody = document.getElementById("laporanBody");
     
-    // Hitung jumlah laporan yang belum selesai (Status bukan 'Selesai')
+    // Hitung jumlah laporan yang belum selesai
     const pending = data.filter(d => d.status !== 'Selesai').length;
     countBadge.innerText = pending;
     
-    tbody.innerHTML = ""; // Bersihkan tabel
+    tbody.innerHTML = ""; 
 
-    // Loop data (Kita balik urutannya pakai logika index agar yang baru di atas)
-    // i mulai dari data.length - 1 (index terakhir) sampai 0
+    // Loop data dari yang terbaru (reverse loop)
     for (let i = data.length - 1; i >= 0; i--) {
         const lap = data[i];
         
-        // Default status jika data lama belum punya status
         if(!lap.status) lap.status = "Menunggu";
 
-        // Tentukan Warna Badge Status
-        let badgeClass = "bg-danger"; // Default Merah (Menunggu)
+        let badgeClass = "bg-danger"; // Menunggu
         if(lap.status === "Proses") badgeClass = "bg-warning text-dark";
         if(lap.status === "Selesai") badgeClass = "bg-success";
 
-        // Format Wilayah (Fallback ke koordinat jika nama wilayah kosong)
         const lokasiShow = lap.wilayah ? `<b>${lap.wilayah}</b><br><small class='text-muted'>${lap.lat.toFixed(4)}, ${lap.lng.toFixed(4)}</small>` : `${lap.lat}, ${lap.lng}`;
 
-        // Link Peta
-        const mapLink = `https://www.google.com/maps?q=${lap.lat},${lap.lng}`;
+        // Link Peta Google
+        const mapLink = `http://maps.google.com/maps?q=${lap.lat},${lap.lng}`;
 
         tbody.innerHTML += `
             <tr>
@@ -88,17 +88,15 @@ function renderTable() {
 }
 
 // FUNGSI UPDATE STATUS
-// Harus di-attach ke window agar bisa dipanggil dari HTML onclick
 window.updateStatus = function(index, newStatus) {
     let data = JSON.parse(localStorage.getItem("dataLaporan_SIGAP")) || [];
     
     // Update status
     data[index].status = newStatus;
     
-    // Simpan balik ke LocalStorage
+    // Simpan balik ke LocalStorage (Trigger 'storage' event)
     localStorage.setItem("dataLaporan_SIGAP", JSON.stringify(data));
     
-    // Refresh tabel
     renderTable();
 }
 
@@ -106,7 +104,7 @@ window.updateStatus = function(index, newStatus) {
 window.hapusLaporan = function(index) {
     if(confirm("Hapus laporan ini permanen?")) {
         let data = JSON.parse(localStorage.getItem("dataLaporan_SIGAP")) || [];
-        data.splice(index, 1); // Hapus 1 item di index tersebut
+        data.splice(index, 1); 
         localStorage.setItem("dataLaporan_SIGAP", JSON.stringify(data));
         renderTable();
     }
