@@ -1,6 +1,6 @@
 const btnLokasi = document.getElementById('btnLokasi');
 const lokasiStatus = document.getElementById('lokasiStatus');
-const inputWilayah = document.getElementById('inputWilayah'); // Pastikan ID ini sama dengan di lapor.html
+const inputWilayah = document.getElementById('inputWilayah');
 const selectJenis = document.getElementById('jenisKejadian');
 const divLainnya = document.getElementById('divLainnya');
 let userCoords = null;
@@ -16,119 +16,81 @@ selectJenis.addEventListener('change', () => {
     }
 });
 
-// 2. Ambil Lokasi & Deteksi Wilayah (LOGIKA BARU LEBIH KUAT)
+// 2. Ambil Lokasi (GPS)
 btnLokasi.addEventListener('click', () => {
-    // Cek support browser
-    if (!navigator.geolocation) { 
-        alert("Browser HP Anda tidak mendukung fitur GPS."); 
-        return; 
-    }
+    if (!navigator.geolocation) { alert("Browser tidak support GPS"); return; }
     
-    // UI Loading
-    lokasiStatus.innerText = "⏳ Sedang melacak satelit & wilayah...";
+    lokasiStatus.innerText = "⏳ Melacak satelit...";
     lokasiStatus.className = "text-warning d-block text-center fw-bold";
-    inputWilayah.value = "Sedang mengambil data...";
+    inputWilayah.value = "Mendeteksi wilayah...";
 
     navigator.geolocation.getCurrentPosition(
         async (pos) => {
-            // Sukses dapat Koordinat
-            userCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+            // Pastikan format angka (Float)
+            userCoords = { 
+                lat: parseFloat(pos.coords.latitude), 
+                lng: parseFloat(pos.coords.longitude) 
+            };
             
-            lokasiStatus.innerHTML = `✅ GPS Terkunci: <b>${userCoords.lat.toFixed(5)}, ${userCoords.lng.toFixed(5)}</b>`;
+            lokasiStatus.innerHTML = `✅ Terkunci: <b>${userCoords.lat.toFixed(5)}, ${userCoords.lng.toFixed(5)}</b>`;
             lokasiStatus.className = "text-success d-block text-center fw-bold";
 
-            // PANGGIL API NOMINATIM (OSM)
+            // Reverse Geocoding (Cari Nama Wilayah)
             try {
                 const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${userCoords.lat}&lon=${userCoords.lng}&zoom=18&addressdetails=1`;
+                const res = await fetch(url, { headers: { 'User-Agent': 'SIGAP-Dumai/1.0' } });
+                const data = await res.json();
                 
-                const response = await fetch(url, {
-                    headers: { 'User-Agent': 'SIGAP-Dumai-App/1.0' } // Penting agar tidak diblokir OSM
-                });
+                // Logika Penamaan Wilayah
+                const addr = data.address || {};
+                const desa = addr.village || addr.suburb || addr.residential || "";
+                const kec = addr.city_district || addr.county || addr.district || "";
                 
-                if (!response.ok) throw new Error("Gagal koneksi ke server peta");
-                
-                const data = await response.json();
-                const addr = data.address;
+                let hasil = desa ? `Kel. ${desa}` : "";
+                if(kec) hasil += (hasil ? ", " : "") + `Kec. ${kec}`;
+                if(!hasil) hasil = addr.city || "Wilayah Dumai";
 
-                console.log("Data Mentah OSM:", addr); // Cek Console jika ingin lihat data asli
-
-                // LOGIKA PINTAR: Cek satu-satu kemungkinan nama
-                // 1. Cari Kelurahan / Desa
-                let kelurahan = addr.village || addr.suburb || addr.residential || addr.neighbourhood || "";
-                
-                // 2. Cari Kecamatan
-                let kecamatan = addr.city_district || addr.county || addr.district || addr.town || "";
-
-                // 3. Cari Kota (Jika kecamatan kosong)
-                let kota = addr.city || addr.region || "";
-
-                // Bersihkan kata-kata duplikat
-                kelurahan = kelurahan.replace(/(Kelurahan|Desa)\s/i, "").trim();
-                kecamatan = kecamatan.replace(/(Kecamatan|District)\s/i, "").trim();
-
-                // GABUNGKAN HASILNYA
-                let hasil = "";
-                if(kelurahan && kecamatan) {
-                    hasil = `Kel. ${kelurahan}, Kec. ${kecamatan}`;
-                } else if (kecamatan) {
-                    hasil = `Kec. ${kecamatan}`;
-                } else if (kelurahan) {
-                    hasil = `Kel. ${kelurahan}`;
-                } else {
-                    // Jika semua gagal, pakai nama Kota/Kabupaten
-                    hasil = kota ? `Area ${kota}` : "Wilayah Tidak Terdeteksi (Isi Manual)";
-                }
-
-                inputWilayah.value = hasil;
-                // Izinkan edit manual jika hasilnya kurang pas
-                inputWilayah.readOnly = false; 
-
-            } catch (error) {
-                console.error("Error Geocoding:", error);
+                inputWilayah.value = hasil.replace(/(Kelurahan|Kecamatan)\s/gi, "");
+                inputWilayah.readOnly = false; // Boleh diedit user kalau kurang pas
+            } catch (e) {
                 inputWilayah.value = "";
-                inputWilayah.placeholder = "Gagal deteksi otomatis. Ketik manual disini...";
+                inputWilayah.placeholder = "Gagal deteksi otomatis. Ketik manual...";
                 inputWilayah.readOnly = false;
-                alert("GPS dapat koordinat, tapi gagal mengambil nama wilayah (Internet/Server Sibuk). Silakan ketik nama wilayah secara manual.");
             }
         },
-        (err) => { 
-            console.error(err);
-            lokasiStatus.innerText = "❌ Gagal ambil lokasi. Pastikan GPS Aktif!";
+        () => { 
+            lokasiStatus.innerText = "❌ Gagal ambil lokasi. Cek GPS!";
             lokasiStatus.className = "text-danger d-block text-center fw-bold";
-            inputWilayah.value = "";
-            inputWilayah.readOnly = false;
         },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        { enableHighAccuracy: true }
     );
 });
 
 // 3. Kirim Laporan
 document.getElementById('formLapor').addEventListener('submit', (e) => {
     e.preventDefault();
-    if(!userCoords) { alert("Wajib ambil lokasi (Klik tombol 'Ambil Lokasi')!"); return; }
+    if(!userCoords) { alert("Wajib ambil lokasi dulu!"); return; }
     
     const nama = document.getElementById('namaPelapor').value;
     let jenisFinal = selectJenis.value;
-    if(jenisFinal === 'Lainnya') {
-        jenisFinal = document.getElementById('ketLainnya').value;
-    }
+    if(jenisFinal === 'Lainnya') jenisFinal = document.getElementById('ketLainnya').value;
     
-    // Ambil nilai wilayah dari input (bisa hasil otomatis atau editan manual user)
-    const wilayahFinal = inputWilayah.value || "Wilayah Tanpa Nama";
-
     const laporan = { 
-        waktu: new Date().toLocaleString("id-ID"), // Format waktu Indonesia
+        id: Date.now(), // ID Unik untuk setiap laporan
+        waktu: new Date().toLocaleString("id-ID"), 
         namaPelapor: nama,
         jenis: jenisFinal, 
         lat: userCoords.lat, 
         lng: userCoords.lng,
-        wilayah: wilayahFinal 
+        wilayah: inputWilayah.value || "Lokasi Terpantau",
+        status: "Menunggu" // Status Default untuk Admin
     };
 
+    // Simpan ke LocalStorage
     let data = JSON.parse(localStorage.getItem("dataLaporan_SIGAP")) || [];
     data.push(laporan);
     localStorage.setItem("dataLaporan_SIGAP", JSON.stringify(data));
     
-    alert("Laporan Berhasil Dikirim!\n\nLokasi: " + wilayahFinal);
-    window.location.href = "index.html";
+    alert("Laporan Berhasil Masuk Sistem!");
+    window.location.href = "index.html"; // Balik ke dashboard
 });

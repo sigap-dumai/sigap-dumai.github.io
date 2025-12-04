@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Tambahan CSS untuk Teks Berjalan & Berita */
+        /* CSS Tambahan untuk Berita & Teks Berjalan */
         .marquee-container { background: #d63031; color: white; padding: 5px; font-size: 12px; white-space: nowrap; overflow: hidden; position: relative; }
         .marquee-text { display: inline-block; padding-left: 100%; animation: marquee 15s linear infinite; }
         @keyframes marquee { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
@@ -57,6 +57,7 @@
             <div class="map-legend-floating">
                 <span><span class="dot dot-posko"></span> Posko</span>
                 <span><span class="dot dot-hotspot"></span> Api</span>
+                <span><span class="dot" style="background: orange;"></span> Angin</span>
                 <span><span class="dot" style="background: #1e90ff;"></span> Banjir</span>
             </div>
         </div>
