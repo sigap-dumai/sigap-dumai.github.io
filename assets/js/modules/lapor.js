@@ -1,6 +1,6 @@
 const btnLokasi = document.getElementById('btnLokasi');
 const lokasiStatus = document.getElementById('lokasiStatus');
-const inputKelurahan = document.getElementById('inputKelurahan');
+const inputWilayah = document.getElementById('inputWilayah'); // ID Baru biar sesuai konteks
 const selectJenis = document.getElementById('jenisKejadian');
 const divLainnya = document.getElementById('divLainnya');
 let userCoords = null;
@@ -16,42 +16,47 @@ selectJenis.addEventListener('change', () => {
     }
 });
 
-// 2. Ambil Lokasi & Deteksi Kelurahan (REAL OSM API)
+// 2. Ambil Lokasi & Deteksi KECAMATAN
 btnLokasi.addEventListener('click', () => {
     if (!navigator.geolocation) { alert("Browser tidak support GPS"); return; }
     
     lokasiStatus.innerText = "Mencari titik koordinat...";
     lokasiStatus.className = "text-muted d-block text-center";
-    inputKelurahan.value = "Sedang melacak wilayah...";
+    inputWilayah.value = "Melacak Kecamatan...";
 
     navigator.geolocation.getCurrentPosition(
         async (pos) => {
             userCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
             
-            // Tampilkan koordinat sementara
-            lokasiStatus.innerText = `✅ GPS Terkunci: ${userCoords.lat.toFixed(5)}, ${userCoords.lng.toFixed(5)}`;
+            lokasiStatus.innerText = `✅ GPS: ${userCoords.lat.toFixed(5)}, ${userCoords.lng.toFixed(5)}`;
             lokasiStatus.className = "text-success d-block text-center fw-bold";
 
-            // PANGGIL API OPENSTREETMAP (NOMINATIM) UNTUK NAMA KELURAHAN
+            // PANGGIL API OPENSTREETMAP (NOMINATIM)
             try {
-                const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${userCoords.lat}&lon=${userCoords.lng}&zoom=18&addressdetails=1`;
+                const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${userCoords.lat}&lon=${userCoords.lng}&zoom=14&addressdetails=1`;
                 const response = await fetch(url);
                 const data = await response.json();
 
-                // Ambil data spesifik: Village (Desa/Kelurahan) atau Suburb (Kecamatan/Wilayah)
-                // Nominatim kadang menaruh nama kelurahan di 'village', 'suburb', atau 'residential'
-                const kelurahan = data.address.village || data.address.suburb || data.address.residential || data.address.city_district || "Wilayah Tidak Terdeteksi";
+                // PRIORITAS DATA KECAMATAN
+                // 1. city_district (Biasanya untuk kota besar)
+                // 2. suburb (Biasanya untuk pinggiran)
+                // 3. county (Kadang terdeteksi sebagai ini)
+                let kecamatan = data.address.city_district || data.address.suburb || data.address.county || "Kecamatan Tidak Terdeteksi";
                 
-                inputKelurahan.value = "Kel. " + kelurahan.replace("Kelurahan ", ""); // Bersihkan nama jika ada duplikasi
+                // Bersihkan kata "Kecamatan" atau "District" jika sudah ada, biar rapi
+                kecamatan = kecamatan.replace("Kecamatan ", "").replace("District", "").trim();
+
+                inputWilayah.value = "Kec. " + kecamatan; 
+
             } catch (error) {
                 console.error(error);
-                inputKelurahan.value = "Gagal deteksi nama wilayah (Offline?)";
+                inputWilayah.value = "Gagal deteksi wilayah";
             }
         },
         () => { 
             lokasiStatus.innerText = "Gagal ambil lokasi. Pastikan Izin GPS Aktif.";
             lokasiStatus.className = "text-danger d-block text-center";
-            inputKelurahan.value = "";
+            inputWilayah.value = "";
         },
         { enableHighAccuracy: true }
     );
@@ -62,7 +67,6 @@ document.getElementById('formLapor').addEventListener('submit', (e) => {
     e.preventDefault();
     if(!userCoords) { alert("Wajib ambil lokasi dulu!"); return; }
     
-    // Ambil Data Input
     const nama = document.getElementById('namaPelapor').value;
     let jenisFinal = selectJenis.value;
     if(jenisFinal === 'Lainnya') {
@@ -71,17 +75,17 @@ document.getElementById('formLapor').addEventListener('submit', (e) => {
 
     const laporan = { 
         waktu: new Date().toLocaleString(), 
-        namaPelapor: nama,   // Simpan Nama Pelapor
+        namaPelapor: nama,
         jenis: jenisFinal, 
         lat: userCoords.lat, 
         lng: userCoords.lng,
-        kelurahan: inputKelurahan.value 
+        wilayah: inputWilayah.value // Simpan nama Kecamatan
     };
 
     let data = JSON.parse(localStorage.getItem("dataLaporan_SIGAP")) || [];
     data.push(laporan);
     localStorage.setItem("dataLaporan_SIGAP", JSON.stringify(data));
     
-    alert("Terima kasih, " + nama + "!\nLaporan Anda berhasil dikirim.");
+    alert("Laporan Terkirim! \nLokasi: " + inputWilayah.value);
     window.location.href = "index.html";
 });
