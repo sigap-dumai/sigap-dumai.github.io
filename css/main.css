@@ -1,0 +1,45 @@
+/* Global Styles */
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; }
+a { text-decoration: none; }
+
+/* Dashboard Styles */
+.app-header { background: white; padding: 15px; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 1000; }
+.app-logo img { width: 40px; height: 40px; border-radius: 50%; object-fit: contain; border: 1px solid #eee; }
+
+.map-container { position: relative; height: 35vh; border-radius: 15px; overflow: hidden; margin-top: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+#map { height: 100%; width: 100%; }
+
+.map-legend-floating {
+    position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+    background: rgba(40, 44, 52, 0.9); padding: 5px 15px; border-radius: 20px;
+    z-index: 500; display: flex; gap: 10px; font-size: 10px; color: white;
+    align-items: center; white-space: nowrap;
+}
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 3px; }
+.dot-hotspot { background: #ff4757; }
+.dot-banjir { background: #1e90ff; }
+.dot-posko { background: #2ed573; }
+
+.stat-card { background: white; border: none; border-radius: 15px; padding: 15px; height: 100%; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+.stat-title { font-size: 14px; font-weight: bold; color: #333; margin-bottom: 5px; }
+.stat-value { font-size: 24px; font-weight: bold; color: #2c3e50; }
+.stat-desc { font-size: 11px; color: #aaa; }
+.stat-btn { font-size: 11px; text-decoration: none; padding: 4px 10px; border-radius: 10px; background: #eef2f7; color: #007bff; display: inline-block; margin-top: 5px; }
+
+/* Bottom Navigation */
+body.with-nav { padding-bottom: 80px; }
+.bottom-nav {
+    position: fixed; bottom: 0; left: 0; width: 100%;
+    background: white; border-top: 1px solid #eee; padding: 10px 15px;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 1000; box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+}
+.nav-item-custom {
+    flex: 1; text-align: center; text-decoration: none;
+    padding: 10px; border-radius: 25px; font-weight: 500; font-size: 14px;
+    color: #6c757d; transition: 0.3s;
+}
+.nav-item-custom.active {
+    background-color: #0d6efd; color: white;
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
+}

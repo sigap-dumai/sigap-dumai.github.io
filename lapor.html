@@ -17,44 +17,24 @@
         <div class="card border-0 shadow-sm">
             <div class="card-body">
                 <form id="formLapor">
-                    
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Foto Kejadian (Opsional)</label>
+                        <label class="form-label fw-bold">Foto Kejadian</label>
                         <input type="file" id="foto" class="form-control" accept="image/*" capture="camera">
                     </div>
-
                     <div class="mb-3">
                         <label class="form-label fw-bold">Jenis Kejadian</label>
-                        <select class="form-select" id="jenisKejadian" required>
-                            <option value="">Pilih Jenis Bencana...</option>
-                            <option value="Karhutla">Kebakaran Hutan (Karhutla)</option>
-                            <option value="Banjir">Banjir/Rob</option>
-                            <option value="Angin Kencang">Angin Kencang/Pohon Tumbang</option>
-                            <option value="Gangguan Hewan Buas">Gangguan Hewan Buas</option>
-                            <option value="Lainnya">Lainnya...</option>
+                        <select class="form-select" id="jenisKejadian">
+                            <option value="Karhutla">Kebakaran Hutan</option>
+                            <option value="Banjir">Banjir</option>
+                            <option value="Lainnya">Lainnya</option>
                         </select>
                     </div>
-
-                    <!-- Input Manual (Muncul jika memilih "Lainnya") -->
-                    <div class="mb-3 d-none" id="lainnyaInputContainer">
-                        <label class="form-label fw-bold">Detail Kejadian Lainnya</label>
-                        <input type="text" id="deskripsiLainnya" class="form-control" placeholder="Tuliskan detail kejadian di sini..." maxlength="100">
-                    </div>
-
                     <div class="mb-3">
                         <button type="button" id="btnLokasi" class="btn btn-outline-primary w-100">
-                            📍 Ambil Lokasi Saya (GPS)
+                            📍 Ambil Lokasi Saya
                         </button>
-                        <small id="lokasiStatus" class="text-muted d-block mt-1 text-center">Status Lokasi: Belum Terdeteksi</small>
+                        <small id="lokasiStatus" class="text-muted d-block mt-1 text-center"></small>
                     </div>
-
-                    <!-- Tampilan Kecamatan Otomatis -->
-                    <div class="mb-4">
-                        <label class="form-label fw-bold">Kecamatan Terdeteksi</label>
-                        <input type="text" id="kecamatanStatus" class="form-control bg-light fw-bold" readonly placeholder="Mendeteksi Kecamatan secara otomatis...">
-                        <small class="text-danger d-block mt-1 text-center" id="lokasiError"></small>
-                    </div>
-
                     <button type="submit" class="btn btn-primary w-100 py-2">Kirim Laporan</button>
                 </form>
             </div>
@@ -66,14 +46,7 @@
         <a href="panduan.html" class="nav-item-custom">Petunjuk</a>
         <a href="lapor.html" class="nav-item-custom active">Lapor</a>
     </div>
-    
-    <!-- LIBRARY FIREBASE (Wajib di urutan ini) -->
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
-    
-    <!-- KONFIGURASI DAN MODUL (firebase-config.js HARUS dijalankan sebelum lapor.js) -->
-    <script src="config.js"></script> 
-    <script src="assets/js/firebase-config.js"></script> 
+    <script src="config.js"></script>
     <script src="assets/js/modules/lapor.js"></script>
 </body>
 </html>
