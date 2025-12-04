@@ -5,12 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SIGAP Dumai - Live Dashboard</title>
+    <link rel="icon" type="image/png" href="assets/img/sigap_dumai.png"> 
+    
     <link rel="stylesheet" href="assets/css/main.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* CSS Tambahan untuk Berita & Teks Berjalan */
+        /* CSS LAMA */
         .marquee-container { background: #d63031; color: white; padding: 5px; font-size: 12px; white-space: nowrap; overflow: hidden; position: relative; }
         .marquee-text { display: inline-block; padding-left: 100%; animation: marquee 15s linear infinite; }
         @keyframes marquee { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
@@ -51,9 +53,7 @@
     </div>
 
     <div class="marquee-container">
-        <span class="marquee-text" id="notifikasi-jalan">
-            ⚠️ MEMUAT DATA PERINGATAN DINI...
-        </span>
+        <span class="marquee-text" id="notifikasi-jalan">⚠️ MEMUAT DATA PERINGATAN DINI...</span>
     </div>
 
     <div class="container pb-3">
@@ -68,7 +68,6 @@
         </div>
 
         <div class="row g-3 mt-1">
-            
             <div class="col-6">
                 <div class="stat-card">
                     <div class="stat-title">Status Siaga</div>
@@ -76,7 +75,6 @@
                     <div id="status-desc" class="stat-desc">Menunggu data...</div>
                 </div>
             </div>
-
             <div class="col-6">
                 <div class="stat-card border-start border-4 border-info">
                     <div class="stat-title">Cuaca Dumai</div>
@@ -87,13 +85,9 @@
                     <div id="cuaca-desc" class="stat-desc">Sinkronisasi...</div>
                 </div>
             </div>
-
             <div class="col-6">
                 <div class="stat-card">
-                    <div class="d-flex justify-content-between">
-                        <div class="stat-title">Laporan</div>
-                        <i class="fas fa-file-alt text-muted"></i>
-                    </div>
+                    <div class="d-flex justify-content-between"><div class="stat-title">Laporan</div><i class="fas fa-file-alt text-muted"></i></div>
                     <div class="stat-value text-primary" id="jml-laporan">0</div>
                     <div class="stat-desc mb-1">Masuk (24 Jam)</div>
                     <a href="login.html" class="btn btn-outline-primary btn-sm rounded-pill" style="font-size: 10px; padding: 2px 8px;">
@@ -101,7 +95,6 @@
                     </a>
                 </div>
             </div>
-
             <div class="col-6">
                 <div class="stat-card border-start border-4 border-danger">
                     <div class="stat-title">Gempa Terkini</div>
@@ -110,14 +103,10 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-12">
                 <div class="card border-0 shadow-sm">
-                    <div class="card-header bg-white py-2">
-                        <h6 class="m-0 fw-bold text-dark"><i class="fas fa-newspaper text-danger me-2"></i>Info Terkini</h6>
-                    </div>
-                    <div class="card-body p-0" id="berita-container">
-                        </div>
+                    <div class="card-header bg-white py-2"><h6 class="m-0 fw-bold text-dark"><i class="fas fa-newspaper text-danger me-2"></i>Info Terkini</h6></div>
+                    <div class="card-body p-0" id="berita-container"></div>
                 </div>
             </div>
         </div>
