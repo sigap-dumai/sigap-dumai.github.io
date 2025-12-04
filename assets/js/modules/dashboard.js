@@ -8,13 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
     getRealTimeWeather();
     fetchEarthquakeData(); 
     
-    // 3. Load Marker POSKO (Sesuai 7 Titik Akurat dari Pak Tami)
+    // 3. Load Marker POSKO (Sesuai 7 Titik Akurat)
     loadPoskoMarkers(map);
-
-    // Dummy Marker Laporan Warga (Menggunakan marker ungu untuk membedakan)
-    // Marker ini akan diganti saat integrasi Firebase selesai.
-    L.circleMarker([1.685, 101.440], {color: 'purple', radius: 6, fillOpacity: 0.8}).addTo(map)
-        .bindPopup("<b>Laporan Warga Dummy</b><br>Asap terlihat!");
 
     // Dummy Data Marker Hotspot (Titik panas tetap merah lingkaran)
     const hotspots = [{lat: 1.6900, lng: 101.4500}, {lat: 1.6700, lng: 101.4300}];
@@ -33,7 +28,7 @@ const POSKO_DATA = [
 ];
 
 function loadPoskoMarkers(map) {
-    // FIX BUG: Marker Posko diubah menjadi Hijau
+    // Marker Posko diubah menjadi Hijau
     const poskoIcon = L.icon({
         iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
         shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -46,9 +41,8 @@ function loadPoskoMarkers(map) {
     });
 }
 
-// --- FUNGSI GEMPA REAL-TIME (BMKG) - FIX API ERROR ---
+// --- FUNGSI GEMPA REAL-TIME (BMKG) ---
 async function fetchEarthquakeData() {
-    // Menggunakan endpoint autogempa.json yang lebih stabil
     const bmkgApiUrl = 'https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json';
     
     try {
@@ -58,7 +52,6 @@ async function fetchEarthquakeData() {
 
         if (gempa) {
             const banner = document.getElementById('earthquake-banner');
-            
             const waktu = gempa.Tanggal + ', ' + gempa.Jam.split(" ")[0];
 
             document.getElementById('eq-magnitude').innerText = `M${gempa.Magnitude} | ${gempa.Kedalaman}`;
@@ -83,13 +76,16 @@ async function fetchEarthquakeData() {
 }
 
 
-// --- FUNGSI STATS & CUACA (NO CHANGE) ---
+// --- FUNGSI STATS & CUACA ---
 
 function loadDashboardStats() {
+    // A. Laporan Masuk (Mengambil dari LocalStorage)
     const dataLaporan = JSON.parse(localStorage.getItem("dataLaporan_SIGAP")) || [];
     document.getElementById('laporan-count').innerHTML = `${dataLaporan.length} <small class="fs-6 text-muted">masuk</small>`;
 
+    // B. Hotspot & ISPU (Simulasi Data Statis)
     document.getElementById('hotspot-count').innerText = '5'; 
+    
     const ispuValue = 45; 
     let ispuStatus = "Baik";
     let ispuColor = "text-success";
