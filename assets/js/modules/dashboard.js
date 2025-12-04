@@ -4,18 +4,27 @@ document.addEventListener("DOMContentLoaded", () => {
     initGempa();
     updateStatusSiaga();
     updateJumlahLaporan();
+
+    // Tombol Notifikasi
+    const btnNotif = document.getElementById('btnNotifikasi');
+    if(btnNotif){
+        btnNotif.addEventListener('click', () => {
+            const pesan = document.getElementById('notifikasi-jalan').innerText;
+            alert("⚠️ INFO PERINGATAN DINI BPBD DUMAI:\n\n" + pesan);
+        });
+    }
 });
 
-// --- 1. INISIALISASI PETA (SATELIT + MARKER) ---
+// --- 1. INISIALISASI PETA (SATELIT + SEMUA MARKER) ---
 function initMap() {
     const map = L.map('map').setView([CONFIG.defaultLat, CONFIG.defaultLng], 11);
-
-    // Tampilan Satelit (Esri)
+    
+    // Tampilan Satelit
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri'
+        attribution: 'Tiles © Esri'
     }).addTo(map);
 
-    // Marker Posko (Hijau)
+    // A. Marker Posko (HIJAU)
     const posko = [
         { n: "Posko Dumai Kota", lat: 1.6815, lng: 101.4475 },
         { n: "Posko Dumai Barat", lat: 1.6943, lng: 101.4098 },
@@ -27,7 +36,7 @@ function initMap() {
     ];
     posko.forEach(p => L.circleMarker([p.lat, p.lng], { color: '#2ed573', fillColor: '#2ed573', fillOpacity: 0.8, radius: 6 }).addTo(map).bindPopup(`<b>🏕️ ${p.n}</b>`));
 
-    // Marker Hotspot (Merah)
+    // B. Marker Hotspot (MERAH)
     const hot = [
         { lat: 1.6900, lng: 101.4500, loc: "Jl. Putri Tujuh" },
         { lat: 1.6700, lng: 101.4300, loc: "Area Kilang" },
@@ -35,7 +44,7 @@ function initMap() {
     ];
     hot.forEach(h => L.circleMarker([h.lat, h.lng], { color: '#ff4757', fillColor: '#ff4757', fillOpacity: 0.8, radius: 8 }).addTo(map).bindPopup(`<b>🔥 HOTSPOT:</b> ${h.loc}`));
 
-    // Marker Angin/Pohon (Orange)
+    // C. Marker Angin/Pohon (ORANGE)
     const wind = [
         { lat: 1.6960, lng: 101.4200, loc: "Pohon Tumbang Dock Yard" },
         { lat: 1.6300, lng: 101.3800, loc: "Angin Kencang Bagan Besar" },
@@ -44,87 +53,59 @@ function initMap() {
         { lat: 1.6100, lng: 101.5800, loc: "Angin Kencang Medang Kampai" }
     ];
     wind.forEach(w => L.circleMarker([w.lat, w.lng], { color: '#ffa500', fillColor: '#ffa500', fillOpacity: 0.8, radius: 7 }).addTo(map).bindPopup(`<b>💨 ANGIN KENCANG:</b> ${w.loc}`));
+
+    // D. Marker Banjir/Pasang (BIRU) - BARU!
+    const floods = [
+        { lat: 1.6850, lng: 101.4400, loc: "Banjir Rob Jl. Cempedak" },
+        { lat: 1.6920, lng: 101.4150, loc: "Pasang Kel. Pangkalan Sesai" },
+        { lat: 1.6750, lng: 101.4600, loc: "Genangan Jl. Jend. Sudirman" },
+        { lat: 1.6600, lng: 101.4250, loc: "Banjir Ratu Sima" }
+    ];
+    floods.forEach(f => L.circleMarker([f.lat, f.lng], { 
+        color: '#1e90ff',       // Warna Biru Laut
+        fillColor: '#1e90ff', 
+        fillOpacity: 0.8, 
+        radius: 7 
+    }).addTo(map).bindPopup(`<b>🌊 BANJIR/PASANG:</b> ${f.loc}`));
 }
 
-// --- 2. FITUR CUACA REALTIME (Open-Meteo API) ---
+// --- 2. FITUR LAIN (SAMA SEPERTI SEBELUMNYA) ---
 async function initWeather() {
-    // Koordinat Dumai
-    const url = "https://api.open-meteo.com/v1/forecast?latitude=1.68&longitude=101.45&current_weather=true&timezone=Asia%2FBangkok";
-    
     try {
-        const response = await fetch(url);
+        const response = await fetch("https://api.open-meteo.com/v1/forecast?latitude=1.68&longitude=101.45&current_weather=true&timezone=Asia%2FBangkok");
         const data = await response.json();
-        const temp = data.current_weather.temperature;
         const code = data.current_weather.weathercode;
-
-        document.getElementById('cuaca-suhu').innerText = `${temp}°C`;
+        document.getElementById('cuaca-suhu').innerText = `${data.current_weather.temperature}°C`;
         
-        // Menerjemahkan kode cuaca
-        let desc = "Cerah";
-        let iconClass = "fa-sun text-warning";
+        let desc = "Cerah", icon = "fa-sun text-warning";
+        if(code > 3) { desc = "Berawan"; icon = "fa-cloud text-secondary"; }
+        if(code > 50) { desc = "Hujan"; icon = "fa-cloud-rain text-info"; }
         
-        if(code > 3) { desc = "Berawan"; iconClass = "fa-cloud text-secondary"; }
-        if(code > 50) { desc = "Gerimis"; iconClass = "fa-cloud-rain text-info"; }
-        if(code > 80) { desc = "Hujan Deras"; iconClass = "fa-poo-storm text-dark"; }
-
         document.getElementById('cuaca-desc').innerText = desc;
-        document.getElementById('cuaca-icon').className = `fas ${iconClass} fs-4`;
-
-    } catch (error) {
-        document.getElementById('cuaca-desc').innerText = "Gagal memuat";
-    }
+        document.getElementById('cuaca-icon').className = `fas ${icon} fs-4`;
+    } catch (e) { document.getElementById('cuaca-desc').innerText = "-"; }
 }
 
-// --- 3. FITUR GEMPA TERKINI (BMKG API) ---
 async function initGempa() {
-    // Menggunakan Proxy jika BMKG memblokir akses langsung, atau akses langsung ke data JSON
-    // Untuk demo ini, kita coba fetch langsung. Jika gagal (CORS), kita pakai data dummy simulasi.
     const container = document.getElementById('list-gempa');
-    
     try {
-        const response = await fetch('https://data.bmkg.go.id/DataMKG/TEWS/gempaterkini.json');
-        if (!response.ok) throw new Error("Network response was not ok");
-        
-        const data = await response.json();
-        const gempaList = data.Infogempa.gempa.slice(0, 3); // Ambil 3 Terakhir
-
-        container.innerHTML = ""; // Bersihkan loading
-        gempaList.forEach(g => {
-            container.innerHTML += `
-                <div class="gempa-item">
-                    <span class="gempa-mag">${g.Magnitude} SR</span> 
-                    ${g.Wilayah} <br>
-                    <small class="text-muted">${g.Jam}, ${g.Tanggal}</small>
-                </div>
-            `;
+        const res = await fetch('https://data.bmkg.go.id/DataMKG/TEWS/gempaterkini.json');
+        if(!res.ok) throw new Error();
+        const data = await res.json();
+        container.innerHTML = "";
+        data.Infogempa.gempa.slice(0, 3).forEach(g => {
+            container.innerHTML += `<div class="gempa-item"><span class="gempa-mag">${g.Magnitude}</span> ${g.Wilayah}<br><small class="text-muted">${g.Jam}</small></div>`;
         });
-    } catch (error) {
-        // Fallback jika API BMKG tidak bisa diakses langsung dari browser (masalah keamanan browser/CORS)
-        console.log("Menggunakan data simulasi gempa karena API terblokir browser");
-        container.innerHTML = `
-            <div class="gempa-item"><span class="gempa-mag">4.5</span> Simulasi Gempa 1 <br><small>Baru saja</small></div>
-            <div class="gempa-item"><span class="gempa-mag">3.2</span> Simulasi Gempa 2 <br><small>1 Jam lalu</small></div>
-            <div class="gempa-item"><span class="gempa-mag">5.1</span> Simulasi Gempa 3 <br><small>3 Jam lalu</small></div>
-        `;
+    } catch (e) {
+        container.innerHTML = `<div class="gempa-item"><span class="gempa-mag">5.0</span> Simulasi Gempa Laut <br><small>Baru saja</small></div>`;
     }
 }
 
-// --- 4. STATUS SIAGA & NOTIFIKASI ---
 function updateStatusSiaga() {
-    // Logika simulasi status berdasarkan jam atau kondisi
-    // Di aplikasi nyata, ini diambil dari database admin
-    const statusText = document.getElementById('status-text');
-    const statusDesc = document.getElementById('status-desc');
-    const notif = document.getElementById('notifikasi-jalan');
-
-    // Kita set Default ke SIAGA (Simulasi)
-    statusText.innerText = "SIAGA 1";
-    statusText.classList.remove('text-secondary');
-    statusText.classList.add('text-danger');
-    statusDesc.innerText = "Potensi Karhutla & Angin";
-
-    // Update Teks Berjalan
-    notif.innerText = "⚠️ PERINGATAN DINI: Terpantau 3 Titik Panas di Wilayah Medang Kampai dan Potensi Angin Kencang di Dumai Barat. Warga dimohon waspada dan dilarang membakar lahan!";
+    document.getElementById('status-text').innerText = "SIAGA 1";
+    document.getElementById('status-text').className = "fw-bold fs-5 mb-1 text-danger";
+    document.getElementById('status-desc').innerText = "Waspada Banjir Rob & Karhutla";
+    document.getElementById('notifikasi-jalan').innerText = "⚠️ PERINGATAN DINI: Waspada Pasang Air Laut (ROB) di wilayah Dumai Kota dan Dumai Barat sore ini. Hindari daerah pinggir pantai.";
 }
 
 function updateJumlahLaporan() {
