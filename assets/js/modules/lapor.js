@@ -34,7 +34,7 @@ selectJenis.addEventListener('change', () => {
   }
 });
 
-bnLokasi.addEventListener('click', () => {
+btnLokasi.addEventListener('click', () => {
   debugLog('Tombol GPS ditekan');
   
   // CHECK 1: Browser Support
