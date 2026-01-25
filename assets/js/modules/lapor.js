@@ -57,8 +57,7 @@ btnLokasi.addEventListener('click', () => {
             lokasiStatus.innerText = "❌ Gagal ambil lokasi. Cek GPS!";
             lokasiStatus.className = "text-danger d-block text-center fw-bold";
         },
-        { enableHighAccuracy: true }
-    );
+{ enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }    );
 });
 
 document.getElementById('formLapor').addEventListener('submit', (e) => {
