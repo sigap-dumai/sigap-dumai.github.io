@@ -127,7 +127,7 @@ bnLokasi.addEventListener('click', () => {
   );
 });
 
-document.getElementById('formLapor').addEventListener('submit', (e) => {
+document.getElementById('formLapor').addEventListener('submit', async (e) => {
   e.preventDefault();
   
   if(!userCoords) {
