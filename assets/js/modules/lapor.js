@@ -80,10 +80,23 @@ document.getElementById('formLapor').addEventListener('submit', (e) => {
         status: "Menunggu" // Status Default untuk Admin
     };
 
-    let data = JSON.parse(localStorage.getItem("dataLaporan_SIGAP")) || [];
-    data.push(laporan);
-    localStorage.setItem("dataLaporan_SIGAP", JSON.stringify(data));
-    
-    alert("Laporan Berhasil Masuk Sistem!");
+ // Submit laporan ke backend GAS API (bukan localStorage)
+  try {
+    const response = await fetch(CONFIG.apiBaseUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' }, // GAS tidak support application/json dari CORS
+      body: JSON.stringify({
+        action: 'report',
+        key: CONFIG.publicApiKey,
+        ...laporan
+      })
+    });
+    const result = await response.json();
+    if (!result.ok) throw new Error(result.error || 'API Error');
+  } catch (err) {
+    console.error('API Error:', err);
+    alert(`Gagal kirim ke server: ${err.message}`);
+    return;
+  }    alert("Laporan Berhasil Masuk Sistem!");
     window.location.href = "index.html"; 
 });
