@@ -53,8 +53,25 @@ function debounce(fn, wait = 300) {
     };
 }
 
+// --- UTIL: Pastikan tidak ada data dummy otomatis (mode produksi) ---
+function ensureNoDummyData() {
+    // Hapus kemungkinan data simulasi lama yang dibuat versi sebelumnya
+    try {
+        const data = JSON.parse(localStorage.getItem("dataLaporan_SIGAP")) || [];
+        const filtered = data.filter(item => {
+            const nama = (item && item.namaPelapor) ? String(item.namaPelapor) : "";
+            // Nama 'Simulasi X' dipakai pada seed dummy sebelumnya
+            return !/^Simulasi\s\d+$/i.test(nama);
+        });
+        if (filtered.length !== data.length) {
+            localStorage.setItem("dataLaporan_SIGAP", JSON.stringify(filtered));
+        }
+    } catch (e) { }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-    seedDummyReports();
+    // PRODUKSI: pastikan tidak ada laporan dummy
+    ensureNoDummyData();
 
     initMap();
     initCuacaBMKG();
@@ -74,18 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.addEventListener('storage', onStorageUpdate);
 });
-
-function seedDummyReports() {
-    const data = JSON.parse(localStorage.getItem("dataLaporan_SIGAP")) || [];
-    if (data.length === 0) {
-        const d = [
-            { waktu: "5/12/2023, 10:00:00", jenis: "Jalan Rusak", lat: 1.6780, lng: 101.4450, wilayah: "Kec. Dumai Kota", status: "Menunggu", namaPelapor: "Simulasi 1" },
-            { waktu: "5/12/2023, 14:30:00", jenis: "Banjir", lat: 1.7010, lng: 101.3950, wilayah: "Kec. Dumai Barat", status: "Proses", namaPelapor: "Simulasi 2" },
-            { waktu: "5/12/2023, 16:15:00", jenis: "Karhutla", lat: 1.6600, lng: 101.4700, wilayah: "Kec. Dumai Timur", status: "Selesai", namaPelapor: "Simulasi 3" }
-        ];
-        localStorage.setItem("dataLaporan_SIGAP", JSON.stringify(d));
-    }
-}
 
 function initProximityAlertButton() {
     const btn = document.getElementById('btnCekRadius');
