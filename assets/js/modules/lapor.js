@@ -157,8 +157,7 @@ document.getElementById('formLapor').addEventListener('submit', async (e) => {
   
   // Submit laporan ke backend GAS API
   try {
-    const response = await fetch(CONFIG.apiBaseUrl + '?action=report', {
-      method: 'POST',
+    const response = await fetch(IG.apiBaseUrl, {      method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify({
         action: 'report',
