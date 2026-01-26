@@ -3,6 +3,6 @@ const CONFIG = {
     version: "1.2",
     defaultLat: 1.6815,
     defaultLng: 101.4475,
-    apiBaseUrl: "https://script.google.com/macros/s/AKfycbxyKy7p_OsycQOH_agtoah_E6dNNHSNQEdhERRfW8UPIHoVXgWoGc5HnqOvRUrPrqNQcQ/exec",
+    apiBaseUrl: "https://script.google.com/macros/s/AKfycbwgpUjmy3qy3zJTrteYEpkgqFQlJ03YmTpWjxLNjg2024z1oXNs7wf8VudQc924jp7_OQ/exec",
     publicApiKey: "SK_TEST_SIGAP_DUMAI_20260126"
 };
